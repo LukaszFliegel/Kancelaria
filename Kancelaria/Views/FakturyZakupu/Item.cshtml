@@ -1,0 +1,5 @@
+﻿@model FakturaZakupu
+
+<li data-value='@Model.Id'>
+@Model.NumerFaktury @(Model.KwotaBrutto - Model.KwotaZaplacona)
+</li>

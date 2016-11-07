@@ -1,0 +1,114 @@
+﻿@model MenuModel
+
+@{
+    ViewBag.Title = "Menu";
+}
+@section featured {
+    @Html.Partial("_FeaturedSection", new FeaturedSectionModel() { Title = "eKancelaria", SubTitle = "Menu" })
+}
+
+<h3>Dostępne opcje:</h3>
+
+<ol class="round">
+    <li class="one">
+        <h5>Faktury zakupu</h5>
+        kartoteka faktur zakupu. Pozwala przeglądać faktury, dodawać nowe oraz modyfikować i usuwać istniejące.<br />
+        @Html.ActionLink("Wyświetl kartotekę faktur zakupu", "Kartoteka", "FakturyZakupu")
+        @Html.ActionLink("Dodaj nową fakturę zakupu", "Dodaj", "FakturyZakupu")
+    </li>
+
+    <li class="two">
+        <h5>Faktury sprzedaży</h5>
+        kartoteka faktur sprzedaży. Pozwala przeglądać faktury, dodawać nowe oraz modyfikować i usuwać istniejące.<br />
+        @Html.ActionLink("Wyświetl kartotekę faktur sprzedaży", "Kartoteka", "FakturySprzedazy")
+        @Html.ActionLink("Dodaj nową fakturę sprzedaży", "Dodaj", "FakturySprzedazy")
+    </li>
+
+    <li class="three">
+        <h5>Kontrahenci</h5>
+        Kartoteka kontrahentów - dostawców i odbiorców faktur. Pozwala przeglądać kontrahentów, dodawać nowych oraz modyfikować i usuwać istniejących.<br />
+        @Html.ActionLink("Wyświetl kartotekę kontrahentów", "Kartoteka", "Kontrahenci")
+        @Html.ActionLink("Dodaj kontrahenta", "Dodaj", "Kontrahenci")
+    </li>
+
+    <li class="four">
+        <h5>Kompensaty</h5>
+        Kartoteka kompensat. Pozwala przeglądać kompensaty, dodawać nowe oraz modyfikować i usuwać istniejące.<br />
+        @*Kompensaty w trakcie prac.<br />*@
+        @Html.ActionLink("Wyświetl kartotekę kompensat", "Kartoteka", "Kompensaty")
+    </li>
+
+    <li class="five">
+        @if(Model.IsOneFirm)
+        {
+            <h5>Firma</h5>
+            @:Dane firmy. Zawiera dane teleadresowe firmy.<br />
+            @Html.ActionLink("Edytuj dane firmy", "Kartoteka", "Firmy")
+        }
+        else
+        {
+            <h5>Firmy</h5>
+            @:Kartoteka firm. Zawiera dane teleadresowe firmy.<br />
+            @Html.ActionLink("Wyświetl kartotekę firm", "Kartoteka", "Firmy")
+            @Html.ActionLink("Wybierz firmę", "Wybor", "Firmy")
+        }
+    </li>
+
+    <li class="six">
+        <h5>Raporty</h5>
+        Lista raportów. Pozwala uruchomić raport.<br />
+        @Html.ActionLink("Wyświetl listę raportów", "Index", "Raporty")
+    </li>
+
+    <li class="seven">
+        <h5>Lata obrotowe</h5>
+        Kartoteka lat obrotowych firmy. Pozwala dodać nowy rok obrotowy.<br />
+        @Html.ActionLink("Wyświetl listę lat obrotowych", "Kartoteka", "LataObrotowe")
+        @Html.ActionLink("Wybierz rok obrotowy", "Wybor", "LataObrotowe")
+    </li>
+
+    <li class="eight">
+        <h5>Typy inwestycji</h5>
+        Kartoteka typów inwestycji. Pozwala przeglądać wszystkie typy, dodawać nowe oraz modyfikować i usuwać istniejące.<br />
+        @Html.ActionLink("Wyświetl kartotekę typów inwestycji", "Kartoteka", "TypyInwestycji")
+        @Html.ActionLink("Dodaj nowy typ inwestycji", "Dodaj", "TypyInwestycji")
+    </li>
+
+    <li class="nine">
+        <h5>Inwestycje</h5>
+        Kartoteka inwestycji, które są powiązane z fakturami. Pozwala przeglądać wszystkie inwestycje, dodawać nowe oraz modyfikować i usuwać istniejące.<br />
+        @Html.ActionLink("Wyświetl kartotekę inwestycji", "Kartoteka", "Inwestycje")
+        @Html.ActionLink("Dodaj nową inwestycję", "Dodaj", "Inwestycje")
+    </li>
+
+    <li class="ten">
+        <h5>Sposoby płatności</h5>
+        Kartoteka sposobów płatności. Pozwala przeglądać listę sposobów płatności, dodawać nowe oraz modyfikować i usuwać istniejące.<br />
+        @Html.ActionLink("Wyświetl kartotekę sposobów płatności", "Kartoteka", "SposobyPlatnosci")
+    </li>
+
+    <li class="eleven">
+        <h5>Konta bankowe</h5>
+        Lista kont bankowych z wybranej firmy.<br />
+        @Html.ActionLink("Wyświetl konta bankowe firmy", "Kartoteka", "KontaBankowe")
+        @Html.ActionLink("Dodaj nowe konto bankowe firmy", "Dodaj", "KontaBankowe")
+    </li>
+
+    <li class="twelve">
+        <h5>Jednostki miary</h5>
+        Kartoteka jednostek miary. Pozwala przeglądać listę jednostek miary, dodawać nowe oraz modyfikować i usuwać istniejące.<br />
+        @Html.ActionLink("Wyświetl kartotekę jednostek miary", "Kartoteka", "JednostkiMiary")
+    </li>
+
+    <li class="thirteen">
+        <h5>Ustawienia</h5>
+        Ustawienia. Zmień ustawienia i wygląd aplikacji.<br />
+        @Html.ActionLink("Zmień skrókę", "Ustawienia", "Home")
+    </li>
+
+    @*<li class="nine">
+        <h5>Kalendarz</h5>
+        Kalendarz. Pomoga przy terminach płatności.<br />
+        @Html.ActionLink("Wyświetl kalendarz", "Index", "Kalendarz")
+    </li>*@
+</ol>

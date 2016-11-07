@@ -1,0 +1,72 @@
+﻿@model ReadOnlyAbleModel<FakturaSprzedazy>
+
+<table class="grid">
+    <caption>
+        <span class="caption-buttons">
+            @Ajax.ActionLink("Dodaj pozycję faktury", "DodajPozycjeFakturySprzedazy", new { @id = Model.Model.Id, @dialogElementId = Model.DialogElementId, @gridElementId = Model.GridElementId }, 
+                new AjaxOptions() { HttpMethod = "Get", UpdateTargetId = Model.DialogElementId, InsertionMode = InsertionMode.Replace },
+                new { @class = "button" }
+            )
+        </span>
+    </caption>
+    <thead>
+        <tr class="ui-widget-header">
+            <th class="ui-widget">Lp.</th>
+            <th class="ui-widget">Opis</th>
+            <th class="ui-widget">J.m.</th>
+            <th class="ui-widget">Ilość</th>
+            <th class="ui-widget">Cena jedn.</th>
+            <th class="ui-widget">Vat (%)</th>
+            <th class="ui-widget">Kwota netto</th>
+            <th class="ui-widget">Kwota vat</th>
+            <th class="ui-widget">Kwota brutto</th>
+            @if (!Model.ReadOnly)
+            {
+                <th class="ui-widget grid-operations-cell">Operacje</th>
+            }
+        </tr>
+    </thead>
+    <tbody id="kanc_faktury_sprzedazy_pozycje">
+    @if (Model != null)
+    {
+        //quick-fix: drukuje naglowek tylko gdy Model.ReadOnly bo nie chcialo mi sie tego parametryzowac dla wywolania z raportu (!) - TODO
+        if (Model.ReadOnly && !String.IsNullOrEmpty(Model.Model.Opis) && !String.IsNullOrEmpty(Model.Model.Opis.Trim()))
+        {
+            <tr>
+                <td class="grid-elements-header" colspan="9">@Model.Model.Opis</td>
+            </tr>
+        }
+        
+        foreach (PozycjaFakturySprzedazy pf in Model.Model.PozycjaFakturySprzedazies)
+        {
+            <tr id="grid-pozycja-faktury-sprzedazy-@pf.Id">
+                <td>@pf.NumerPozycji</td>
+                <td>@pf.Opis</td>
+                <td>@pf.JednostkaMiary.KodJednostkiMiary</td>
+                <td>@pf.Ilosc</td>
+                <td>@pf.CenaJednostkowa.ToString("N2")</td>
+                <td>@pf.StawkaVat.ToString()</td>
+                <td>@pf.KwotaNetto.ToString("N2")</td>
+                <td>@pf.KwotaVat.ToString("N2")</td>
+                <td>@pf.KwotaBrutto.ToString("N2")</td>
+                
+                @if (!Model.ReadOnly)
+                {
+                    <td class="grid-operations-cell">
+                        @Ajax.ActionLink("Edytuj", "EdytujPozycjeFakturySprzedazy",
+                            new { @id = pf.Id, @dialogElementId = Model.DialogElementId, @gridElementId = Model.GridElementId },
+                            new AjaxOptions() { HttpMethod = "get", UpdateTargetId = Model.DialogElementId, InsertionMode = InsertionMode.Replace },
+                            new { @class = "button" }
+                        )
+                        @Ajax.ActionLink("Usuń", "UsunPozycjeFakturySprzedazy",
+                            new { @id = pf.Id, @dialogElementId = Model.DialogElementId, @gridElementId = Model.GridElementId },
+                            new AjaxOptions() { HttpMethod = "get", UpdateTargetId = Model.DialogElementId, InsertionMode = InsertionMode.Replace },
+                            new { @class = "button" }
+                        )
+                    </td>
+                }
+            </tr>
+        }
+    }
+    </tbody>
+</table>

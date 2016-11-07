@@ -1,0 +1,7 @@
+﻿@model Kancelaria.Models.Inwestycja
+
+<li data-value='@Model.Id'>
+@Model.NumerInwestycji @if(!String.IsNullOrEmpty(Model.Opis)) {
+                           @:- @Model.Opis
+                       }
+</li>

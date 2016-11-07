@@ -1,0 +1,289 @@
+﻿.ae-pagination {
+    margin:10px 0 10px 0;
+    text-align: center;
+}
+
+#cookies-info
+{
+    background-color: activeborder;
+    height: 60px;
+    position: absolute;
+    text-align: center;
+    width: 100%;
+    display:none;
+}
+
+.site-title {
+    /*background-image:url('/Content/Images/kaz_logo.gif');*/
+}
+
+caption {
+    padding:8px 0;
+}
+
+caption span.caption-label {
+    font-size:large;
+}
+
+caption span.caption-buttons {
+    float:left;
+}
+
+input[type='text'] {
+    height:26px;
+    display: inline-block;
+    width:300px;
+}
+
+input.search-text {
+    width:260px;
+}
+
+input[type='password'] {
+    height:26px;
+    display: inline-block;
+    width:300px;
+}
+
+input[type='number'] {
+    height:26px;
+    display: inline-block;
+    width:300px;
+}
+
+input[type='submit'] {
+    display: inline-block;
+}
+
+input[type='datetime'] {
+    display: inline-block;
+    vertical-align: middle;
+    height:26px;
+    width:100px;
+}
+
+input.read-only {
+}
+
+input {
+        
+}
+
+hr {
+    border: 0 none;
+    border-radius: 4px;
+    height: 4px;
+    margin-top: 12px;
+}
+
+fieldset div.kanc-fieldset-right {
+    width: 49%;
+    display:inline-table;
+}
+
+fieldset div.kanc-fieldset-left {
+    width:49%;
+    display:inline-table;
+}
+
+ul.ae-lookup-searchlist {
+    list-style:none;
+}
+
+.ui-widget {
+    font-family:inherit !important;
+}
+
+input.kanc-search {
+    display: inline;
+    vertical-align: middle;
+    margin-right:6px;
+}
+
+div.kanc-message {
+    padding:0px 10px;
+    display:table;
+    margin: auto auto 10px;
+}
+
+.kanc-hide-button {
+    font-size:x-small !important;
+    float:right;
+}
+
+input[type="submit"] {
+    /*font-size:large;*/
+}
+
+.kanc-print-head {
+    text-align:center;
+    padding-top:6px;
+}
+
+.kanc-print-top {
+    text-align: right;
+}
+
+.kanc-row {
+    display:table-row;
+}
+
+.kanc-left-cell {
+    display:table-cell;
+    width:480px;
+}
+
+.kanc-right-cell {
+    display:table-cell;
+    width:480px;
+}
+
+.kanc-print-details span.caption-buttons {
+    display:none;
+}
+
+.kanc-print-footer {
+    margin: 25px 0 0 0;
+}
+
+.editor-field {
+    display:inline-block;
+    width: 100%;
+}
+
+th.grid-operations-cell {
+    /*min-width:160px;*/
+}
+
+td.grid-operations-cell {
+    white-space:nowrap;
+}
+
+.company-year-info {
+    text-align:center;
+    margin-bottom:10px;
+    margin-top:0px;
+}
+
+/* generic */
+
+.text-center {
+    text-align:center;
+}
+
+.text-right {
+    text-align:right;
+}
+
+.margin-top {
+    margin-top:60px;
+}
+
+.float-right {
+    float:right;
+}
+
+a.no-decoration
+{
+    text-decoration:none;
+}
+
+a.no-decoration:hover
+{
+    text-decoration:none;
+}
+
+a.no-decoration:visited
+{
+    text-decoration:none;
+}
+
+a.no-decoration:active
+{
+    text-decoration:none;
+}
+
+/*.relative {
+    position:relative;
+}
+
+.bottom-div {
+    position:absolute;
+    bottom:0;
+}*/
+
+/* logon control */
+
+div.LogOnAuthenticatedUserControl
+{
+    display: table;
+    float: right;
+    margin-right:20px;
+    margin-top: 6px;
+}
+
+#authuserdropdown
+{
+    display: none;
+    top: 66px;
+    right: 20px;
+}
+
+div.left-logon-part
+{
+    display:inline-block;
+    vertical-align:middle;
+}
+
+div.right-logon-part
+{
+    display:inline-block;
+    margin-left:6px;
+}
+
+div.popup-panel
+{
+    position:absolute;
+    display:none;
+    padding: 10px;
+    background-color:#ffffff;
+    min-width:400px;
+    z-index: 100;
+    /*box-shadow: 8px 8px 8px 0px rgba(0, 0, 0, 0.25);*/
+    border:1px solid #666666;
+}
+
+.date-filter-container {
+    display: inline-block;
+    padding: 0 20px;
+}
+
+    .date-filter-container span {
+        font-size:large;
+        vertical-align:middle;
+    }
+
+input.kanc-date-picker {
+    width:100px;
+}
+
+div.kanc-date-tracker {
+    display: inline-block;
+    margin-left: 60px;
+}
+
+    div.kanc-date-tracker input {
+        width:40px;
+    }
+
+    div.kanc-date-tracker div.kanc-date-tracker-button {
+        width:30px;
+        height:30px;
+        display:inline-block;
+        vertical-align: bottom;
+        cursor: pointer;
+    }
+
+.brutto-netto-buttonset {
+    display:inline-block;
+}

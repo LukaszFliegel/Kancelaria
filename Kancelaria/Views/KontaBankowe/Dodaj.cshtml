@@ -1,0 +1,32 @@
+﻿@model KontoBankowe
+
+@{
+    ViewBag.Title = "Dodawanie nowego konta bankowego";
+}
+
+@section featured {
+    @Html.Partial("_FeaturedSection", new FeaturedSectionModel() { Title = "Dodawanie konta bankowego.", SubTitle = "Dodaj nowe konto bankowe." })
+}
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Konto bankowe</legend>
+
+        @Html.Partial("_KontoBankowe", Model)
+        <hr />
+        <p>
+            <input type="submit" value="Dodaj konto bankowe" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Powrót do kartoteki", "Kartoteka")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

@@ -1,0 +1,63 @@
+﻿@model FeaturedSectionModel
+
+<section class="featured">
+    <div class="content-wrapper">
+        <hgroup class="title">
+            <h1>@Model.Title</h1>
+            <h2>@Model.SubTitle</h2>
+        </hgroup>
+        <h4 class="company-year-info">
+            @if (!String.IsNullOrEmpty(ViewBag.CompanyName) || !String.IsNullOrEmpty(ViewBag.YearName))
+            {                    
+                @*<div class="ui-widget">
+                    <div class="ui-state-highlight ui-corner-all kanc-message">*@
+                        @*@if (!String.IsNullOrEmpty(ViewBag.YearName))
+                        {
+                            @:Firma @ViewBag.CompanyName rok obrotowy @ViewBag.YearName
+                        }
+                        else   
+                        {
+                            @:Firma @ViewBag.CompanyName
+                        }*@
+                        @(!String.IsNullOrEmpty(ViewBag.CompanyName) ? String.Format("Firma {0}", ViewBag.CompanyName) : "") @(!String.IsNullOrEmpty(ViewBag.YearName) ? String.Format("Rok obrotowy {0}", ViewBag.YearName) : "")
+                    @*</div>
+                </div>*@
+            }
+        </h4>
+    </div>
+</section>
+
+
+
+
+@*
+<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl" %>
+
+<% using (Html.BeginForm("ChangeSkin", "Skin", FormMethod.Post))
+       { %>
+       
+       <%= Html.DropDownList("skinName", ViewData["skinName"] as SelectList, new { onChange = "this.form.submit();" })%>
+       <%= Html.Hidden("returnUrl", Request.Url.ToString())%>
+       <!--<input type="hidden" name="skinName" value="Standard" />-->
+<%     } %>
+
+    <%--<% using (Html.BeginForm("ChangeSkin", "Skin", FormMethod.Post))
+       { %>
+                    <% Html.DevExpress().Menu(
+                                settings =>
+                                {
+                                    settings.Name = "skinMenu";
+                                    settings.AllowSelectItem = true;
+                                    settings.EnableHotTrack = true;
+                                    settings.EnableAnimation = true;
+                                    settings.AppearAfter = 0;
+                                    settings.DisappearAfter = 0;
+                                    settings.MaximumDisplayLevels = 2;
+                                    settings.ShowPopOutImages = DefaultBoolean.True;
+
+                                    foreach (string listItem in (ViewData["skinList"] as List<string>))
+                                    {
+                                        var i = settings.Items.Add(listItem);//.HtmlAttributes(new { onclick = "document.getElementById('SkinNames').value = '" + listItem + "';document.getElementById('skinForm').submit();" }); ;
+                                    }
+                                }).Render(); %>
+    <% } %>--%>*@

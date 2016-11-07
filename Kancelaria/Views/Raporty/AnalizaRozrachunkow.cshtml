@@ -1,0 +1,105 @@
+﻿@model ReportModel<IQueryable<AnalizaRozrachunku>>
+
+@{
+    ViewBag.Title = "Analiza Rozrachunków";
+    Layout = "~/Views/Shared/_ReportLayout.cshtml";
+}
+
+<table class="grid">
+    <caption>
+        <span class="caption-buttons"></span>
+        @using (Html.BeginForm(null, null, FormMethod.Get, new { id = "SearchForm", @class = "centerDiv" }))
+        { 
+            @*<div class="caption-lookup-list">
+                <span class="caption-lookup-item-label">@Html.Label("Pokaż tylko przeterminowane")</span>
+                <div class="caption-lookup-item-control">
+                    <input type="checkbox" name="tylkoPrzeterminowane" id="tylkoPrzeterminowane" checked="@ViewBag.tylkoPrzeterminowane" />
+                    <label for="tylkoPrzeterminowane" title=".ui-icon-circle-check">
+                        <span class="ui-icon ui-icon-check"></span>
+                    </label>
+                </div>
+            </div>
+            @Html.Partial("_Search", new FilterBoxModel("", "Slownik", new AnalizaRozrachunkowDictionary()))*@
+        }
+    </caption>
+    <thead>
+        <tr class="ui-widget-header">
+            @*@Model.Model.Result.First().*@
+            <th class="ui-widget">Dni po term.</th>
+            @Html.KancelariaGridSortingColumn("TerminPlatnosci", "Termin płatności", Request.Url.AbsolutePath, Request.Url.Query)
+            @Html.KancelariaGridSortingColumn("NumerFaktury", "Numer faktury", Request.Url.AbsolutePath, Request.Url.Query)
+            @Html.KancelariaGridSortingColumn("DataFaktury", "Data faktury", Request.Url.AbsolutePath, Request.Url.Query)
+            @Html.KancelariaGridSortingColumn("Wn", "Winien", Request.Url.AbsolutePath, Request.Url.Query)
+            @Html.KancelariaGridSortingColumn("Ma", "Ma", Request.Url.AbsolutePath, Request.Url.Query)
+        </tr>
+    </thead>
+    <tbody>
+    @{
+        int PoprzednieIdKontrahenta;
+        string PoprzedniKodKontrahenta;
+        if(Model.Model.Count() > 0)
+        {
+            PoprzednieIdKontrahenta = Model.Model.OrderBy(s => s.KodKontrahenta).First().IdKontrahenta;
+            PoprzedniKodKontrahenta = Model.Model.OrderBy(s => s.KodKontrahenta).First().KodKontrahenta;
+        }
+        else
+        {
+            PoprzednieIdKontrahenta = 0;
+            PoprzedniKodKontrahenta = "";
+        }
+    }
+
+    @foreach(AnalizaRozrachunku ar in Model.Model.OrderBy(p => p.KodKontrahenta))
+    {
+        if (ar.IdKontrahenta != PoprzednieIdKontrahenta)
+        {
+            <tr class="summary-row">
+                <td>@PoprzedniKodKontrahenta</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td class="numer-cell border-cell">@(Model.Model.Where(p => p.IdKontrahenta == PoprzednieIdKontrahenta).Sum(p => p.Wn).HasValue ? Model.Model.Where(p => p.IdKontrahenta == PoprzednieIdKontrahenta).Sum(p => p.Wn).Value.ToString("N2") : "")</td>
+                <td class="numer-cell border-cell">@(Model.Model.Where(p => p.IdKontrahenta == PoprzednieIdKontrahenta).Sum(p => p.Ma).HasValue ? Model.Model.Where(p => p.IdKontrahenta == PoprzednieIdKontrahenta).Sum(p => p.Ma).Value.ToString("N2") : "")</td>
+            </tr>    
+            <tr class="breaking-row">
+                <td>&nbsp;</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            PoprzednieIdKontrahenta = ar.IdKontrahenta;
+            PoprzedniKodKontrahenta = ar.KodKontrahenta;
+        }
+        <tr>
+            <td>@(((DateTime.Now - ar.TerminPlatnosci).TotalDays - 1).ToString("N0"))</td>
+            <td>@ar.TerminPlatnosci.ToShortDateString()</td>
+            <td>@ar.NumerFaktury</td>
+            <td>@ar.DataFaktury.ToShortDateString()</td>
+            <td class="numer-cell border-cell">@(ar.Wn.HasValue ? ar.Wn.Value.ToString("N2") : "")</td>
+            <td class="numer-cell border-cell">@(ar.Ma.HasValue ? ar.Ma.Value.ToString("N2") : "")</td>
+        </tr>
+        
+    }
+        <tr class="summary-row">
+            <td>@PoprzedniKodKontrahenta</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td class="numer-cell border-cell">@(Model.Model.Where(p => p.IdKontrahenta == PoprzednieIdKontrahenta).Sum(p => p.Wn).HasValue ? Model.Model.Where(p => p.IdKontrahenta == PoprzednieIdKontrahenta).Sum(p => p.Wn).Value.ToString("N2") : "")</td>
+            <td class="numer-cell border-cell">@(Model.Model.Where(p => p.IdKontrahenta == PoprzednieIdKontrahenta).Sum(p => p.Ma).HasValue ? Model.Model.Where(p => p.IdKontrahenta == PoprzednieIdKontrahenta).Sum(p => p.Ma).Value.ToString("N2") : "")</td>
+        </tr> 
+    </tbody>
+    <tfoot>
+        <tr><td>&nbsp;</td></tr>
+        <tr>
+            <td>Suma</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td class="numer-cell">@(Model.Model.Sum(p => p.Wn).HasValue ? Model.Model.Sum(p => p.Wn).Value.ToString("N2") : "")</td>
+            <td class="numer-cell">@(Model.Model.Sum(p => p.Ma).HasValue ? Model.Model.Sum(p => p.Ma).Value.ToString("N2") : "")</td>
+        </tr>
+    </tfoot>
+</table>

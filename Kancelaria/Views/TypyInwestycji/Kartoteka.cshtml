@@ -1,0 +1,46 @@
+﻿@model GridSettings<TypInwestycji>
+
+@{
+    ViewBag.Title = "Typy inwestycji";
+}
+
+@section featured {
+    @Html.Partial("_FeaturedSection", new FeaturedSectionModel() { Title = "Typy inwestycji.", SubTitle = "Tutaj możesz dodawać, edytować i usuwać typy inwestycji." })
+}
+
+<table class="grid">
+    <caption>
+        <span class="caption-buttons"><a href="@Url.Action("Dodaj")" class="kanc-button"><span>Dodaj typ inwestycji</span></a></span>
+    </caption>
+    <thead>
+        <tr class="ui-widget-header">
+            @Html.KancelariaGridSortingColumn("KodTypuInwestycji", "Kod typu inwestycji", Request.Url.AbsolutePath, Request.Url.Query)
+            @Html.KancelariaGridSortingColumn("NazwaTypuInwestycji", "Nazwa typu inwestycji", Request.Url.AbsolutePath, Request.Url.Query)
+            <th class="ui-widget grid-operations-cell">Operacje</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach(TypInwestycji i in Model.Query.Result)
+    {
+        <tr>
+            <td @(i.CzyDomyslny ? String.Format("class=default") : "")>@i.KodTypuInwestycji</td>
+            <td>@i.NazwaTypuInwestycji</td>
+            <td class="grid-operations-cell">
+                <a title="Edytuj" href="@Url.Action("Edytuj", new { @id = i.Id })" class="kanc-button"><span class="ui-icon ui-icon-pencil"></span></a>
+                <a title="Usuń" href="@Url.Action("Usun", new { @id = i.Id })" class="kanc-button"><span class="ui-icon ui-icon-trash"></span></a>
+                <a title="Ustaw domyślny" href="@Url.Action("UstawDomyslny", new { @id = i.Id, @returnUrl = Request.Url.ToString() })" class="kanc-button"><span class="ui-icon ui-icon-star"></span></a>
+            </td>
+        </tr>
+    }
+    </tbody>
+    @if (Model.PageCount > 0)
+    {
+    <tfoot>
+        <tr>
+            <td colspan="3">@Html.Partial("_Pager", (IPaged)Model.Query)</td>
+        </tr>
+    </tfoot>
+    }
+</table>
+
+

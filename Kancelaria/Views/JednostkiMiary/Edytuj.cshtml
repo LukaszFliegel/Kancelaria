@@ -1,0 +1,34 @@
+﻿@model JednostkaMiary
+
+@{
+    ViewBag.Title = "Edycja jednostki miary";
+}
+
+@section featured {
+    @Html.Partial("_FeaturedSection", new FeaturedSectionModel() { Title = String.Format("Edycja jednostki miary \"{0}\"", Model.KodJednostkiMiary), SubTitle = "Edytuj jednostkę miary." })
+}
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Jednostka miary</legend>
+
+        @Html.HiddenFor(model => model.Id)
+
+        @Html.Partial("_JednostkaMiary", Model)
+
+        <p>
+            <input type="submit" value="Zapisz" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Powrót do kartoteki", "Kartoteka")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

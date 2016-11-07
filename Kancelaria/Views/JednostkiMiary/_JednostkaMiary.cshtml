@@ -1,0 +1,17 @@
+﻿@model JednostkaMiary
+
+<div class="editor-label">
+    @Html.Label("Kod jednostki miary")
+</div>
+<div class="editor-field">
+    @Html.EditorFor(model => model.KodJednostkiMiary)
+    @Html.ValidationMessageFor(model => model.KodJednostkiMiary)
+</div>
+
+<div class="editor-label">
+    @Html.Label("Opis jednostki miary")
+</div>
+<div class="editor-field">
+    @Html.EditorFor(model => model.OpisJednostkiMiary)
+    @Html.ValidationMessageFor(model => model.OpisJednostkiMiary)
+</div>

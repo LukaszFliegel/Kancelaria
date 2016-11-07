@@ -1,0 +1,22 @@
+﻿@model Kompensata
+
+@{
+    ViewBag.Title = "Usuwanie kompensaty";
+}
+
+@section featured {
+    @Html.Partial("_FeaturedSection", new FeaturedSectionModel() { Title = String.Format("Usuwanie kompensaty \"{0}\"", Model.NumerKompensaty), SubTitle = "Usuń kompensatę." })
+}
+<h3>Czy na pewno chcesz usunąć kompensatę?</h3>
+<h4>@Model.NumerKompensaty</h4>
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    <p>
+        @Html.HiddenFor(model => model.Id)
+
+        <input type="submit" value="Usuń" />
+    </p>
+}
+
+@Html.ActionLink("Powrót do kartoteki", "Kartoteka")

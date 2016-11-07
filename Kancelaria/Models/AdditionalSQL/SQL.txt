@@ -1,0 +1,1047 @@
+﻿create unique nonclustered index [InwestycjeDefault]
+on [Inwestycje]([CzyDomyslny])
+where [CzyDomyslny] = 1;
+
+create unique nonclustered index [KontrahenciDefault]
+on [Kontrahenci]([CzyDomyslny])
+where [CzyDomyslny] = 1;
+
+create unique nonclustered index [SposobyPlatnosciDefault]
+on [SposobyPlatnosci]([CzyDomyslny])
+where [CzyDomyslny] = 1;
+
+create unique nonclustered index [KontaBankoweDefault]
+on [KontaBankowe]([CzyDomyslny])
+where [CzyDomyslny] = 1;
+
+alter table [LataObrotowe] add CONSTRAINT [AK_LataObrotowe_Uq1] UNIQUE ([NazwaRoku]);
+
+CREATE TABLE [dbo].[JednostkiMiary]
+(
+	[Id] INT NOT NULL PRIMARY KEY IDENTITY, 
+    [KodJednostkiMiary] NVARCHAR(30) NOT NULL, 
+    [OpisJednostkiMiary] NVARCHAR(300) NULL, 
+    [CzyDomyslna] BIT NULL
+);
+
+
+GO
+CREATE UNIQUE NONCLUSTERED INDEX [JednostkiMiaryDefault]
+    ON [dbo].[JednostkiMiary]([CzyDomyslna] ASC) WHERE ([CzyDomyslna] = (1));
+
+
+alter table pozycjefaktursprzedazy add [IdJednostkiMiary] INT NULL;
+
+alter table pozycjefaktursprzedazy add CONSTRAINT [FK_PozycjeFakturSprzedazy_JednostkiMiary] FOREIGN KEY (IdJednostkiMiary) REFERENCES [dbo].[JednostkiMiary] ([Id]);
+
+insert into JednostkiMiary(KodJednostkiMiary, OpisJednostkiMiary) values('szt', 'Sztuka');
+
+update PozycjeFakturSprzedazy set IdJednostkiMiary = 1; -- SPRAWDZIC!!!
+
+alter table pozycjefaktursprzedazy alter column [IdJednostkiMiary] INT NOT NULL;
+
+alter table pozycjefaktursprzedazy add [Ilosc] int NULL;
+
+update PozycjeFakturSprzedazy set [ilosc] = 1;
+
+alter table pozycjefaktursprzedazy alter column ilosc INT NOT NULL;
+
+alter table KontaBankowe add NazwaBanku nvarchar(300) NULL;
+
+alter table FakturySprzedazy add IdSposobuPlatnosci int NULL;
+
+update FakturySprzedazy set IdSposobuPlatnosci = 1; -- SPRAWDZIC!!!
+
+alter table FakturySprzedazy alter column IdSposobuPlatnosci int NOT NULL;
+
+alter table FakturySprzedazy 
+add CONSTRAINT FK_FakturySprzedazy_SposobyPlatnosci FOREIGN KEY (IdSposobuPlatnosci) REFERENCES SposobyPlatnosci(Id);
+
+alter table PozycjeFakturZakupu add Opis nvarchar(1000) null;
+
+alter table PozycjeFakturSprzedazy add Opis nvarchar(1000) null;
+
+-- puszczone 26 stycznia
+
+alter table fakturysprzedazy add [DataSprzedazy] date NULL;
+
+alter table fakturyzakupu add [DataZakupu] date NULL;
+
+-- puszczone 2 lutego
+
+sp_RENAME '[PozycjeFakturSprzedazy].[KwotaBrutto]' , 'KwotaNetto', 'COLUMN';
+
+sp_RENAME '[PozycjeFakturZakupu].[KwotaBrutto]' , 'KwotaNetto', 'COLUMN';
+
+-- puszczone 3 lutego
+
+sp_RENAME '[PozycjeFakturSprzedazy].[KwotaNetto]' , 'CenaJednostkowa', 'COLUMN';
+
+sp_RENAME '[PozycjeFakturZakupu].[KwotaNetto]' , 'CenaJednostkowa', 'COLUMN';
+
+alter table pozycjefakturzakupu add [Ilosc] int NULL;
+
+update pozycjefakturzakupu set [ilosc] = 1;
+
+alter table pozycjefakturzakupu alter column ilosc INT NOT NULL;
+
+alter table pozycjefakturzakupu add [IdJednostkiMiary] INT NULL;
+
+alter table pozycjefakturzakupu add CONSTRAINT [FK_PozycjeFakturZakupu_JednostkiMiary] FOREIGN KEY (IdJednostkiMiary) REFERENCES [dbo].[JednostkiMiary] ([Id]);
+
+update pozycjefakturzakupu set IdJednostkiMiary = 1; -- SPRAWDZIC!!!
+
+alter table pozycjefakturzakupu alter column [IdJednostkiMiary] INT NOT NULL;
+
+alter table Kontrahenci add [IdKontrahentaNadrzednego] INT NULL;
+
+alter table Kontrahenci add CONSTRAINT [FK_Kontrahenci_Kontrahenci] FOREIGN KEY ([IdKontrahentaNadrzednego]) REFERENCES [dbo].Kontrahenci ([Id]);
+
+-- puszczone 10 lutego
+
+insert into webpages_Roles(RoleName) values('Admin')
+
+insert into webpages_Roles(RoleName) values('Kancelaria')
+
+create view Uzytkownicy_vw as
+select 
+	u.*, 
+	m.CreateDate, 
+	m.ConfirmationToken, 
+	m.IsConfirmed, 
+	m.LastPasswordFailureDate, 
+	m.PasswordFailuresSinceLastSuccess, 
+	m.PasswordChangedDate, 
+	m.PasswordSalt, 
+	m.PasswordVerificationToken, 
+	m.PasswordVerificationTokenExpirationDate,
+	(select 1 from webpages_Roles r, webpages_UsersInRoles uir where r.RoleId = uir.RoleId and uir.UserId = m.UserId and r.RoleName = 'Admin') CzyAdmin,
+	(select 1 from webpages_Roles r, webpages_UsersInRoles uir where r.RoleId = uir.RoleId and uir.UserId = m.UserId and r.RoleName = 'Kancelaria') CzyKancelaria
+from
+	Uzytkownicy u,
+	webpages_Membership m
+where 1 = 1
+	and u.UserId = m.UserId
+
+--
+
+CREATE TABLE [Kompensaty] (
+    [Id]              INT           IDENTITY (1, 1) NOT NULL,
+    [IdFirmy]         INT           NOT NULL,
+    [IdRoku]          INT           NOT NULL,
+    [NumerKompensaty] NVARCHAR (50) NOT NULL,
+    [IdKontrahenta]   INT           NOT NULL,
+    [DataKompensaty]  DATE          NOT NULL,
+    PRIMARY KEY CLUSTERED ([Id] ASC),
+    CONSTRAINT [AK_Kompensaty_UQ1] UNIQUE NONCLUSTERED ([Id] ASC, [IdKontrahenta] ASC),
+    CONSTRAINT [FK_Kompensaty_Firma] FOREIGN KEY ([IdFirmy]) REFERENCES [Firmy] ([Id]),
+    CONSTRAINT [FK_Kompensaty_LataObrotowe] FOREIGN KEY ([IdRoku]) REFERENCES [LataObrotowe] ([Id]),
+    CONSTRAINT [FK_Kompensaty_Kontrahenci] FOREIGN KEY ([IdKontrahenta]) REFERENCES [Kontrahenci] ([Id])
+);
+
+ALTER TABLE [FakturySprzedazy]
+    ADD CONSTRAINT [AK_FakturySprzedazy_UQ1] UNIQUE NONCLUSTERED ([Id] ASC, [IdKontrahenta] ASC);
+
+ALTER TABLE [FakturyZakupu]
+    ADD CONSTRAINT [AK_FakturyZakupu_UQ1] UNIQUE NONCLUSTERED ([Id] ASC, [IdKontrahenta] ASC);
+
+CREATE TABLE [KompensatyPowiazania] (
+    [Id]                 INT             IDENTITY (1, 1) NOT NULL,
+    [IdKompensaty]       INT             NOT NULL,
+    [IdKontrahenta]      INT             NOT NULL,
+    [IdFakturySprzedazy] INT             NULL,
+    [IdFakturyZakupu]    INT             NULL,
+    [Kwota]              DECIMAL (16, 2) NOT NULL,
+    PRIMARY KEY CLUSTERED ([Id] ASC),
+    CONSTRAINT [FK_KompensatyPowiazania_Kompensaty] FOREIGN KEY ([IdKompensaty], [IdKontrahenta]) REFERENCES [Kompensaty] ([Id], [IdKontrahenta]),
+    CONSTRAINT [FK_KompensatyPowiazania_FakturyZakupu] FOREIGN KEY ([IdFakturyZakupu], [IdKontrahenta]) REFERENCES [FakturyZakupu] ([Id], [IdKontrahenta]),
+    CONSTRAINT [FK_KompensatyPowiazania_FakturySprzedazy] FOREIGN KEY ([IdFakturySprzedazy], [IdKontrahenta]) REFERENCES [FakturySprzedazy] ([Id], [IdKontrahenta])
+);
+
+---------------------
+
+alter table fakturysprzedazy add [KwotaZaplacona] DECIMAL(16, 2) NULL;
+
+alter table fakturyzakupu add [KwotaZaplacona] DECIMAL(16, 2) NULL;
+
+alter table fakturysprzedazy add CzyUmowa bit NULL;
+
+update fakturysprzedazy set CzyUmowa = 1;
+
+alter table fakturysprzedazy alter column CzyUmowa bit not NULL;
+
+ALTER TABLE KompensatyPowiazania
+   DROP CONSTRAINT FK_KompensatyPowiazania_Kompensaty   -- or whatever it's called
+
+ALTER TABLE KompensatyPowiazania ADD
+   CONSTRAINT [FK_KompensatyPowiazania_Kompensaty] FOREIGN KEY ([IdKompensaty], [IdKontrahenta]) REFERENCES [dbo].[Kompensaty] ([Id], [IdKontrahenta]) ON DELETE CASCADE
+
+
+
+create view NieuregulowaneFakturySprzedazy_vw as
+select
+	FS.Id,
+	FS.IdFirmy,
+	FS.IdRoku,
+	FS.NumerFaktury,
+	FS.DataFaktury,
+	FS.TerminPlatnosci,
+	FS.Opis,
+	FS.IdKontrahenta,
+	FS.KwotaZaplacona,
+	FS.IdInwestycji,
+	sum(FS.KwotaNetto) KwotaNetto,
+	sum(FS.KwotaVat) KwotaVat,
+	sum(FS.KwotaBrutto) KwotaBrutto,
+	FS.KwotaSkompensowana,
+	sum(FS.KwotaBrutto) - IsNull(fs.KwotaZaplacona, 0) -  IsNull(FS.KwotaSkompensowana, 0) KwotaNieuregulowana,
+	K.KodKontrahenta,
+	I.NumerInwestycji,
+	I.NumerUmowy
+from
+	(
+		select 
+			FS.Id,
+			FS.IdFirmy,
+			FS.IdRoku,
+			FS.NumerFaktury,
+			FS.DataFaktury,
+			FS.TerminPlatnosci,
+			FS.Opis,
+			FS.IdKontrahenta,
+			FS.KwotaZaplacona,
+			FS.IdInwestycji,
+			pfs.CenaJednostkowa * PFS.Ilosc KwotaNetto,
+			pfs.CenaJednostkowa * PFS.Ilosc * pfs.StawkaVat/100.0 KwotaVat,
+			pfs.CenaJednostkowa * PFS.Ilosc + pfs.CenaJednostkowa * PFS.Ilosc * pfs.StawkaVat/100.0 KwotaBrutto,
+			kp.Kwota KwotaSkompensowana
+		from 
+			--FakturySprzedazy FS, PozycjeFakturSprzedazy PFS, KompensatyPowiazania KP
+			FakturySprzedazy FS LEFT OUTER JOIN PozycjeFakturSprzedazy PFS ON FS.Id = PFS.IdFaktury 
+			LEFT OUTER JOIN KompensatyPowiazania KP ON FS.Id = KP.IdFakturySprzedazy
+		where 1 = 1
+			--and FS.Id = PFS.IdFaktury
+			--and FS.Id = KP.IdFakturySprzedazy
+	) FS,
+	Kontrahenci K,
+	Inwestycje I
+where 1 = 1
+	and FS.IdKontrahenta = K.Id
+	and FS.IdInwestycji = I.Id
+group by
+	FS.Id,
+	FS.IdFirmy,
+	FS.IdRoku,
+	FS.NumerFaktury,
+	FS.DataFaktury,
+	FS.TerminPlatnosci,
+	FS.Opis,
+	FS.IdKontrahenta,
+	FS.KwotaZaplacona,
+	FS.IdInwestycji,
+	FS.KwotaSkompensowana,
+	K.KodKontrahenta,
+	I.NumerInwestycji,
+	I.NumerUmowy
+
+
+
+============================
+
+create view NieuregulowaneFakturyZakupu_vw as
+select
+	FZ.Id,
+	FZ.IdFirmy,
+	FZ.IdRoku,
+	FZ.NumerFaktury,
+	FZ.DataFaktury,
+	FZ.TerminPlatnosci,
+	FZ.Opis,
+	FZ.IdKontrahenta,
+	FZ.KwotaZaplacona,
+	sum(FZ.KwotaNetto) KwotaNetto,
+	sum(FZ.KwotaVat) KwotaVat,
+	sum(FZ.KwotaBrutto) KwotaBrutto,
+	FZ.KwotaSkompensowana,
+	sum(FZ.KwotaBrutto) - IsNull(FZ.KwotaZaplacona, 0) -  IsNull(FZ.KwotaSkompensowana, 0) KwotaNieuregulowana,
+	K.KodKontrahenta
+from
+	(
+		select 
+			FZ.Id,
+			FZ.IdFirmy,
+			FZ.IdRoku,
+			FZ.NumerFaktury,
+			FZ.DataFaktury,
+			FZ.TerminPlatnosci,
+			FZ.Opis,
+			FZ.IdKontrahenta,
+			FZ.KwotaZaplacona,
+			PFZ.CenaJednostkowa * PFZ.Ilosc KwotaNetto,
+			PFZ.CenaJednostkowa * PFZ.Ilosc * PFZ.StawkaVat/100.0 KwotaVat,
+			PFZ.CenaJednostkowa * PFZ.Ilosc + PFZ.CenaJednostkowa * PFZ.Ilosc * PFZ.StawkaVat/100.0 KwotaBrutto,
+			kp.Kwota KwotaSkompensowana
+		from 
+			FakturyZakupu FZ LEFT OUTER JOIN PozycjeFakturZakupu PFZ ON FZ.Id = PFZ.IdFaktury 
+			LEFT OUTER JOIN KompensatyPowiazania KP ON FZ.Id = KP.IdFakturyZakupu
+		where 1 = 1
+	) FZ,
+	Kontrahenci K
+where 1 = 1
+	and FZ.IdKontrahenta = K.Id
+group by
+	FZ.Id,
+	FZ.IdFirmy,
+	FZ.IdRoku,
+	FZ.NumerFaktury,
+	FZ.DataFaktury,
+	FZ.TerminPlatnosci,
+	FZ.Opis,
+	FZ.IdKontrahenta,
+	FZ.KwotaZaplacona,
+	FZ.KwotaSkompensowana,
+	K.KodKontrahenta
+
+
+
+=============== Po wizycie: =============
+
+alter table Kontrahenci add CzyVatowiec bit
+
+update kontrahenci set CzyVatowiec = 0
+
+alter table Kontrahenci alter column CzyVatowiec bit not null
+
+
+CREATE TABLE ZaplatyFakturZakupu (
+    [Id]                 INT             IDENTITY (1, 1) NOT NULL,
+    [IdFakturyZakupu]    INT             NOT NULL,
+    [Kwota]              DECIMAL (16, 2) NOT NULL,
+	[DataZaplaty]			DATE NOT NULL,
+	[Opis]					nvarchar(1000) NULL,
+    PRIMARY KEY CLUSTERED ([Id] ASC),
+    CONSTRAINT [FK_FakturyZakupu_ZaplatyFakturZakupu] FOREIGN KEY ([IdFakturyZakupu]) REFERENCES [FakturyZakupu] ([Id]),
+);
+
+
+CREATE TABLE ZaplatyFakturSprzedazy (
+    [Id]                 INT             IDENTITY (1, 1) NOT NULL,
+    [IdFakturySprzedazy]    INT             NOT NULL,
+    [Kwota]              DECIMAL (16, 2) NOT NULL,
+	[DataZaplaty]			DATE NOT NULL,
+	[Opis]					nvarchar(1000) NULL,
+    PRIMARY KEY CLUSTERED ([Id] ASC),
+    CONSTRAINT [FK_FakturySprzedazy_ZaplatyFakturSprzedazy] FOREIGN KEY ([IdFakturySprzedazy]) REFERENCES [FakturySprzedazy] ([Id]),
+);
+
+alter table FakturyZakupu drop column KwotaZaplacona
+GO
+
+alter table FakturySprzedazy drop column KwotaZaplacona
+GO
+
+ALTER view NieuregulowaneFakturySprzedazy_vw as
+select
+	FS.Id,
+	FS.IdFirmy,
+	FS.IdRoku,
+	FS.NumerFaktury,
+	FS.DataFaktury,
+	FS.TerminPlatnosci,
+	FS.Opis,
+	FS.IdKontrahenta,
+	IsNull((select sum(ZFS.Kwota) from ZaplatyFakturSprzedazy ZFS where ZFS.IdFakturySprzedazy = FS.Id), 0) KwotaZaplacona,
+	FS.IdInwestycji,
+	sum(FS.KwotaNetto) KwotaNetto,
+	sum(FS.KwotaVat) KwotaVat,
+	sum(FS.KwotaBrutto) KwotaBrutto,
+	sum(IsNull(FS.KwotaSkompensowana, 0)) KwotaSkompensowana,
+	sum(FS.KwotaBrutto) - IsNull((select sum(ZFS.Kwota) from ZaplatyFakturSprzedazy ZFS where ZFS.IdFakturySprzedazy = FS.Id), 0) - sum(IsNull(FS.KwotaSkompensowana, 0)) KwotaNieuregulowana,
+	K.KodKontrahenta,
+	I.NumerInwestycji,
+	I.NumerUmowy
+from
+	(
+		select 
+			FS.Id,
+			FS.IdFirmy,
+			FS.IdRoku,
+			FS.NumerFaktury,
+			FS.DataFaktury,
+			FS.TerminPlatnosci,
+			FS.Opis,
+			FS.IdKontrahenta,
+			FS.IdInwestycji,
+			pfs.CenaJednostkowa * PFS.Ilosc KwotaNetto,
+			pfs.CenaJednostkowa * PFS.Ilosc * pfs.StawkaVat/100.0 KwotaVat,
+			pfs.CenaJednostkowa * PFS.Ilosc + pfs.CenaJednostkowa * PFS.Ilosc * pfs.StawkaVat/100.0 KwotaBrutto,
+			kp.Kwota KwotaSkompensowana
+		from 
+			--FakturySprzedazy FS, PozycjeFakturSprzedazy PFS, KompensatyPowiazania KP
+			FakturySprzedazy FS LEFT OUTER JOIN PozycjeFakturSprzedazy PFS ON FS.Id = PFS.IdFaktury 
+			LEFT OUTER JOIN KompensatyPowiazania KP ON FS.Id = KP.IdFakturySprzedazy
+		where 1 = 1
+			--and FS.Id = PFS.IdFaktury
+			--and FS.Id = KP.IdFakturySprzedazy
+	) FS,
+	Kontrahenci K,
+	Inwestycje I
+where 1 = 1
+	and FS.IdKontrahenta = K.Id
+	and FS.IdInwestycji = I.Id
+group by
+	FS.Id,
+	FS.IdFirmy,
+	FS.IdRoku,
+	FS.NumerFaktury,
+	FS.DataFaktury,
+	FS.TerminPlatnosci,
+	FS.Opis,
+	FS.IdKontrahenta,
+	--FS.KwotaZaplacona,
+	FS.IdInwestycji,
+	--FS.KwotaSkompensowana,
+	K.KodKontrahenta,
+	I.NumerInwestycji,
+	I.NumerUmowy
+
+
+
+alter view NieuregulowaneFakturyZakupu_vw as
+select
+	FZ.Id,
+	FZ.IdFirmy,
+	FZ.IdRoku,
+	FZ.NumerFaktury,
+	FZ.DataFaktury,
+	FZ.TerminPlatnosci,
+	FZ.Opis,
+	FZ.IdKontrahenta,
+	IsNull((select sum(ZFZ.Kwota) from ZaplatyFakturZakupu ZFZ where ZFZ.IdFakturyZakupu = FZ.Id), 0) KwotaZaplacona,
+	sum(FZ.KwotaNetto) KwotaNetto,
+	sum(FZ.KwotaVat) KwotaVat,
+	sum(FZ.KwotaBrutto) KwotaBrutto,
+	sum(IsNull(FZ.KwotaSkompensowana, 0)) KwotaSkompensowana,
+	sum(FZ.KwotaBrutto) - IsNull((select sum(ZFZ.Kwota) from ZaplatyFakturZakupu ZFZ where ZFZ.IdFakturyZakupu = FZ.Id), 0) - sum(IsNull(FZ.KwotaSkompensowana, 0)) KwotaNieuregulowana,
+	K.KodKontrahenta
+from
+	(
+		select 
+			FZ.Id,
+			FZ.IdFirmy,
+			FZ.IdRoku,
+			FZ.NumerFaktury,
+			FZ.DataFaktury,
+			FZ.TerminPlatnosci,
+			FZ.Opis,
+			FZ.IdKontrahenta,
+			PFZ.CenaJednostkowa * PFZ.Ilosc KwotaNetto,
+			PFZ.CenaJednostkowa * PFZ.Ilosc * PFZ.StawkaVat/100.0 KwotaVat,
+			PFZ.CenaJednostkowa * PFZ.Ilosc + PFZ.CenaJednostkowa * PFZ.Ilosc * PFZ.StawkaVat/100.0 KwotaBrutto,
+			kp.Kwota KwotaSkompensowana
+		from 
+			FakturyZakupu FZ LEFT OUTER JOIN PozycjeFakturZakupu PFZ ON FZ.Id = PFZ.IdFaktury 
+			LEFT OUTER JOIN KompensatyPowiazania KP ON FZ.Id = KP.IdFakturyZakupu
+		where 1 = 1
+	) FZ,
+	Kontrahenci K
+where 1 = 1
+	and FZ.IdKontrahenta = K.Id
+group by
+	FZ.Id,
+	FZ.IdFirmy,
+	FZ.IdRoku,
+	FZ.NumerFaktury,
+	FZ.DataFaktury,
+	FZ.TerminPlatnosci,
+	FZ.Opis,
+	FZ.IdKontrahenta,
+	K.KodKontrahenta
+
+
+create view KosztyNaInwestycjach as
+select
+	FZ.IdFirmy,
+	FZ.IdRoku,
+	PFZ.IdInwestycji,
+	I.NumerInwestycji,
+	FZ.NumerFaktury,
+	FZ.DataFaktury,
+	FZ.WlasnyNumerFaktury,
+	K.KodKontrahenta,
+	K.NazwaKontrahenta,
+	sum(PFZ.Ilosc * PFZ.CenaJednostkowa) KwotaNetto,
+	sum(PFZ.Ilosc * PFZ.CenaJednostkowa * PFZ.StawkaVat / 100) KwotaVat,
+	sum(PFZ.Ilosc * PFZ.CenaJednostkowa + (PFZ.Ilosc * PFZ.CenaJednostkowa) * PFZ.StawkaVat / 100) KwotaBrutto
+from
+	PozycjeFakturZakupu PFZ
+	JOIN Inwestycje I ON PFZ.IdInwestycji = I.Id
+	JOIN FakturyZakupu FZ ON FZ.Id = PFZ.IdFaktury
+	JOIN Kontrahenci K ON FZ.IdKontrahenta = K.Id
+where 1 = 1
+group by
+	FZ.IdFirmy,
+	FZ.IdRoku,
+	PFZ.IdInwestycji,
+	I.NumerInwestycji,
+	FZ.NumerFaktury,
+	FZ.DataFaktury,
+	FZ.WlasnyNumerFaktury,
+	K.KodKontrahenta,
+	K.NazwaKontrahenta
+
+=========================================================================================================
+
+drop view AnalizaRozrachunkow_vw
+go
+
+CREATE VIEW AnalizaRozrachunkow_vw as
+select
+	'FZ' + Convert(nvarchar, FZ.Id) "Key", FZ.IdFirmy, FZ.IdRoku, K.Id IdKontrahenta, K.KodKontrahenta, FZ.NumerFaktury, FZ.DataFaktury, FZ.TerminPlatnosci, 
+	--round(sum(PFZ.CenaJednostkowa * PFZ.CenaJednostkowa), 2) NETTO,
+	round(sum(PFZ.CenaJednostkowa * PFZ.Ilosc + (PFZ.CenaJednostkowa * PFZ.Ilosc * PFZ.StawkaVat / 100)), 2) Wn,
+	null Ma
+	--round(sum(PFZ.CenaJednostkowa * PFZ.CenaJednostkowa * PFZ.StawkaVat / 100), 2) VAT
+from
+	Kontrahenci K
+	JOIN NieuregulowaneFakturyZakupu_vw FZ ON K.Id = FZ.IdKontrahenta
+	JOIN PozycjeFakturZakupu PFZ ON FZ.Id = PFZ.IdFaktury
+	--JOIN FakturySprzedazy FS ON K.Id = FS.IdKontrahenta
+where 1 = 1
+	and FZ.KwotaNieuregulowana <> 0
+group by
+	FZ.IdFirmy, FZ.IdRoku, FZ.Id, K.Id,K.KodKontrahenta, FZ.NumerFaktury, FZ.DataFaktury, FZ.TerminPlatnosci
+union
+select
+	'FS' + Convert(nvarchar, FS.Id) "Key", FS.IdFirmy, FS.IdRoku, K.Id IdKontrahenta, K.KodKontrahenta, FS.NumerFaktury, FS.DataFaktury, FS.TerminPlatnosci, 
+	--round(sum(PFS.CenaJednostkowa * PFS.CenaJednostkowa), 2) NETTO,
+	null Wn,
+	round(sum(PFS.CenaJednostkowa * PFS.Ilosc + (PFS.CenaJednostkowa * PFS.Ilosc * PFS.StawkaVat / 100)), 2) Ma
+	--round(sum(PFS.CenaJednostkowa * PFS.CenaJednostkowa * PFS.StawkaVat / 100), 2) VAT
+from
+	Kontrahenci K
+	JOIN NieuregulowaneFakturySprzedazy_vw FS ON K.Id = FS.IdKontrahenta
+	JOIN PozycjeFakturSprzedazy PFS ON FS.Id = PFS.IdFaktury
+	--JOIN FakturySprzedazy FS ON K.Id = FS.IdKontrahenta
+where 1 = 1
+	and FS.KwotaNieuregulowana <> 0
+group by
+	FS.IdFirmy, FS.IdRoku, FS.Id, K.Id,K.KodKontrahenta, FS.NumerFaktury, FS.DataFaktury, FS.TerminPlatnosci
+--order by
+--	K.Id
+
+
+===========================================
+
+drop view KosztyNaInwestycjach
+
+create view KosztyNaInwestycjach as
+select
+	FZ.IdFirmy,
+	FZ.IdRoku,
+	PFZ.IdInwestycji,
+	I.NumerInwestycji,
+	FZ.NumerFaktury,
+	FZ.DataFaktury,
+	FZ.WlasnyNumerFaktury,
+	K.id "IdKontrahenta",
+	K.KodKontrahenta,
+	K.NazwaKontrahenta,
+	FZ.Opis,
+	sum(PFZ.Ilosc * PFZ.CenaJednostkowa) KwotaNetto,
+	sum(PFZ.Ilosc * PFZ.CenaJednostkowa * PFZ.StawkaVat / 100) KwotaVat,
+	sum(PFZ.Ilosc * PFZ.CenaJednostkowa + (PFZ.Ilosc * PFZ.CenaJednostkowa) * PFZ.StawkaVat / 100) KwotaBrutto
+from
+	PozycjeFakturZakupu PFZ
+	JOIN Inwestycje I ON PFZ.IdInwestycji = I.Id
+	JOIN FakturyZakupu FZ ON FZ.Id = PFZ.IdFaktury
+	JOIN Kontrahenci K ON FZ.IdKontrahenta = K.Id
+where 1 = 1
+group by
+	FZ.IdFirmy,
+	FZ.IdRoku,
+	PFZ.IdInwestycji,
+	I.NumerInwestycji,
+	FZ.NumerFaktury,
+	FZ.DataFaktury,
+	FZ.WlasnyNumerFaktury,
+	K.id,
+	K.KodKontrahenta,
+	K.NazwaKontrahenta,
+	FZ.Opis
+
+
+
+===============================================================================================================================
+
+--drop table TypyInwestycji;
+--go
+
+CREATE TABLE TypyInwestycji (
+    Id						INT		IDENTITY (1, 1) NOT NULL,
+    KodTypuInwestycji		NVARCHAR (30) NOT NULL,
+    NazwaTypuInwestycji		NVARCHAR (30) NOT NULL,
+	CzyDomyslny				bit not null default 0,
+    PRIMARY KEY CLUSTERED ([Id] ASC)
+);
+go
+
+insert into TypyInwestycji(KodTypuInwestycji, NazwaTypuInwestycji, CzyDomyslny) values('Domyślny typ', 'Domyślny typ inwestycji', 1);
+GO
+
+ALTER TABLE Inwestycje ADD IdTypuInwestycji int;
+GO
+
+update Inwestycje set IdTypuInwestycji = (select id from TypyInwestycji where CzyDomyslny = 1);
+GO
+
+alter table Inwestycje alter column IdTypuInwestycji int not null;
+GO
+
+ALTER TABLE Inwestycje ADD
+   CONSTRAINT [FK_Inwestycje_TypyInwestycji] FOREIGN KEY (IdTypuInwestycji) REFERENCES TypyInwestycji (Id);
+go
+
+drop view KosztyNaInwestycjach
+go
+
+create view KosztyNaInwestycjach as
+select
+	FZ.IdFirmy,
+	FZ.IdRoku,
+	PFZ.IdInwestycji,
+	I.NumerInwestycji,
+	I.IdTypuInwestycji,
+	TI.KodTypuInwestycji,
+	FZ.NumerFaktury,
+	FZ.DataFaktury,
+	FZ.WlasnyNumerFaktury,
+	K.id "IdKontrahenta",
+	K.KodKontrahenta,
+	K.NazwaKontrahenta,
+	PFZ.Opis,
+	sum(PFZ.Ilosc * PFZ.CenaJednostkowa) KwotaNetto,
+	sum(PFZ.Ilosc * PFZ.CenaJednostkowa * PFZ.StawkaVat / 100) KwotaVat,
+	sum(PFZ.Ilosc * PFZ.CenaJednostkowa + (PFZ.Ilosc * PFZ.CenaJednostkowa) * PFZ.StawkaVat / 100) KwotaBrutto
+from
+	PozycjeFakturZakupu PFZ
+	JOIN Inwestycje I ON PFZ.IdInwestycji = I.Id
+	JOIN FakturyZakupu FZ ON FZ.Id = PFZ.IdFaktury
+	JOIN Kontrahenci K ON FZ.IdKontrahenta = K.Id
+	JOIN TypyInwestycji TI ON I.IdTypuInwestycji = TI.Id
+where 1 = 1
+group by
+	FZ.IdFirmy,
+	FZ.IdRoku,
+	PFZ.IdInwestycji,
+	I.NumerInwestycji,
+	I.IdTypuInwestycji,
+	TI.KodTypuInwestycji,
+	FZ.NumerFaktury,
+	FZ.DataFaktury,
+	FZ.WlasnyNumerFaktury,
+	K.id,
+	K.KodKontrahenta,
+	K.NazwaKontrahenta,
+	PFZ.Opis
+
+-- sprawdzic, czy na [FakturyZakupu] pole [IdInwestycji] jest nullowe
+
+ALTER TABLE FakturyZakupu
+ADD CONSTRAINT FakturyZakupuNumerFakturyUQ UNIQUE (IdFirmy, IdRoku, NumerFaktury)
+
+alter table PozycjeFakturZakupu add CzyBrutto bit NOT NULL DEFAULT(0)
+
+------------------------------------------
+
+create view PozycjeFakturZakupu_vw as
+select
+	V.*,
+	(V.Brutto - V.Netto) Vat
+from
+(
+	select
+		PFZ.*,
+		CASE WHEN PFZ.CzyBrutto = 1 THEN PFZ.CenaJednostkowa * PFZ.Ilosc ELSE (PFZ.CenaJednostkowa * PFZ.Ilosc) + (PFZ.CenaJednostkowa * PFZ.Ilosc) * PFZ.StawkaVat / 100 END Brutto,
+		CASE WHEN PFZ.CzyBrutto = 1 THEN (PFZ.CenaJednostkowa * PFZ.Ilosc) / (1 + PFZ.StawkaVat / 100) ELSE PFZ.CenaJednostkowa * PFZ.Ilosc END Netto
+	from
+		PozycjeFakturZakupu PFZ
+) V
+
+ALTER view [dbo].[KosztyNaInwestycjach] as
+select
+	FZ.IdFirmy,
+	FZ.IdRoku,
+	PFZ.IdInwestycji,
+	I.NumerInwestycji,
+	I.IdTypuInwestycji,
+	TI.KodTypuInwestycji,
+	FZ.NumerFaktury,
+	FZ.DataFaktury,
+	FZ.WlasnyNumerFaktury,
+	K.id "IdKontrahenta",
+	K.KodKontrahenta,
+	K.NazwaKontrahenta,
+	PFZ.Opis,
+	sum(PFZ.Netto) KwotaNetto,
+	sum(PFZ.Vat) KwotaVat,
+	sum(PFZ.Brutto) KwotaBrutto
+from
+	PozycjeFakturZakupu_vw PFZ
+	JOIN Inwestycje I ON PFZ.IdInwestycji = I.Id
+	JOIN FakturyZakupu FZ ON FZ.Id = PFZ.IdFaktury
+	JOIN Kontrahenci K ON FZ.IdKontrahenta = K.Id
+	JOIN TypyInwestycji TI ON I.IdTypuInwestycji = TI.Id
+where 1 = 1
+group by
+	FZ.IdFirmy,
+	FZ.IdRoku,
+	PFZ.IdInwestycji,
+	I.NumerInwestycji,
+	I.IdTypuInwestycji,
+	TI.KodTypuInwestycji,
+	FZ.NumerFaktury,
+	FZ.DataFaktury,
+	FZ.WlasnyNumerFaktury,
+	K.id,
+	K.KodKontrahenta,
+	K.NazwaKontrahenta,
+	PFZ.Opis
+
+
+ALTER view [dbo].[NieuregulowaneFakturyZakupu_vw] as
+select
+	FZ.Id,
+	FZ.IdFirmy,
+	FZ.IdRoku,
+	FZ.NumerFaktury,
+	FZ.DataFaktury,
+	FZ.TerminPlatnosci,
+	FZ.Opis,
+	FZ.IdKontrahenta,
+	IsNull((select sum(ZFZ.Kwota) from ZaplatyFakturZakupu ZFZ where ZFZ.IdFakturyZakupu = FZ.Id), 0) KwotaZaplacona,
+	sum(FZ.KwotaNetto) KwotaNetto,
+	sum(FZ.KwotaVat) KwotaVat,
+	sum(FZ.KwotaBrutto) KwotaBrutto,
+	sum(IsNull(FZ.KwotaSkompensowana, 0)) KwotaSkompensowana,
+	sum(FZ.KwotaBrutto) - IsNull((select sum(ZFZ.Kwota) from ZaplatyFakturZakupu ZFZ where ZFZ.IdFakturyZakupu = FZ.Id), 0) - sum(IsNull(FZ.KwotaSkompensowana, 0)) KwotaNieuregulowana,
+	K.KodKontrahenta
+from
+	(
+		select 
+			FZ.Id,
+			FZ.IdFirmy,
+			FZ.IdRoku,
+			FZ.NumerFaktury,
+			FZ.DataFaktury,
+			FZ.TerminPlatnosci,
+			FZ.Opis,
+			FZ.IdKontrahenta,
+			PFZ.Netto KwotaNetto,
+			PFZ.Vat KwotaVat,
+			PFZ.Brutto KwotaBrutto,
+			kp.Kwota KwotaSkompensowana
+		from 
+			FakturyZakupu FZ LEFT OUTER JOIN PozycjeFakturZakupu_vw PFZ ON FZ.Id = PFZ.IdFaktury 
+			LEFT OUTER JOIN KompensatyPowiazania KP ON FZ.Id = KP.IdFakturyZakupu
+		where 1 = 1
+	) FZ,
+	Kontrahenci K
+where 1 = 1
+	and FZ.IdKontrahenta = K.Id
+group by
+	FZ.Id,
+	FZ.IdFirmy,
+	FZ.IdRoku,
+	FZ.NumerFaktury,
+	FZ.DataFaktury,
+	FZ.TerminPlatnosci,
+	FZ.Opis,
+	FZ.IdKontrahenta,
+	K.KodKontrahenta
+
+
+
+---------------------------------------------
+
+ALTER view [dbo].[PozycjeFakturZakupu_vw] as
+select
+	V.*,
+	(V.Brutto - V.Netto) Vat
+from
+(
+	select
+		PFZ.*,
+		CASE WHEN PFZ.CzyBrutto = 1 THEN PFZ.CenaJednostkowa * PFZ.Ilosc ELSE (PFZ.CenaJednostkowa * PFZ.Ilosc) + (PFZ.CenaJednostkowa * PFZ.Ilosc) * PFZ.StawkaVat / 100 END Brutto,
+		CASE WHEN PFZ.CzyBrutto = 1 THEN ROUND((PFZ.CenaJednostkowa * PFZ.Ilosc) / (1 + CONVERT(DECIMAL(16, 2), PFZ.StawkaVat) / 100), 2) ELSE PFZ.CenaJednostkowa * PFZ.Ilosc END Netto
+	from
+		PozycjeFakturZakupu PFZ
+) V
+
+
+
+
+--------------------------------------------
+
+
+ALTER TABLE [FakturySprzedazy] add IdFakturyKorygujacej int null
+go
+
+ALTER TABLE [FakturySprzedazy] ADD
+   CONSTRAINT [FK_FakturySprzedazy_FakturySprzedazy] FOREIGN KEY (IdFakturyKorygujacej) REFERENCES [FakturySprzedazy] (Id);
+go
+
+ALTER TABLE [FakturySprzedazy] add Uwagi nvarchar(1000) null
+go
+
+ALTER TABLE inwestycje add Opis nvarchar(1000) null
+GO
+
+CREATE PROCEDURE SkorygujFaktureSprzedazy @IdFaktury int
+AS
+BEGIN
+	declare @InsertedIdTable table (ID int);
+	declare @InsertedId int;
+
+	insert into FakturySprzedazy 
+	(
+		IdFirmy, IdRoku, NumerFaktury, DataFaktury, TerminPlatnosci, Opis, IdKontrahenta, CzyZaliczka, 
+		IdInwestycji, IdKontaBankowegoFirmy, IdSposobuPlatnosci, DataSprzedazy, CzyUmowa, IdFakturyKorygujacej
+	)
+	output INSERTED.Id into @InsertedIdTable(Id)
+	(
+		select
+			IdFirmy, IdRoku, NumerFaktury + '/Korekta', DataFaktury, TerminPlatnosci, Opis, IdKontrahenta, CzyZaliczka, 
+			IdInwestycji, IdKontaBankowegoFirmy, IdSposobuPlatnosci, DataSprzedazy, CzyUmowa, NULL
+		from
+			FakturySprzedazy
+		where 1 = 1
+			and id = @IdFaktury
+	)
+
+	select
+		@InsertedId = Id
+	from
+		@InsertedIdTable
+
+	update 
+		FakturySprzedazy
+	set
+		IdFakturyKorygujacej = @InsertedId
+	where 1= 1
+		and id = @IdFaktury
+
+	insert into PozycjeFakturSprzedazy
+	(
+		NumerPozycji, IdFaktury, CenaJednostkowa, StawkaVat, Opis, IdJednostkiMiary, Ilosc
+	)
+	(
+		select
+			NumerPozycji, @InsertedId, CenaJednostkowa, StawkaVat, Opis, IdJednostkiMiary, Ilosc
+		from
+			PozycjeFakturSprzedazy
+		where 1 = 1
+			and IdFaktury = @IdFaktury
+	)
+
+	SELECT @InsertedId
+END
+GO
+
+ALTER view [dbo].[NieuregulowaneFakturySprzedazy_vw] as
+select
+	FS.Id,
+	FS.IdFirmy,
+	FS.IdRoku,
+	FS.NumerFaktury,
+	FS.DataFaktury,
+	FS.TerminPlatnosci,
+	FS.Opis,
+	FS.IdKontrahenta,
+	IsNull((select sum(ZFS.Kwota) from ZaplatyFakturSprzedazy ZFS where ZFS.IdFakturySprzedazy = FS.Id), 0) KwotaZaplacona,
+	FS.IdInwestycji,
+	sum(FS.KwotaNetto) KwotaNetto,
+	sum(FS.KwotaVat) KwotaVat,
+	sum(FS.KwotaBrutto) KwotaBrutto,
+	sum(IsNull(FS.KwotaSkompensowana, 0)) KwotaSkompensowana,
+	sum(FS.KwotaBrutto) - IsNull((select sum(ZFS.Kwota) from ZaplatyFakturSprzedazy ZFS where ZFS.IdFakturySprzedazy = FS.Id), 0) - sum(IsNull(FS.KwotaSkompensowana, 0)) KwotaNieuregulowana,
+	K.KodKontrahenta,
+	I.NumerInwestycji,
+	I.NumerUmowy,
+	FS.IdFakturyKorygujacej
+from
+	(
+		select 
+			FS.Id,
+			FS.IdFirmy,
+			FS.IdRoku,
+			FS.NumerFaktury,
+			FS.DataFaktury,
+			FS.TerminPlatnosci,
+			FS.Opis,
+			FS.IdKontrahenta,
+			FS.IdInwestycji,
+			pfs.CenaJednostkowa * PFS.Ilosc KwotaNetto,
+			pfs.CenaJednostkowa * PFS.Ilosc * pfs.StawkaVat/100.0 KwotaVat,
+			pfs.CenaJednostkowa * PFS.Ilosc + pfs.CenaJednostkowa * PFS.Ilosc * pfs.StawkaVat/100.0 KwotaBrutto,
+			kp.Kwota KwotaSkompensowana,
+			FS.IdFakturyKorygujacej
+		from 
+			--FakturySprzedazy FS, PozycjeFakturSprzedazy PFS, KompensatyPowiazania KP
+			FakturySprzedazy FS LEFT OUTER JOIN PozycjeFakturSprzedazy PFS ON FS.Id = PFS.IdFaktury 
+			LEFT OUTER JOIN KompensatyPowiazania KP ON FS.Id = KP.IdFakturySprzedazy
+		where 1 = 1
+			--and FS.Id = PFS.IdFaktury
+			--and FS.Id = KP.IdFakturySprzedazy
+	) FS,
+	Kontrahenci K,
+	Inwestycje I
+where 1 = 1
+	and FS.IdKontrahenta = K.Id
+	and FS.IdInwestycji = I.Id
+group by
+	FS.Id,
+	FS.IdFirmy,
+	FS.IdRoku,
+	FS.NumerFaktury,
+	FS.DataFaktury,
+	FS.TerminPlatnosci,
+	FS.Opis,
+	FS.IdKontrahenta,
+	--FS.KwotaZaplacona,
+	FS.IdInwestycji,
+	--FS.KwotaSkompensowana,
+	K.KodKontrahenta,
+	I.NumerInwestycji,
+	I.NumerUmowy,
+	FS.IdFakturyKorygujacej
+GO
+
+
+-----------------------------------------------------------------------------------------------
+
+alter table PozycjeFakturSprzedazy add CzyBrutto bit NOT NULL DEFAULT(0)
+
+CREATE view [dbo].[PozycjeFakturSprzedazy_vw] as
+select
+	V.*,
+	(V.Brutto - V.Netto) Vat
+from
+(
+	select
+		PFS.*,
+		CASE WHEN PFS.CzyBrutto = 1 THEN PFS.CenaJednostkowa * PFS.Ilosc ELSE (PFS.CenaJednostkowa * PFS.Ilosc) + (PFS.CenaJednostkowa * PFS.Ilosc) * PFS.StawkaVat / 100 END Brutto,
+		CASE WHEN PFS.CzyBrutto = 1 THEN (PFS.CenaJednostkowa * PFS.Ilosc) / (1 + PFS.StawkaVat / 100) ELSE PFS.CenaJednostkowa * PFS.Ilosc END Netto
+	from
+		PozycjeFakturSprzedazy PFS
+) V
+
+
+
+ALTER view [dbo].[NieuregulowaneFakturySprzedazy_vw] as
+select
+	FS.Id,
+	FS.IdFirmy,
+	FS.IdRoku,
+	FS.NumerFaktury,
+	FS.DataFaktury,
+	FS.TerminPlatnosci,
+	FS.Opis,
+	FS.IdKontrahenta,
+	IsNull((select sum(ZFS.Kwota) from ZaplatyFakturSprzedazy ZFS where ZFS.IdFakturySprzedazy = FS.Id), 0) KwotaZaplacona,
+	FS.IdInwestycji,
+	sum(FS.KwotaNetto) KwotaNetto,
+	sum(FS.KwotaVat) KwotaVat,
+	sum(FS.KwotaBrutto) KwotaBrutto,
+	sum(IsNull(FS.KwotaSkompensowana, 0)) KwotaSkompensowana,
+	sum(FS.KwotaBrutto) - IsNull((select sum(ZFS.Kwota) from ZaplatyFakturSprzedazy ZFS where ZFS.IdFakturySprzedazy = FS.Id), 0) - sum(IsNull(FS.KwotaSkompensowana, 0)) KwotaNieuregulowana,
+	K.KodKontrahenta,
+	I.NumerInwestycji,
+	I.NumerUmowy,
+	FS.IdFakturyKorygujacej
+from
+	(
+		select 
+			FS.Id,
+			FS.IdFirmy,
+			FS.IdRoku,
+			FS.NumerFaktury,
+			FS.DataFaktury,
+			FS.TerminPlatnosci,
+			FS.Opis,
+			FS.IdKontrahenta,
+			FS.IdInwestycji,
+			pfs.CenaJednostkowa * PFS.Ilosc KwotaNetto,
+			pfs.CenaJednostkowa * PFS.Ilosc * pfs.StawkaVat/100.0 KwotaVat,
+			pfs.CenaJednostkowa * PFS.Ilosc + pfs.CenaJednostkowa * PFS.Ilosc * pfs.StawkaVat/100.0 KwotaBrutto,
+			kp.Kwota KwotaSkompensowana,
+			FS.IdFakturyKorygujacej
+		from 
+			--FakturySprzedazy FS, PozycjeFakturSprzedazy PFS, KompensatyPowiazania KP
+			FakturySprzedazy FS LEFT OUTER JOIN PozycjeFakturSprzedazy_vw PFS ON FS.Id = PFS.IdFaktury 
+			LEFT OUTER JOIN KompensatyPowiazania KP ON FS.Id = KP.IdFakturySprzedazy
+		where 1 = 1
+			--and FS.Id = PFS.IdFaktury
+			--and FS.Id = KP.IdFakturySprzedazy
+	) FS,
+	Kontrahenci K,
+	Inwestycje I
+where 1 = 1
+	and FS.IdKontrahenta = K.Id
+	and FS.IdInwestycji = I.Id
+group by
+	FS.Id,
+	FS.IdFirmy,
+	FS.IdRoku,
+	FS.NumerFaktury,
+	FS.DataFaktury,
+	FS.TerminPlatnosci,
+	FS.Opis,
+	FS.IdKontrahenta,
+	--FS.KwotaZaplacona,
+	FS.IdInwestycji,
+	--FS.KwotaSkompensowana,
+	K.KodKontrahenta,
+	I.NumerInwestycji,
+	I.NumerUmowy,
+	FS.IdFakturyKorygujacej
+
+GO
+
+
+------------------------------
+
+alter table [Uzytkownicy] add WybraneIdRoku int
+GO
+
+alter table [Uzytkownicy] add WybraneIdFirmy int
+GO
+
+
+
+ALTER view [dbo].[Uzytkownicy_vw] as
+select 
+	u.UserId,
+	u.UserName,
+	u.Imie,
+	u.Nazwisko,
+	u.WybraneIdRoku,
+	u.WybraneIdFirmy,
+	m.CreateDate, 
+	m.ConfirmationToken, 
+	m.IsConfirmed, 
+	m.LastPasswordFailureDate, 
+	m.PasswordFailuresSinceLastSuccess, 
+	m.PasswordChangedDate, 
+	m.PasswordSalt, 
+	m.PasswordVerificationToken, 
+	m.PasswordVerificationTokenExpirationDate,
+	(select 1 from webpages_Roles r, webpages_UsersInRoles uir where r.RoleId = uir.RoleId and uir.UserId = m.UserId and r.RoleName = 'Admin') CzyAdmin,
+	(select 1 from webpages_Roles r, webpages_UsersInRoles uir where r.RoleId = uir.RoleId and uir.UserId = m.UserId and r.RoleName = 'Kancelaria') CzyKancelaria
+from
+	Uzytkownicy u,
+	webpages_Membership m
+where 1 = 1
+	and u.UserId = m.UserId
+GO
+

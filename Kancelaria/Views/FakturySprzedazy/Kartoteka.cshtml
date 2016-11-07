@@ -1,0 +1,63 @@
+﻿@model GridSettings<FakturaSprzedazy>
+
+@{
+    ViewBag.Title = "Faktury sprzedaży";
+}
+
+@section featured {
+    @Html.Partial("_FeaturedSection", new FeaturedSectionModel() { Title = "Faktury sprzedaży.", SubTitle = "Tutaj możesz dodawać, edytować i usuwać faktury sprzedaży." })
+}
+
+<table class="grid">
+    <caption>
+        <span class="caption-buttons"><a href="@Url.Action("Dodaj")" class="kanc-button"><span>Dodaj fakturę sprzedaży</span></a></span>
+        @Html.Partial("_Search", new FilterBoxModel("", "Slownik", new FakturySprzedazyDictionary(), DateTimeSearchControlType.DateRange))
+    </caption>
+    <thead>
+        <tr class="ui-widget-header">
+            @Html.KancelariaGridSortingColumn("NumerFaktury", "Numer faktury", Request.Url.AbsolutePath, Request.Url.Query)
+            @Html.KancelariaGridSortingColumn("DataFaktury", "Data faktury", Request.Url.AbsolutePath, Request.Url.Query)
+            <th class="ui-widget">Kontrahent</th>
+            <th class="ui-widget">Inwestycja</th>
+            <th class="ui-widget">Kwota netto</th>
+            <th class="ui-widget">Kwota vat</th>
+            <th class="ui-widget">Kwota brutto</th>
+            <th class="ui-widget grid-operations-cell">Operacje</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach(FakturaSprzedazy fz in Model.Query.Result)
+    {
+        <tr>
+            <td>@fz.NumerFaktury</td>            
+            <td>@fz.DataFaktury.ToShortDateString()</td>
+            <td>@fz.Kontrahent.KodKontrahenta</td>
+            <td>@(fz.Inwestycja != null ? fz.Inwestycja.NumerInwestycji : "")</td>
+            <td>@fz.KwotaNetto.ToString("0.00")</td>
+            <td>@fz.KwotaVat.ToString("0.00")</td>
+            <td>@fz.KwotaBrutto.ToString("0.00")</td>
+            <td class="grid-operations-cell">
+                <a title="Edytuj" href="@Url.Action("Edytuj", new { @id = fz.Id })" class="kanc-button"><span class="ui-icon ui-icon-pencil"></span></a>                
+                <a title="Zapłaty" href="@Url.Action("Zaplaty", new { @idFakturySprzedazy = fz.Id })" class="kanc-button"><span class="ui-icon ui-icon-calculator"></span></a>
+                <a title="Skoryguj" href="@Url.Action("Skoryguj", new { @id = fz.Id })" class="kanc-button"><span class="ui-icon ui-icon-tag"></span></a>
+                <a title="Usuń" href="@Url.Action("Usun", new { @id = fz.Id })" class="kanc-button"><span class="ui-icon ui-icon-trash"></span></a>                
+                <a title="Drukuj" href="@Url.Action("Drukuj", new { @id = fz.Id })" class="kanc-button"><span class="ui-icon ui-icon-print"></span></a>                
+                @if(fz.IdFakturyKorygujacej.HasValue)
+                {
+                <a title="Drukuj korektę" href="@Url.Action("DrukujKorekte", new { @id = fz.Id })" class="kanc-button"><span class="ui-icon ui-icon-print"></span></a>
+                }
+            </td>
+        </tr>
+    }
+    </tbody>
+    @if (Model.PageCount > 0)
+    {
+    <tfoot>
+        <tr>
+            <td colspan="8">@Html.Partial("_Pager", (IPaged)Model.Query)</td>
+        </tr>
+    </tfoot>
+    }
+</table>
+
+

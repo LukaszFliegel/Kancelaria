@@ -1,0 +1,51 @@
+﻿@model GridSettings<UzytkownikMembership>
+
+@{
+    ViewBag.Title = "Zarządzanie użytkownikami";
+}
+
+@section featured {
+    @Html.Partial("_FeaturedSection", new FeaturedSectionModel() { Title = "Zarządzanie użytkownikami.", SubTitle = "Tutaj możesz zarządzać użytkownikami." })
+}
+
+<table class="grid">
+    <caption>
+        <span class="caption-buttons"></span>
+    </caption>
+    <thead>
+        <tr class="ui-widget-header">
+            @Html.KancelariaGridSortingColumn("UserName", "Nazwa użytkownika", Request.Url.AbsolutePath, Request.Url.Query)
+            @Html.KancelariaGridSortingColumn("Imie", "Imię", Request.Url.AbsolutePath, Request.Url.Query)
+            @Html.KancelariaGridSortingColumn("Nazwisko", "Nazwisko", Request.Url.AbsolutePath, Request.Url.Query)
+            @Html.KancelariaGridSortingColumn("CzyKancelaria", "Rola kancelaria", Request.Url.AbsolutePath, Request.Url.Query)
+            @Html.KancelariaGridSortingColumn("CzyAdmin", "Rola admin", Request.Url.AbsolutePath, Request.Url.Query)
+            <th class="ui-widget grid-operations-cell">Operacje</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (UzytkownikMembership u in Model.Query.Result)
+    {
+        <tr>
+            <td>@u.UserName</td>
+            <td>@u.Imie</td>
+            <td>@u.Nazwisko</td>
+            <td>@(u.CzyKancelaria == 1 ? "Tak" : "Nie")</td>
+            <td>@(u.CzyAdmin == 1 ? "Tak" : "Nie")</td>            
+            <td class="grid-operations-cell">
+                <a title="Przestaw rolę Kancelaria" href="@Url.Action("PrzestawRoleKancelaria", new { @userId = u.UserId })" class="kanc-button"><span class="ui-icon ui-icon-folder-open"></span></a>
+                <a title="Przestaw rolę Admin" href="@Url.Action("PrzestawRoleAdmin", new { @userId = u.UserId })" class="kanc-button"><span class="ui-icon ui-icon-tag"></span></a>
+            </td>
+        </tr>
+    }
+    </tbody>
+    @if (Model.PageCount > 0)
+    {
+    <tfoot>
+        <tr>
+            <td colspan="3">@Html.Partial("_Pager", (IPaged)Model.Query)</td>
+        </tr>
+    </tfoot>
+    }
+</table>
+
+

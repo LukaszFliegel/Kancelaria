@@ -1,0 +1,52 @@
+﻿@model GridSettings<Kontrahent>
+
+@{
+    ViewBag.Title = "Kontrahenci";
+}
+
+@section featured {
+    @Html.Partial("_FeaturedSection", new FeaturedSectionModel() { Title = "Kontrahenci.", SubTitle = "Tutaj możesz dodawać, edytować i usuwać kontrahentów." })
+}
+
+<table class="grid">
+    <caption>
+        <span class="caption-buttons"><a href="@Url.Action("Dodaj")" class="kanc-button"><span>Dodaj kontrahenta</span></a></span>
+        @Html.Partial("_Search", new FilterBoxModel("", "Slownik", new KontrahenciDictionary()))
+    </caption>
+    <thead>
+        <tr class="ui-widget-header">
+            @*<th class="ui-widget">Kod kontrahenta</th>
+            <th class="ui-widget">Nazwa kontrahenta</th>
+            <th class="ui-widget">Miejscowość</th>*@
+            @Html.KancelariaGridSortingColumn("KodKontrahenta", "Kod kontrahenta", Request.Url.AbsolutePath, Request.Url.Query)
+            @Html.KancelariaGridSortingColumn("NazwaKontrahenta", "Nazwa kontrahenta", Request.Url.AbsolutePath, Request.Url.Query)
+            @Html.KancelariaGridSortingColumn("Miejscowosc", "Miejscowość", Request.Url.AbsolutePath, Request.Url.Query)
+            <th class="ui-widget">Kontrahent nadrz.</th>
+            <th class="ui-widget grid-operations-cell">Operacje</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach(Kontrahent k in Model.Query.Result)
+    {
+        <tr>
+            <td @(k.CzyDomyslny.HasValue && k.CzyDomyslny.Value ? String.Format("class=default") : "")>@k.KodKontrahenta</td>
+            <td>@k.NazwaKontrahenta</td>
+            <td>@k.Miejscowosc</td>
+            <td>@(k.Kontrahenci1 != null ? k.KontrahentNadrzedny.KodKontrahenta : "")</td>
+            <td class="grid-operations-cell">
+                <a title="Edytuj" href="@Url.Action("Edytuj", new { @id = k.Id })" class="kanc-button"><span class="ui-icon ui-icon-pencil"></span></a>
+                <a title="Usuń" href="@Url.Action("Usun", new { @id = k.Id })" class="kanc-button"><span class="ui-icon ui-icon-trash"></span></a>
+                <a title="Ustaw domyślny" href="@Url.Action("UstawDomyslny", new { @id = k.Id, @returnUrl = Request.Url.ToString() })" class="kanc-button"><span class="ui-icon ui-icon-star"></span></a>
+            </td>
+        </tr>
+    }
+    </tbody>
+    @if (Model.PageCount > 0)
+    {
+    <tfoot>
+        <tr>
+            <td colspan="4">@Html.Partial("_Pager", (IPaged)Model.Query)</td>
+        </tr>
+    </tfoot>
+    }
+</table>

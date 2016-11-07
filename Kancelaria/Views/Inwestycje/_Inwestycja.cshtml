@@ -1,0 +1,33 @@
+﻿@model Inwestycja
+
+<div class="editor-label">
+    @Html.Label("Numer inwestycji")
+</div>
+<div class="editor-field">
+    @Html.EditorFor(model => model.NumerInwestycji)
+    @Html.ValidationMessageFor(model => model.NumerInwestycji)
+</div>
+
+<div class="editor-label">
+    @Html.Label("Numer umowy/zamówienia")
+</div>
+<div class="editor-field">
+    @Html.EditorFor(model => model.NumerUmowy)
+    @Html.ValidationMessageFor(model => model.NumerUmowy)
+</div>
+
+<div class="editor-label">
+    @Html.Label("Typ inwestycji")
+</div>
+<div class="editor-field">
+    @Html.LookupFor(o => o.IdTypuInwestycji, controller: "TypyInwestycji", multiselect: false, chooseText: "Wybierz", cancelText: "Anuluj", title: "Wybierz typ inwestycji", paging: true)
+    @Html.ValidationMessageFor(model => model.IdTypuInwestycji)
+</div>
+
+<div class="editor-label">
+    @Html.Label("Opis")
+</div>
+<div class="editor-field">
+    @Html.EditorFor(model => model.Opis)
+    @Html.ValidationMessageFor(model => model.Opis)
+</div>

@@ -1,0 +1,92 @@
+﻿@model Firma
+
+<div class="kanc-fieldset-left">
+    <div class="editor-label">
+        @Html.Label("Nazwa skrócona")
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.NazwaSkrocona)
+        @Html.ValidationMessageFor(model => model.NazwaSkrocona)
+    </div>
+
+    <div class="editor-label">
+        @Html.Label("Nazwa pełna")
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.NazwaPelna)
+        @Html.ValidationMessageFor(model => model.NazwaPelna)
+    </div>
+
+    <div class="editor-label">
+        @Html.Label("NIP")
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.NIP)
+        @Html.ValidationMessageFor(model => model.NIP)
+    </div>
+
+    <div class="editor-label">
+        @Html.Label("REGON")
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.Regon)
+        @Html.ValidationMessageFor(model => model.Regon)
+    </div>
+
+    <div class="editor-label">
+        @Html.Label("KRS")
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.KRS)
+        @Html.ValidationMessageFor(model => model.KRS)
+    </div>
+</div>
+<div class="kanc-fieldset-right">
+    <div class="editor-label">
+        @Html.Label("Państwo")
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.Panstwo)
+        @Html.ValidationMessageFor(model => model.Panstwo)
+    </div>
+
+    <div class="editor-label">
+        @Html.Label("Miejscowość")
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.Miejscowosc)
+        @Html.ValidationMessageFor(model => model.Miejscowosc)
+    </div>
+
+    <div class="editor-label">
+        @Html.Label("Kod pocztowy")
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.KodPocztowy)
+        @Html.ValidationMessageFor(model => model.KodPocztowy)
+    </div>
+
+    <div class="editor-label">
+        @Html.Label("Ulica")
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.Ulica)
+        @Html.ValidationMessageFor(model => model.Ulica)
+    </div>
+
+    <div class="editor-label">
+        @Html.Label("Numer domu")
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.NumerDomu)
+        @Html.ValidationMessageFor(model => model.NumerDomu)
+    </div>
+
+    <div class="editor-label">
+        @Html.Label("Numer lokalu")
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.NumerLokalu)
+        @Html.ValidationMessageFor(model => model.NumerLokalu)
+    </div>
+</div>

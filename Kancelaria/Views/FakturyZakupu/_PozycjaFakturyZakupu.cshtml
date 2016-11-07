@@ -1,0 +1,105 @@
+﻿@model AjaxEditModel<PozycjaFakturyZakupu>
+
+<div id="kanc_pozycja_faktury_zakupu_dialog" class="kanc-ajax-dialog-submit" data-dialog-width="900" data-dialog-height="360" title="Dodaj pozycję faktury">
+    @using (Ajax.BeginForm(Model.Action, Model.Controller,
+        new AjaxOptions { HttpMethod = "Post", UpdateTargetId = Model.GridElementId, InsertionMode = Model.InsertionMode }
+        )
+    )
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+
+        <fieldset>
+            <legend>Pozycja faktury zakupu</legend>
+
+            @Html.Hidden("Id", Model.Model.Id)
+            @Html.Hidden("DialogElementId", Model.DialogElementId)
+            @Html.Hidden("GridElementId", Model.GridElementId)
+                        <div class="kanc-fieldset-left">
+                <div class="editor-label">
+                    @Html.Label("Opis")
+                </div>
+                <div class="editor-field">
+                    @Html.TextBox("Opis", Model.Model.Opis)
+                </div>
+
+                <div class="editor-label">
+                    @Html.Label("Cena jednostkowa")
+                </div>
+                <div class="editor-field">
+                    @Html.TextBox("CenaJednostkowa", Model.Model.CenaJednostkowa, new { style="width:150px;" })
+                    <div class="buttonset brutto-netto-buttonset">
+                        <input type="radio" id="brutto" name="BruttoNettoRadio" value="Brutto"><label for="brutto">brutto</label>
+                        <input type="radio" id="netto" name="BruttoNettoRadio" value="Netto" checked="checked"><label for="netto">netto</label>
+                        @*@Html.RadioButton("radio", "Brutto", false)
+                        @Html.RadioButton("radio", "Netto", true)*@
+                    </div>
+                </div>
+
+                <div class="editor-label">
+                    @Html.Label("Stawka Vat (%)")
+                </div>
+                <div class="editor-field">
+                    @Html.TextBox("StawkaVat", Model.Model.StawkaVat)
+                </div>
+            </div>
+
+            <div class="kanc-fieldset-right">
+                <div class="editor-label">
+                    @Html.Label("Ilość jednostkowa")
+                </div>
+                <div class="editor-field">
+                    @Html.TextBox("Ilosc", Model.Model.Ilosc)
+                </div>
+
+                <div class="editor-label">
+                    @Html.Label("Jednostka miary")
+                </div>
+                <div class="editor-field">
+                    @Html.Lookup("IdJednostkiMiary", value: Model.Model.IdJednostkiMiary, controller: "JednostkiMiary", multiselect: false, chooseText: "Wybierz", 
+                    cancelText: "Anuluj", title: "Wybierz jednostkę miary", paging: true)
+                </div>
+
+                <div class="editor-label">
+                    @Html.Label("Inwestycja")
+                </div>
+                <div class="editor-field">
+                    @Html.Lookup("IdInwestycji", value: Model.Model.IdInwestycji, controller: "Inwestycje", multiselect: false, chooseText: "Wybierz", 
+                    cancelText: "Anuluj", title: "Wybierz inwestycję", paging: true)
+                </div>
+            </div>
+            @*<div class="editor-label">
+                @Html.Label("Cena jednostkowa")
+            </div>
+            <div class="editor-field">
+                @Html.TextBox("CenaJednostkowa", Model.Model.CenaJednostkowa)
+            </div>
+            <div class="editor-label">
+                @Html.Label("Ilość jednostkowa")
+            </div>
+            <div class="editor-field">
+                @Html.TextBox("Ilosc", Model.Model.Ilosc)
+            </div>
+            <div class="editor-label">
+                @Html.Label("Stawka Vat (%)")
+            </div>
+            <div class="editor-field">
+                @Html.TextBox("StawkaVat", Model.Model.StawkaVat)
+            </div>
+            <div class="editor-label">
+                @Html.Label("Inwestycja")
+            </div>
+            <div class="editor-field">
+                @Html.Lookup("IdInwestycji", value: Model.Model.IdInwestycji, controller: "Inwestycje", multiselect: false, chooseText: "Wybierz", 
+                cancelText: "Anuluj", title: "Wybierz inwestycję", paging: true)
+            </div>
+
+            <div class="editor-label">
+                @Html.Label("Opis")
+            </div>
+            <div class="editor-field">
+                @Html.TextBox("Opis", Model.Model.Opis)
+            </div>*@
+        </fieldset>
+    }
+</div>

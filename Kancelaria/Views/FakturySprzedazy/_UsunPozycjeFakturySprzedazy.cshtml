@@ -1,0 +1,18 @@
+﻿@model AjaxEditModel<PozycjaFakturySprzedazy>
+
+<div id="kanc_pozycja_faktury_zakupu_dialog" class="kanc-ajax-dialog-delete-submit" data-dialog-width="900" data-dialog-height="300" title="Czy chcesz usunąć pozycję?">
+    @using (Ajax.BeginForm(Model.Action, Model.Controller,
+        new AjaxOptions { HttpMethod = "Post", UpdateTargetId = Model.GridElementId, InsertionMode = Model.InsertionMode }
+        )
+    )
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+
+        <h3>Czy na pewno chcesz usunąć pozycję nr @Model.Model.NumerPozycji.ToString() faktury sprzedaży?</h3>
+
+        @Html.Hidden("Id", Model.Model.Id)
+        @Html.Hidden("DialogElementId", Model.DialogElementId)
+        @Html.Hidden("GridElementId", Model.GridElementId)
+    }
+</div>

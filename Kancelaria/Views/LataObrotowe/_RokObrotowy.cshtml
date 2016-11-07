@@ -1,0 +1,11 @@
+﻿@model RokObrotowy
+
+<div class="kanc-fieldset-left">
+    <div class="editor-label">
+        @Html.Label("Nazwa roku")
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.NazwaRoku)
+        @Html.ValidationMessageFor(model => model.NazwaRoku)
+    </div>
+</div>

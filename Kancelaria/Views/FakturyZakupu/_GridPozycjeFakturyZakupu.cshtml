@@ -1,0 +1,65 @@
+﻿@model ReadOnlyAbleModel<FakturaZakupu>
+
+<table class="grid">
+    <caption>
+        <span class="caption-buttons">
+            @Ajax.ActionLink("Dodaj pozycję faktury", "DodajPozycjeFakturyZakupu", new { @id = Model.Model.Id, @dialogElementId = Model.DialogElementId, @gridElementId = Model.GridElementId }, 
+                new AjaxOptions() { HttpMethod = "Get", UpdateTargetId = Model.DialogElementId, InsertionMode = InsertionMode.Replace },
+                new { @class = "button" }
+            )
+        </span>
+    </caption>
+    <thead>
+        <tr class="ui-widget-header">
+            <th class="ui-widget">Lp.</th>
+            <th class="ui-widget">Opis</th>
+            <th class="ui-widget">J.m.</th>
+            <th class="ui-widget">Ilość</th>
+            <th class="ui-widget">Cena jedn.</th>
+            <th class="ui-widget">Vat (%)</th>
+            <th class="ui-widget">Kwota netto</th>
+            <th class="ui-widget">Kwota vat</th>
+            <th class="ui-widget">Kwota brutto</th>
+            <th class="ui-widget">Inwestycja</th>
+            @if (!Model.ReadOnly)
+            {
+                <th class="ui-widget grid-operations-cell">Operacje</th>
+            }
+        </tr>
+    </thead>
+    <tbody id="kanc_faktury_zakupu_pozycje">
+    @if (Model != null)
+    {
+        foreach (PozycjaFakturyZakupu pf in Model.Model.PozycjaFakturyZakupus)
+        {
+            <tr id="grid-pozycja-faktury-zakupu-@pf.Id">
+                <td>@pf.NumerPozycji</td>
+                <td>@pf.Opis</td>
+                <td>@pf.JednostkaMiary.KodJednostkiMiary</td>
+                <td>@pf.Ilosc</td>
+                <td>@pf.CenaJednostkowa.ToString("N2")</td>
+                <td>@pf.StawkaVat.ToString()</td>
+                <td>@pf.KwotaNetto.ToString("N2")</td>
+                <td>@pf.KwotaVat.ToString("N2")</td>
+                <td>@pf.KwotaBrutto.ToString("N2")</td>
+                <td>@pf.Inwestycja.NumerInwestycji</td>
+                @if (!Model.ReadOnly)
+                {
+                    <td class="grid-operations-cell">
+                        @Ajax.ActionLink("Edytuj", "EdytujPozycjeFakturyZakupu",
+                            new { @id = pf.Id, @dialogElementId = Model.DialogElementId, @gridElementId = Model.GridElementId },
+                            new AjaxOptions() { HttpMethod = "get", UpdateTargetId = Model.DialogElementId, InsertionMode = InsertionMode.Replace },
+                            new { @class = "button" }
+                        )
+                        @Ajax.ActionLink("Usuń", "UsunPozycjeFakturyZakupu",
+                            new { @id = pf.Id, @dialogElementId = Model.DialogElementId, @gridElementId = Model.GridElementId },
+                            new AjaxOptions() { HttpMethod = "get", UpdateTargetId = Model.DialogElementId, InsertionMode = InsertionMode.Replace },
+                            new { @class = "button" }
+                        )
+                    </td>
+                }
+            </tr>
+        }
+    }
+    </tbody>
+</table>

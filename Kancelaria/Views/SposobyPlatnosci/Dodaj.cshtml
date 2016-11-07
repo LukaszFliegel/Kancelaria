@@ -1,0 +1,32 @@
+﻿@model SposobPlatnosci
+
+@{
+    ViewBag.Title = "Dodawanie nowego sposobu płatności";
+}
+
+@section featured {
+    @Html.Partial("_FeaturedSection", new FeaturedSectionModel() { Title = "Dodawanie sposobu płatności.", SubTitle = "Dodaj nowy sposób płatności." })
+}
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Sposób płatności</legend>
+
+        @Html.Partial("_SposobPlatnosci", Model)
+        <hr />
+        <p>
+            <input type="submit" value="Dodaj sposób płatności" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Powrót do kartoteki", "Kartoteka")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

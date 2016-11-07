@@ -1,0 +1,73 @@
+﻿@model ReportModel<PagedSearchedQueryResult<FakturaZakupu>>
+
+@{
+    ViewBag.Title = "Rejestr zakupu";
+    Layout = "~/Views/Shared/_ReportLayout.cshtml";
+}
+
+<table class="grid">
+    <caption>
+        <span class="caption-buttons"></span>
+        @using (Html.BeginForm(null, null, FormMethod.Get, new { id = "SearchForm", @class = "centerDiv" }))
+        { 
+            @*@Html.Lookup("IdKontrahenta", controller: "Kontrahenci", multiselect: false, chooseText: "Wybierz", cancelText: "Anuluj", title: "Wybierz kontrahenta", paging: true)*@
+            <div class="caption-lookup-list">
+                <div class="caption-lookup-item"><span class="caption-lookup-item-label">@Html.Label("Kontrahent")</span><div class="caption-lookup-item-control">@Html.Lookup("IdKontrahenta", controller: "Kontrahenci", multiselect: false, chooseText: "Wybierz", cancelText: "Anuluj", title: "Wybierz kontrahenta", paging: true)</div></div>
+            </div>
+            @Html.Partial("_Search", new FilterBoxModel("", "Slownik", new FakturyZakupuDictionary(), DateTimeSearchControlType.DateRange))
+        }
+    </caption>
+    <thead>
+        <tr class="ui-widget-header">
+            @Html.KancelariaGridSortingColumn("NumerFaktury", "Numer faktury", Request.Url.AbsolutePath, Request.Url.Query)
+            @Html.KancelariaGridSortingColumn("WlasnyNumerFaktury", "Własny Nr faktury", Request.Url.AbsolutePath, Request.Url.Query)
+            @Html.KancelariaGridSortingColumn("DataFaktury", "Data faktury", Request.Url.AbsolutePath, Request.Url.Query)
+            <th class="ui-widget">Kontrahent</th>
+            <th class="ui-widget">Kwota brutto</th>
+            <th class="ui-widget">Kwota netto</th>
+            <th class="ui-widget">Kwota vat</th>
+        </tr>
+    </thead>
+    <tbody>
+    @{int i = 0;}
+    @foreach(FakturaZakupu fz in Model.Model.Result)
+    {
+        i = 0;
+        <tr>
+            <td>@fz.NumerFaktury</td>         
+            <td>@fz.WlasnyNumerFaktury</td>   
+            <td>@fz.DataFaktury.ToShortDateString()</td>
+            <td>@fz.Kontrahent.KodKontrahenta</td>
+            <td class="border-cell">@fz.KwotaBrutto.ToString("N2")</td>
+            <td class="border-cell">@fz.KwotaNetto.ToString("N2")</td>
+            <td class="border-cell">@fz.KwotaVat.ToString("N2")</td>
+        </tr>
+        @*foreach (var inw in fz.PozycjaFakturyZakupus.OrderBy(p => p.IdInwestycji).Select(p => p.Inwestycja).Distinct())
+        {
+            i++;
+            <tr class="sub-table-row @if(fz.PozycjaFakturyZakupus.OrderBy(p => p.IdInwestycji).Select(p => p.Inwestycja).Distinct().Count() == i) { 
+                    @:last-row
+                }">
+                <td></td>
+                <td>@inw.NumerInwestycji</td>
+                <td></td>
+                <td>@fz.PozycjaFakturyZakupus.Where(p => p.IdInwestycji == inw.Id).Sum(p => p.KwotaBrutto).ToString("N2")</td>
+                <td>@fz.PozycjaFakturyZakupus.Where(p => p.IdInwestycji == inw.Id).Sum(p => p.KwotaNetto).ToString("N2")</td>
+                <td>@fz.PozycjaFakturyZakupus.Where(p => p.IdInwestycji == inw.Id).Sum(p => p.KwotaVat).ToString("N2")</td>
+            </tr>
+        }*@
+    }
+    </tbody>
+    <tfoot>
+        <tr><td>&nbsp;</td></tr>
+        <tr>
+            <td>Suma</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>@Model.Model.Result.AsEnumerable().Sum(p => p.KwotaBrutto).ToString("N2")</td>
+            <td>@Model.Model.Result.AsEnumerable().Sum(p => p.KwotaNetto).ToString("N2")</td>
+            <td>@Model.Model.Result.AsEnumerable().Sum(p => p.KwotaVat).ToString("N2")</td>
+        </tr>
+    </tfoot>
+</table>

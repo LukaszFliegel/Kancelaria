@@ -1,0 +1,52 @@
+﻿@model ZaplatyFakturyZakupuModel
+
+@{
+    ViewBag.Title = "Zapłaty faktury zakupu";
+}
+
+@section featured {
+    @Html.Partial("_FeaturedSection", new FeaturedSectionModel() { Title = "Zapłaty faktury zakupu.", SubTitle = String.Format("Tutaj możesz dodawać, edytować i usuwać zapłaty faktury zakupu {0}.", Model.FakturaZakupu.NumerFaktury) })
+}
+
+<table class="grid">
+    <caption>
+        <span class="caption-buttons"><a href="@Url.Action("DodajZaplate", new { @idFakturyZakupu = Model.FakturaZakupu.Id })" class="kanc-button"><span>Dodaj zapłatę</span></a></span>
+        @Html.Partial("_Search", new FilterBoxModel("", "Slownik", new ZaplatyFakturZakupuDictionary()))
+    </caption>
+    <thead>
+        <tr class="ui-widget-header">
+            @Html.KancelariaGridSortingColumn("DataZaplaty", "Data zapłaty", Request.Url.AbsolutePath, Request.Url.Query)
+            @Html.KancelariaGridSortingColumn("Kwota", "Kwota", Request.Url.AbsolutePath, Request.Url.Query)
+            @Html.KancelariaGridSortingColumn("Opis", "Opis", Request.Url.AbsolutePath, Request.Url.Query)
+            <th class="ui-widget grid-operations-cell">Operacje</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach(ZaplataFakturyZakupu zfz in Model.GridSettings.Query.Result)
+    {
+        <tr>
+            <td>@zfz.DataZaplaty.ToShortDateString()</td>
+            <td>@zfz.Kwota.ToString("0.00")</td>
+            <td>@zfz.Opis</td>            
+            <td class="grid-operations-cell">
+                <a title="Edytuj" href="@Url.Action("EdytujZaplate", new { @id = zfz.Id })" class="kanc-button"><span class="ui-icon ui-icon-pencil"></span></a>
+                <a title="Usuń" href="@Url.Action("UsunZaplate", new { @id = zfz.Id })" class="kanc-button"><span class="ui-icon ui-icon-trash"></span></a>
+            </td>
+        </tr>
+    }
+    </tbody>
+    @if (Model.GridSettings.PageCount > 0)
+    {
+    <tfoot>
+        <tr>
+            <td colspan="4">@Html.Partial("_Pager", (IPaged)Model.GridSettings.Query)</td>
+        </tr>
+    </tfoot>
+    }
+</table>
+
+<hr />
+
+<div>
+    @Html.ActionLink("Powrót do kartoteki", "Kartoteka") @Html.ActionLink("Edytuj fakturę", "Edytuj", new { @id = Model.FakturaZakupu.Id })
+</div>

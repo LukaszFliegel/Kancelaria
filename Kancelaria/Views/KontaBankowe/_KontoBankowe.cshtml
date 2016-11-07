@@ -1,0 +1,55 @@
+﻿@model KontoBankowe
+
+@Html.HiddenFor(model => model.IdFirmy)
+
+<div class="editor-label">
+    @Html.Label("Konto bankowe")
+</div>
+<div class="editor-field">
+    @*@Html.TextBoxFor(model => model.LiczbaKontrolna, new { @size = 2 })
+    @Html.TextBoxFor(model => model.WyroznikKonta, new { @size = 8 })*@
+    @Html.TextBoxFor(model => model.NumerKonta)
+    @*@Html.ValidationMessageFor(model => model.LiczbaKontrolna)
+    @Html.ValidationMessageFor(model => model.WyroznikKonta)*@
+    @Html.ValidationMessageFor(model => model.NumerKonta)
+</div>
+
+<div class="editor-label">
+    @Html.Label("Nazwa konta")
+</div>
+<div class="editor-field">
+    @Html.TextBoxFor(model => model.Nazwa)
+    @Html.ValidationMessageFor(model => model.Nazwa)
+</div>
+
+<div class="editor-label">
+    @Html.Label("Nazwa banku")
+</div>
+<div class="editor-field">
+    @Html.TextBoxFor(model => model.NazwaBanku)
+    @Html.ValidationMessageFor(model => model.NazwaBanku)
+</div>
+
+@*<div class="editor-label">
+    @Html.Label("Liczba kontrolna")
+</div>
+<div class="editor-field">
+    @Html.EditorFor(model => model.LiczbaKontrolna)
+    @Html.ValidationMessageFor(model => model.LiczbaKontrolna)
+</div>
+
+<div class="editor-label">
+    @Html.Label("Wyróżnik konta")
+</div>
+<div class="editor-field">
+    @Html.EditorFor(model => model.WyroznikKonta)
+    @Html.ValidationMessageFor(model => model.WyroznikKonta)
+</div>
+
+<div class="editor-label">
+    @Html.Label("Numer konta")
+</div>
+<div class="editor-field">
+    @Html.EditorFor(model => model.NumerKonta)
+    @Html.ValidationMessageFor(model => model.NumerKonta)
+</div>*@

@@ -1,0 +1,62 @@
+﻿@model ReadOnlyAbleModel<Kompensata>
+
+<table class="grid">
+    <caption>
+        <span class="caption-buttons">
+            @Ajax.ActionLink("Dodaj pozycję kompensaty", "DodajPozycjeKompensaty", new { @id = Model.Model.Id, @dialogElementId = Model.DialogElementId, @gridElementId = Model.GridElementId }, 
+                new AjaxOptions() { HttpMethod = "Get", UpdateTargetId = Model.DialogElementId, InsertionMode = InsertionMode.Replace },
+                new { @class = "button" }
+            )
+        </span>
+    </caption>
+    <thead>
+        <tr class="ui-widget-header">
+            <th class="ui-widget">Numer faktury sprzedaży</th>
+            <th class="ui-widget">Numer faktury zakupu</th>
+            <th class="ui-widget">Kwota</th>
+            @if (!Model.ReadOnly)
+            {
+                <th class="ui-widget grid-operations-cell">Operacje</th>
+            }
+        </tr>
+    </thead>
+    <tbody id="kanc_kompensaty_pozycje">
+    @if (Model != null)
+    {
+        foreach (KompensataPowiazanie kp in Model.Model.KompensataPowiazanies)
+        {
+            <tr id="grid-pozycja-kompensaty-@kp.Id">
+                <td>@(kp.IdFakturySprzedazy.HasValue ? kp.FakturaSprzedazy.NumerFaktury : "")</td>
+                <td>@(kp.IdFakturyZakupu.HasValue ? kp.FakturaZakupu.NumerFaktury : "")</td>                
+                <td>@kp.Kwota.ToString("N2")</td>
+                @if (!Model.ReadOnly)
+                {
+                    <td class="grid-operations-cell">
+                        @Ajax.ActionLink("Edytuj", "EdytujPozycjeKompensaty",
+                            new { @id = kp.Id, @dialogElementId = Model.DialogElementId, @gridElementId = Model.GridElementId },
+                            new AjaxOptions() { HttpMethod = "get", UpdateTargetId = Model.DialogElementId, InsertionMode = InsertionMode.Replace },
+                            new { @class = "button" }
+                        )
+                        @Ajax.ActionLink("Usun", "UsunPozycjeKompensaty",
+                            new { @id = kp.Id, @dialogElementId = Model.DialogElementId, @gridElementId = Model.GridElementId },
+                            new AjaxOptions() { HttpMethod = "get", UpdateTargetId = Model.DialogElementId, InsertionMode = InsertionMode.Replace },
+                            new { @class = "button" }
+                        )
+                    </td>
+                }
+            </tr>
+        }
+    }
+    </tbody>
+    @if(Model.DisplaySummary)
+    {
+    <tfoot>
+        <tr><td>&nbsp;</td></tr>
+        <tr>
+            <td>Suma</td>
+            <td></td>
+            <td>@Model.Model.KompensataPowiazanies.Sum(p => p.Kwota).ToString("N2")</td>
+        </tr>
+    </tfoot>  
+    }
+</table>

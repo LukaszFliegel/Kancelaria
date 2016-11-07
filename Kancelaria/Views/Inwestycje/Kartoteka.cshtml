@@ -1,0 +1,52 @@
+﻿@model GridSettings<Inwestycja>
+
+@{
+    ViewBag.Title = "Inwestycje";
+}
+
+@section featured {
+    @Html.Partial("_FeaturedSection", new FeaturedSectionModel() { Title = "Inwestycje.", SubTitle = "Tutaj możesz dodawać, edytować i usuwać inwestycje." })
+}
+
+<table class="grid">
+    <caption>
+        <span class="caption-buttons"><a href="@Url.Action("Dodaj")" class="kanc-button"><span>Dodaj inwestycję</span></a></span>
+        @Html.Partial("_Search", new FilterBoxModel("", "Slownik", new InwestycjeDictionary()))
+    </caption>
+    <thead>
+        <tr class="ui-widget-header">
+            @*<th class="ui-widget">Numer inwestycji</th>
+            <th class="ui-widget">Numer umowy</th>*@
+            @Html.KancelariaGridSortingColumn("NumerInwestycji", "Numer inwestycji", Request.Url.AbsolutePath, Request.Url.Query)
+            @Html.KancelariaGridSortingColumn("NumerUmowy", "Numer umowy/zamówienia", Request.Url.AbsolutePath, Request.Url.Query)
+            <th class="ui-widget">Czy występuje na fakturach</th>
+            <th class="ui-widget grid-operations-cell">Operacje</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach(Inwestycja i in Model.Query.Result)
+    {
+        <tr>
+            <td @(i.CzyDomyslny.HasValue && i.CzyDomyslny.Value ? String.Format("class=default") : "")>@i.NumerInwestycji</td>
+            <td>@i.NumerUmowy</td>
+            <td>@(i.PozycjaFakturyZakupus.Count() > 0 ? "Tak" : "Nie" )</td>
+            <td class="grid-operations-cell">
+                <a title="Edytuj" href="@Url.Action("Edytuj", new { @id = i.Id })" class="kanc-button"><span class="ui-icon ui-icon-pencil"></span></a>
+                <a title="Usuń" href="@Url.Action("Usun", new { @id = i.Id })" class="kanc-button"><span class="ui-icon ui-icon-trash"></span></a>
+                <a title="Ustaw domyślny" href="@Url.Action("UstawDomyslny", new { @id = i.Id, @returnUrl = Request.Url.ToString() })" class="kanc-button"><span class="ui-icon ui-icon-star"></span></a>
+                <a title="Wyświetl faktury sprzedaży" href="@Url.Action("RejestrSprzedazy", "Raporty",  new { @IdInwestycji = i.Id })" class="kanc-button"><span class="ui-icon ui-icon-note"></span></a>
+            </td>
+        </tr>
+    }
+    </tbody>
+    @if (Model.PageCount > 0)
+    {
+    <tfoot>
+        <tr>
+            <td colspan="4">@Html.Partial("_Pager", (IPaged)Model.Query)</td>
+        </tr>
+    </tfoot>
+    }
+</table>
+
+

@@ -1,0 +1,111 @@
+﻿@model Kontrahent
+
+<div class="kanc-fieldset-left">
+    <div class="editor-label">
+        @Html.Label("Kod kontrahenta")
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.KodKontrahenta)
+        @Html.ValidationMessageFor(model => model.KodKontrahenta)
+    </div>
+
+    <div class="editor-label">
+        @Html.Label("Kontrahent nadrzędny")
+    </div>
+    <div class="editor-field">
+        @Html.LookupFor(o => o.IdKontrahentaNadrzednego, controller: "Kontrahenci", multiselect: false, chooseText: "Wybierz", cancelText: "Anuluj", title: "Wybierz kontrahenta", paging: true)
+        @Html.ValidationMessageFor(model => model.IdKontrahentaNadrzednego)
+    </div>
+
+    <div class="editor-label">
+        @Html.Label("Nazwa kontrahenta")
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.NazwaKontrahenta)
+        @Html.ValidationMessageFor(model => model.NazwaKontrahenta)
+    </div>
+
+    <div class="editor-label">
+        @Html.Label("NIP")
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.NIP)
+        @Html.ValidationMessageFor(model => model.NIP)
+    </div>
+
+    <div class="editor-label">
+        @Html.Label("Numer konta bankowego kontrahenta")
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.NumerKontaBankowego)
+        @Html.ValidationMessageFor(model => model.NumerKontaBankowego)
+    </div>
+
+    <div class="editor-label">
+        @Html.Label("Czy VATowiec")
+    </div>
+    <div class="editor-field">
+        <input type="checkbox" name="CheckCzyVatowiec" id="CheckCzyVatowiec" checked="@Model.CzyVatowiec" />
+        <label for="CheckCzyVatowiec" title=".ui-icon-circle-check">
+            <span class="ui-icon ui-icon-check"></span>
+        </label>
+        @Html.ValidationMessageFor(model => model.CzyVatowiec)
+    </div>
+
+    @*<div class="editor-label">
+        @Html.Label("Czy VATowiec")
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.CzyVatowiec)
+        @Html.ValidationMessageFor(model => model.CzyVatowiec)
+    </div>*@
+</div>
+<div class="kanc-fieldset-right">
+    <div class="editor-label">
+        @Html.Label("Państwo")
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.Panstwo)
+        @Html.ValidationMessageFor(model => model.Panstwo)
+    </div>
+
+    <div class="editor-label">
+        @Html.Label("Miejscowość")
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.Miejscowosc)
+        @Html.ValidationMessageFor(model => model.Miejscowosc)
+    </div>
+
+    <div class="editor-label">
+        @Html.Label("Kod pocztowy")
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.KodPocztowy)
+        @Html.ValidationMessageFor(model => model.KodPocztowy)
+    </div>
+
+    <div class="editor-label">
+        @Html.Label("Ulica")
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.Ulica)
+        @Html.ValidationMessageFor(model => model.Ulica)
+    </div>
+
+    <div class="editor-label">
+        @Html.Label("Numer domu")
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.NumerDomu)
+        @Html.ValidationMessageFor(model => model.NumerDomu)
+    </div>
+
+    <div class="editor-label">
+        @Html.Label("Numer lokalu")
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.NumerLokalu)
+        @Html.ValidationMessageFor(model => model.NumerLokalu)
+    </div>
+</div>

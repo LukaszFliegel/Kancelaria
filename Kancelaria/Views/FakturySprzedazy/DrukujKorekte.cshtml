@@ -1,0 +1,199 @@
+﻿@model FakturaSprzedazy
+
+@{
+    ViewBag.Title = "Drukuj korektę";
+}
+@*<img src="/Content/Images/KazLogo.png">*@
+
+<div class="kanc-print-top">
+    Data faktury: @Model.FakturaKorygujaca.DataFaktury.ToShortDateString()
+    @if (Model.FakturaKorygujaca.DataSprzedazy.HasValue)
+    {
+    @:<br />Data sprzedaży: @Model.FakturaKorygujaca.DataSprzedazy.Value.ToShortDateString()
+    }
+</div>
+<div class="kanc-print-head">
+    <h2>Faktura VAT korekta nr @if (Model.FakturaKorygujaca.CzyZaliczka)
+                              { 
+                    @:zaliczkowa 
+                    } @Model.FakturaKorygujaca.NumerFaktury<br />
+    Do faktury VAT Nr @Model.NumerFaktury<br />
+    @(Model.FakturaKorygujaca.DataSprzedazy.HasValue ? "Data sprzedaży " + Model.FakturaKorygujaca.DataSprzedazy.Value.ToShortDateString() : "")
+    </h2>
+</div>
+<div class="kanc-print-sub-head margin-top">
+    <div class="kanc-left-cell">
+        <h4>Sprzedawca</h4>
+        @Model.FakturaKorygujaca.Firma.NazwaPelna<br />
+        @Model.FakturaKorygujaca.Firma.Ulica @Model.FakturaKorygujaca.Firma.NumerDomu @if (!String.IsNullOrEmpty(Model.Firma.NumerDomu) && !String.IsNullOrEmpty(Model.Firma.NumerLokalu))
+                                                  { 
+                                                    @:/ 
+                                                  }
+        @Model.FakturaKorygujaca.Firma.NumerLokalu<br />
+        @Model.FakturaKorygujaca.Firma.KodPocztowy @Model.FakturaKorygujaca.Firma.Miejscowosc<br />
+        NIP: @Model.FakturaKorygujaca.Firma.NIP<br />
+        <h4>Odbiorca</h4>
+        @Html.AdresKontrahenta(Model.FakturaKorygujaca.Kontrahent)<br />
+        NIP: @Model.FakturaKorygujaca.Kontrahent.NIP
+        @*Kontrahent: @Model.FakturaKorygujaca.Kontrahent.KodKontrahenta<br />*@
+        @*@Model.FakturaKorygujaca.Kontrahent.NazwaKontrahenta<br />        
+        @Model.FakturaKorygujaca.Kontrahent.KodPocztowy @Model.FakturaKorygujaca.Kontrahent.Miejscowosc @Model.FakturaKorygujaca.Kontrahent.Ulica @Model.FakturaKorygujaca.Kontrahent.NumerDomu @if (!String.IsNullOrEmpty(Model.FakturaKorygujaca.Kontrahent.NumerDomu) && !String.IsNullOrEmpty(Model.FakturaKorygujaca.Kontrahent.NumerLokalu))
+                                                            { 
+                                                                @:/ 
+                                                            }
+        @Model.FakturaKorygujaca.Kontrahent.NumerLokalu*@@*<br />
+        NIP: @Model.FakturaKorygujaca.Kontrahent.NIP<br />*@
+    </div>
+    <div class="kanc-right-cell">
+        <h4>Konto bankowe</h4> 
+        Bank: @Model.FakturaKorygujaca.KontoBankowe.NazwaBanku<br />
+        Numer konta bankowego: @Model.FakturaKorygujaca.KontoBankowe.NumerKonta
+    </div>    
+</div>
+<div class="kanc-print-details margin-top">
+    <h4>Przed korektą</h4>
+    @Html.Partial("_GridPozycjeFakturySprzedazy", new ReadOnlyAbleModel<FakturaSprzedazy>(Model, true, "", ""))
+</div>
+<div class="kanc-print-details">
+    <h4>Po korekcie</h4>
+    @Html.Partial("_GridPozycjeFakturySprzedazy", new ReadOnlyAbleModel<FakturaSprzedazy>(Model.FakturaKorygujaca, true, "", ""))
+</div>
+<div class="kanc-print-footer">
+    <div class="kanc-row">
+        <div class="kanc-left-cell">
+            <br />
+            <br />
+            <br />
+            @(@Model.FakturaKorygujaca.Inwestycja != null ? 
+            (Model.FakturaKorygujaca.CzyUmowa ? "Umowa" : "Zamówienie") + " nr: " + (!String.IsNullOrEmpty(Model.FakturaKorygujaca.Inwestycja.NumerUmowy) ? Model.FakturaKorygujaca.Inwestycja.NumerUmowy + ", " : "") + Model.FakturaKorygujaca.Inwestycja.NumerInwestycji 
+                : "")<br />
+            Forma płatności: @Model.FakturaKorygujaca.SposobPlatnosci.OpisSposobuPlatnosci<br />
+            Termin płatności: @Model.FakturaKorygujaca.TerminPlatnosci.ToShortDateString()
+            @if (!String.IsNullOrEmpty(Model.FakturaKorygujaca.Uwagi))
+            {
+                <br />
+                @Model.FakturaKorygujaca.Uwagi
+            }
+        </div>
+        <div class="kanc-right-cell">
+            <h4>Przed korektą</h4>
+            <table class="small-grid">
+                <thead>
+                    <tr class="ui-widget-header">
+                        <th class="ui-widget">Vat (%)</th>
+                        <th class="ui-widget">Kwota netto</th>
+                        <th class="ui-widget">Kwota vat</th>
+                        <th class="ui-widget">Kwota brutto</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach(var grupa in Model.PozycjaFakturySprzedazies.GroupBy(p => p.StawkaVat).AsEnumerable())
+                    {
+                        @:
+                        <tr>
+                            <td>@grupa.First().StawkaVat</td>
+                            <td>@grupa.Sum(p => p.KwotaNetto).ToString("N2")</td>
+                            <td>@grupa.Sum(p => p.KwotaNetto * p.StawkaVat / 100).ToString("N2")</td>
+                            <td>@grupa.Sum(p => p.KwotaNetto + p.KwotaNetto * p.StawkaVat / 100).ToString("N2")</td>
+                        </tr>
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th>Razem</th>
+                        <th>@Model.PozycjaFakturySprzedazies.Sum(p => p.KwotaNetto).ToString("N2")</th>
+                        <th>@Model.PozycjaFakturySprzedazies.Sum(p => p.KwotaNetto * p.StawkaVat / 100).ToString("N2")</th>
+                        <th>@Model.PozycjaFakturySprzedazies.Sum(p => p.KwotaNetto + p.KwotaNetto * p.StawkaVat / 100).ToString("N2")</th>
+                    </tr>
+                </tfoot>
+            </table>
+            <h4>Po korekcie</h4>
+            <table class="small-grid">
+                <thead>
+                    <tr class="ui-widget-header">
+                        <th class="ui-widget">Vat (%)</th>
+                        <th class="ui-widget">Kwota netto</th>
+                        <th class="ui-widget">Kwota vat</th>
+                        <th class="ui-widget">Kwota brutto</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach(var grupa in Model.FakturaKorygujaca.PozycjaFakturySprzedazies.GroupBy(p => p.StawkaVat).AsEnumerable())
+                    {
+                        @:
+                        <tr>
+                            <td>@grupa.First().StawkaVat</td>
+                            <td>@grupa.Sum(p => p.KwotaNetto).ToString("N2")</td>
+                            <td>@grupa.Sum(p => p.KwotaNetto * p.StawkaVat / 100).ToString("N2")</td>
+                            <td>@grupa.Sum(p => p.KwotaNetto + p.KwotaNetto * p.StawkaVat / 100).ToString("N2")</td>
+                        </tr>
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th>Razem</th>
+                        <th>@Model.FakturaKorygujaca.PozycjaFakturySprzedazies.Sum(p => p.KwotaNetto).ToString("N2")</th>
+                        <th>@Model.FakturaKorygujaca.PozycjaFakturySprzedazies.Sum(p => p.KwotaNetto * p.StawkaVat / 100).ToString("N2")</th>
+                        <th>@Model.FakturaKorygujaca.PozycjaFakturySprzedazies.Sum(p => p.KwotaNetto + p.KwotaNetto * p.StawkaVat / 100).ToString("N2")</th>
+                    </tr>
+                </tfoot>
+            </table>
+
+            <hr />
+            <strong><span>Do zapłaty:</span> <span class="float-right">@Model.FakturaKorygujaca.PozycjaFakturySprzedazies.Sum(p => p.KwotaNetto + p.KwotaNetto * p.StawkaVat / 100).ToString("N2")</span></strong><br />
+            <strong>
+                <span>Słownie:</span> 
+                <span class="float-right">
+                @Formatowanie.LiczbaSlownie(
+                    Decimal.ToInt32(Decimal.Truncate(Model.FakturaKorygujaca.PozycjaFakturySprzedazies.Sum(p => p.KwotaNetto + p.KwotaNetto * p.StawkaVat / 100)))
+                ) 
+                @Formatowanie.WalutaSlownie(Decimal.ToInt32(Decimal.Truncate(Model.FakturaKorygujaca.PozycjaFakturySprzedazies.Sum(p => p.KwotaNetto + p.KwotaNetto * p.StawkaVat / 100))), "PLN") 
+                i 
+                    @{
+                        var debug1 = Model.FakturaKorygujaca.PozycjaFakturySprzedazies.Sum(p => p.KwotaNetto + p.KwotaNetto * p.StawkaVat / 100);
+                        var debug2 = Model.PozycjaFakturySprzedazies.Sum(p => p.KwotaNetto + p.KwotaNetto * p.StawkaVat / 100);
+                    }
+                @Formatowanie.LiczbaSlownie(
+                    Decimal.ToInt32(
+                        Decimal.Truncate((Model.FakturaKorygujaca.PozycjaFakturySprzedazies.Sum(p => p.KwotaNetto + p.KwotaNetto * p.StawkaVat / 100) - Decimal.Truncate(Model.FakturaKorygujaca.PozycjaFakturySprzedazies.Sum(p => p.KwotaNetto + p.KwotaNetto * p.StawkaVat / 100))) * 100)
+                    )
+                )
+                @Formatowanie.WalutaSlownie(
+                    Decimal.ToInt32(
+                        Decimal.Truncate((Model.FakturaKorygujaca.PozycjaFakturySprzedazies.Sum(p => p.KwotaNetto + p.KwotaNetto * p.StawkaVat / 100) - Decimal.Truncate(Model.PozycjaFakturySprzedazies.Sum(p => p.KwotaNetto + p.KwotaNetto * p.StawkaVat / 100))) * 100)
+                    ),
+                    ".PLN"
+                )
+                </span>
+            </strong>
+        </div>
+    </div>
+    <div class="margin-top">&nbsp;</div>
+    <div class="margin-top text-center">
+        <div class="kanc-left-cell">
+            <strong>Wystawił(a)</strong><br />
+            <br />
+            @ViewBag.Imie @ViewBag.Nazwisko<br />
+            <br />
+            Podpis osoby upoważnionej<br />
+            do wystawienia faktury Vat
+        </div>
+        <div class="kanc-right-cell">
+            <strong>Odebrał(a)</strong><br />
+            <br />
+            <br />
+            <br />
+            Podpis osoby upoważnionej<br />
+            do odbioru faktury Vat
+        </div>
+    </div>
+</div>
+<div class="kanc-print-links">
+    <p>
+        <span class="button" onclick="window.print();">Drukuj</span>
+    </p>
+    <hr />
+    <p>
+        @Html.ActionLink("Edytuj", "Edytuj", new { id = Model.Id }) @Html.ActionLink("Powrót do kartoteki", "Kartoteka")
+    </p>
+</div>

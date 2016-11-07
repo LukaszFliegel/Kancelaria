@@ -1,0 +1,41 @@
+﻿@model IPaged
+
+<div class="pager-info">
+
+@if (Model.GetCurrentPage() > 0)
+{
+    <a class="button" href="@Kancelaria.Globals.Core.WebUtils.UrlReplaceParam(Request, "page", 0)"><span class="ui-icon ui-icon-arrowthickstop-1-w"></span></a>
+    <a class="button" href="@Kancelaria.Globals.Core.WebUtils.UrlReplaceParam(Request, "page", @Model.GetCurrentPage() - 1)"><span class="ui-icon ui-icon-circle-triangle-w"></span></a>
+}
+else
+{
+    <button class="button" disabled><span class="ui-icon ui-icon-arrowthickstop-1-w"></span></button>
+    <button class="button" disabled><span class="ui-icon ui-icon-circle-triangle-w"></span></button>
+}
+<span>
+@if (Model.GetTotalRows() > 0)
+{
+    if (Model.GetCurrentPage() < Model.GetPagesCount())
+    {
+        @(Model.GetCurrentPage() * Model.GetPageSize() + 1)@: - @((Model.GetCurrentPage() + 1) * Model.GetPageSize()) 
+    }
+    else
+    {
+        @(Model.GetCurrentPage() * Model.GetPageSize() + 1)@: - @Model.GetTotalRows() 
+    }
+}
+&nbsp;
+</span>
+<!-- @Model.GetCurrentPage() - @Model.GetPagesCount() -->
+@if (Model.GetCurrentPage() < Model.GetPagesCount())
+{
+    <a class="button" href="@Kancelaria.Globals.Core.WebUtils.UrlReplaceParam(Request, "page", @Model.GetCurrentPage() + 1)"><span class="ui-icon ui-icon-circle-triangle-e"></span></a>
+    <a class="button" href="@Kancelaria.Globals.Core.WebUtils.UrlReplaceParam(Request, "page", @Model.GetPagesCount())"><span class="ui-icon ui-icon-arrowthickstop-1-e"></span></a>
+}
+else
+{
+    <button class="button" disabled><span class="ui-icon ui-icon-circle-triangle-e"></span></button>
+    <button class="button" disabled><span class="ui-icon ui-icon-arrowthickstop-1-e"></span></button>
+}
+
+</div>

@@ -1,0 +1,62 @@
+﻿@model ReportModel<PagedSearchedQueryResult<Kontrahent>>
+
+@{
+    ViewBag.Title = "Rejestr kontrahentów";
+    Layout = "~/Views/Shared/_ReportLayout.cshtml";
+}
+
+<table class="grid">
+    <caption>
+        <span class="caption-buttons"></span>
+        @using (Html.BeginForm(null, null, FormMethod.Get, new { id = "SearchForm", @class = "centerDiv" }))
+        { 
+            <div class="caption-lookup-list">
+            </div>
+            @Html.Partial("_Search", new FilterBoxModel("", "Slownik", new KontrahenciDictionary()))
+        }
+    </caption>
+    <thead>
+        <tr class="ui-widget-header">
+            @*@Model.Model.Result.First().*@
+            @Html.KancelariaGridSortingColumn("KodKontrahenta", "Kod kontrahenta", Request.Url.AbsolutePath, Request.Url.Query)
+            @Html.KancelariaGridSortingColumn("NazwaKontrahenta", "Nazwa kontrahenta", Request.Url.AbsolutePath, Request.Url.Query)
+            <th class="ui-widget">Niezapłacona kwota FS</th>
+            <th class="ui-widget">Zapłacona kwota FS</th>
+            <th class="ui-widget">Liczba FS</th>
+            <th class="ui-widget">Niezapłacona kwota FZ</th>
+            <th class="ui-widget">Zapłacona kwota FZ</th>
+            <th class="ui-widget">Liczba FZ</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach(Kontrahent kon in Model.Model.Result)
+    {
+        <tr>
+            <td>@kon.KodKontrahenta</td>            
+            <td>@kon.NazwaKontrahenta</td>
+            <td class="border-cell">@kon.FakturaSprzedazies.Sum(p => p.KwotaNiezaplacona).ToString("N2")</td>
+            <td class="border-cell">@kon.FakturaSprzedazies.Sum(p => p.KwotaZaplaconaBadzSkompensowana).ToString("N2")</td>
+            <td class="border-cell">@kon.FakturaSprzedazies.Count().ToString()</td>
+            <td class="border-cell">@kon.FakturaZakupus.Sum(p => p.KwotaNiezaplacona).ToString("N2")</td>
+            <td class="border-cell">@kon.FakturaZakupus.Sum(p => p.KwotaZaplaconaBadzSkompensowana).ToString("N2")</td>
+            <td>@kon.FakturaZakupus.Count().ToString()</td>
+        </tr>
+    }
+    </tbody>
+    <tfoot>
+        <tr><td>&nbsp;</td></tr>
+        <tr>
+            <td>Suma</td>
+            <td></td>
+            <td>@Model.Model.Result.AsEnumerable().Sum(p => p.FakturaSprzedazies.Sum(s => s.KwotaNiezaplacona)).ToString("N2")</td>
+            <td>@Model.Model.Result.AsEnumerable().Sum(p => p.FakturaSprzedazies.Sum(s => s.KwotaZaplaconaBadzSkompensowana)).ToString("N2")</td>
+            <td></td>
+            <td>@Model.Model.Result.AsEnumerable().Sum(p => p.FakturaZakupus.Sum(s => s.KwotaNiezaplacona)).ToString("N2")</td>
+            <td>@Model.Model.Result.AsEnumerable().Sum(p => p.FakturaZakupus.Sum(s => s.KwotaZaplaconaBadzSkompensowana)).ToString("N2")</td>
+            <td></td>
+            @*<td>@Model.Model.Result.AsEnumerable().Sum(p => p.KwotaBrutto).ToString("N2")</td>
+            <td>@Model.Model.Result.AsEnumerable().Sum(p => p.KwotaNetto).ToString("N2")</td>
+            <td>@Model.Model.Result.AsEnumerable().Sum(p => p.KwotaVat).ToString("N2")</td>*@
+        </tr>
+    </tfoot>
+</table>

@@ -1,0 +1,402 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="Kancelaria" Class="KancelariaDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="WebSettings" ConnectionString="Data Source=.\SQLEXPRESS;Initial Catalog=Kancelaria;Integrated Security=True" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="DefaultConnection" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.SposobyPlatnosci" Member="SposobPlatnoscis">
+    <Type Name="SposobPlatnosci">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="KodSposobuPlatnosci" Type="System.String" DbType="NVarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="OpisSposobuPlatnosci" Type="System.String" DbType="NVarChar(300)" CanBeNull="true" />
+      <Column Name="CzyDomyslny" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Association Name="SposobPlatnosci_FakturaZakupu" Member="FakturaZakupus" ThisKey="Id" OtherKey="IdSposobuPlatnosci" Type="FakturaZakupu" />
+      <Association Name="SposobPlatnosci_FakturaSprzedazy" Member="FakturaSprzedazies" ThisKey="Id" OtherKey="IdSposobuPlatnosci" Type="FakturaSprzedazy" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Firmy" Member="Firmas">
+    <Type Name="Firma">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="NazwaSkrocona" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="NazwaPelna" Type="System.String" DbType="NVarChar(300) NOT NULL" CanBeNull="false" />
+      <Column Name="Ulica" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="Miejscowosc" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="NumerDomu" Type="System.String" DbType="NVarChar(5)" CanBeNull="true" />
+      <Column Name="NumerLokalu" Type="System.String" DbType="NVarChar(5)" CanBeNull="true" />
+      <Column Name="Panstwo" Type="System.String" DbType="NVarChar(30)" CanBeNull="true" />
+      <Column Name="KodPocztowy" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
+      <Column Name="NIP" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="Regon" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="KRS" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Association Name="Firma_RokObrotowy" Member="RokObrotowies" ThisKey="Id" OtherKey="IdFirmy" Type="RokObrotowy" />
+      <Association Name="Firma_KontoBankowe" Member="KontoBankowes" ThisKey="Id" OtherKey="IdFirmy" Type="KontoBankowe" />
+      <Association Name="Firma_Kompensata" Member="Kompensatas" ThisKey="Id" OtherKey="IdFirmy" Type="Kompensata" />
+      <Association Name="Firma_Kontrahent" Member="Kontrahents" ThisKey="Id" OtherKey="IdFirmy" Type="Kontrahent" />
+      <Association Name="Firma_FakturaZakupu" Member="FakturaZakupus" ThisKey="Id" OtherKey="IdFirmy" Type="FakturaZakupu" />
+      <Association Name="Firma_Inwestycja" Member="Inwestycjas" ThisKey="Id" OtherKey="IdFirmy" Type="Inwestycja" />
+      <Association Name="Firma_FakturaSprzedazy" Member="FakturaSprzedazies" ThisKey="Id" OtherKey="IdFirmy" Type="FakturaSprzedazy" />
+    </Type>
+  </Table>
+  <Table Name="dbo.LataObrotowe" Member="RokObrotowies">
+    <Type Name="RokObrotowy">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="IdFirmy" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="NazwaRoku" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Association Name="RokObrotowy_Kompensata" Member="Kompensatas" ThisKey="Id" OtherKey="IdRoku" Type="Kompensata" />
+      <Association Name="RokObrotowy_FakturaZakupu" Member="FakturaZakupus" ThisKey="Id" OtherKey="IdRoku" Type="FakturaZakupu" />
+      <Association Name="RokObrotowy_FakturaSprzedazy" Member="FakturaSprzedazies" ThisKey="Id" OtherKey="IdRoku" Type="FakturaSprzedazy" />
+      <Association Name="Firma_RokObrotowy" Member="Firma" ThisKey="IdFirmy" OtherKey="Id" Type="Firma" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.JednostkiMiary" Member="JednostkaMiaries">
+    <Type Name="JednostkaMiary">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="KodJednostkiMiary" Type="System.String" DbType="NVarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="OpisJednostkiMiary" Type="System.String" DbType="NVarChar(300)" CanBeNull="true" />
+      <Column Name="CzyDomyslna" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Association Name="JednostkaMiary_PozycjaFakturySprzedazy" Member="PozycjaFakturySprzedazies" ThisKey="Id" OtherKey="IdJednostkiMiary" Type="PozycjaFakturySprzedazy" />
+      <Association Name="JednostkaMiary_PozycjaFakturyZakupu" Member="PozycjaFakturyZakupus" ThisKey="Id" OtherKey="IdJednostkiMiary" Type="PozycjaFakturyZakupu" />
+    </Type>
+  </Table>
+  <Table Name="dbo.KontaBankowe" Member="KontoBankowes">
+    <Type Name="KontoBankowe">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="IdFirmy" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="NumerKonta" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Nazwa" Type="System.String" DbType="NVarChar(200)" CanBeNull="true" />
+      <Column Name="CzyDomyslny" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="NazwaBanku" Type="System.String" DbType="NVarChar(300)" CanBeNull="true" />
+      <Association Name="KontoBankowe_FakturaSprzedazy" Member="FakturaSprzedazies" ThisKey="Id,IdFirmy" OtherKey="IdKontaBankowegoFirmy,IdFirmy" Type="FakturaSprzedazy" />
+      <Association Name="Firma_KontoBankowe" Member="Firma" ThisKey="IdFirmy" OtherKey="Id" Type="Firma" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.webpages_OAuthMembership" Member="webpages_OAuthMemberships">
+    <Type Name="webpages_OAuthMembership">
+      <Column Name="Provider" Type="System.String" DbType="NVarChar(30) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="ProviderUserId" Type="System.String" DbType="NVarChar(100) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="UserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.webpages_Roles" Member="webpages_Roles">
+    <Type Name="webpages_Role">
+      <Column Name="RoleId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="RoleName" Type="System.String" DbType="NVarChar(256) NOT NULL" CanBeNull="false" />
+      <Association Name="webpages_Role_webpages_UsersInRole" Member="webpages_UsersInRoles" ThisKey="RoleId" OtherKey="RoleId" Type="webpages_UsersInRole" />
+    </Type>
+  </Table>
+  <Table Name="dbo.webpages_UsersInRoles" Member="webpages_UsersInRoles">
+    <Type Name="webpages_UsersInRole">
+      <Column Name="UserId" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="RoleId" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Association Name="webpages_Role_webpages_UsersInRole" Member="webpages_Role" ThisKey="RoleId" OtherKey="RoleId" Type="webpages_Role" IsForeignKey="true" />
+      <Association Name="Uzytkownik_webpages_UsersInRole" Member="Uzytkownik" ThisKey="UserId" OtherKey="UserId" Type="Uzytkownik" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.webpages_Membership" Member="webpages_Memberships">
+    <Type Name="webpages_Membership">
+      <Column Name="UserId" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CreateDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="ConfirmationToken" Type="System.String" DbType="NVarChar(128)" CanBeNull="true" />
+      <Column Name="IsConfirmed" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="LastPasswordFailureDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="PasswordFailuresSinceLastSuccess" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Password" Type="System.String" DbType="NVarChar(128) NOT NULL" CanBeNull="false" />
+      <Column Name="PasswordChangedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="PasswordSalt" Type="System.String" DbType="NVarChar(128) NOT NULL" CanBeNull="false" />
+      <Column Name="PasswordVerificationToken" Type="System.String" DbType="NVarChar(128)" CanBeNull="true" />
+      <Column Name="PasswordVerificationTokenExpirationDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Kompensaty" Member="Kompensatas">
+    <Type Name="Kompensata">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="IdFirmy" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="IdRoku" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="NumerKompensaty" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="IdKontrahenta" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="DataKompensaty" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Association Name="Kompensata_KompensataPowiazanie" Member="KompensataPowiazanies" ThisKey="Id,IdKontrahenta" OtherKey="IdKompensaty,IdKontrahenta" Type="KompensataPowiazanie" />
+      <Association Name="Firma_Kompensata" Member="Firma" ThisKey="IdFirmy" OtherKey="Id" Type="Firma" IsForeignKey="true" />
+      <Association Name="RokObrotowy_Kompensata" Member="RokObrotowy" ThisKey="IdRoku" OtherKey="Id" Type="RokObrotowy" IsForeignKey="true" />
+      <Association Name="Kontrahent_Kompensata" Member="Kontrahent" ThisKey="IdKontrahenta" OtherKey="Id" Type="Kontrahent" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.KompensatyPowiazania" Member="KompensataPowiazanies">
+    <Type Name="KompensataPowiazanie">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="IdKompensaty" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="IdKontrahenta" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="IdFakturySprzedazy" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="IdFakturyZakupu" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Kwota" Type="System.Decimal" DbType="Decimal(16,2) NOT NULL" CanBeNull="false" />
+      <Association Name="Kompensata_KompensataPowiazanie" Member="Kompensata" ThisKey="IdKompensaty,IdKontrahenta" OtherKey="Id,IdKontrahenta" Type="Kompensata" IsForeignKey="true" />
+      <Association Name="FakturaZakupu_KompensataPowiazanie" Member="FakturaZakupu" ThisKey="IdFakturyZakupu,IdKontrahenta" OtherKey="Id,IdKontrahenta" Type="FakturaZakupu" IsForeignKey="true" />
+      <Association Name="FakturaSprzedazy_KompensataPowiazanie" Member="FakturaSprzedazy" ThisKey="IdFakturySprzedazy,IdKontrahenta" OtherKey="Id,IdKontrahenta" Type="FakturaSprzedazy" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.NieuregulowaneFakturyZakupu_vw" Member="NieuregulowanaFakturaZakupus">
+    <Type Name="NieuregulowanaFakturaZakupu">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="IdFirmy" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="IdRoku" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="NumerFaktury" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="DataFaktury" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="TerminPlatnosci" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="Opis" Type="System.String" DbType="NVarChar(1000)" CanBeNull="true" />
+      <Column Name="IdKontrahenta" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="KwotaZaplacona" Type="System.Decimal" DbType="Decimal(16,2)" CanBeNull="true" />
+      <Column Name="KwotaNetto" Type="System.Decimal" DbType="Decimal(38,2)" CanBeNull="true" />
+      <Column Name="KwotaVat" Type="System.Decimal" DbType="Decimal(38,6)" CanBeNull="true" />
+      <Column Name="KwotaBrutto" Type="System.Decimal" DbType="Decimal(38,6)" CanBeNull="true" />
+      <Column Name="KwotaSkompensowana" Type="System.Decimal" DbType="Decimal(16,2)" CanBeNull="true" />
+      <Column Name="KwotaNieuregulowana" Type="System.Decimal" DbType="Decimal(38,6)" CanBeNull="true" />
+      <Column Name="KodKontrahenta" Type="System.String" DbType="NVarChar(30) NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Kontrahenci" Member="Kontrahents">
+    <Type Name="Kontrahent">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="IdFirmy" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="KodKontrahenta" Type="System.String" DbType="NVarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="NazwaKontrahenta" Type="System.String" DbType="NVarChar(500) NOT NULL" CanBeNull="false" />
+      <Column Name="NIP" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="Miejscowosc" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="Ulica" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="NumerDomu" Type="System.String" DbType="NVarChar(5)" CanBeNull="true" />
+      <Column Name="NumerLokalu" Type="System.String" DbType="NVarChar(5)" CanBeNull="true" />
+      <Column Name="KodPocztowy" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
+      <Column Name="Panstwo" Type="System.String" DbType="NVarChar(30)" CanBeNull="true" />
+      <Column Name="NumerKontaBankowego" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="CzyDomyslny" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="IdKontrahentaNadrzednego" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CzyVatowiec" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="Kontrahent_Kompensata" Member="Kompensatas" ThisKey="Id" OtherKey="IdKontrahenta" Type="Kompensata" />
+      <Association Name="Kontrahent_Kontrahent" Member="Kontrahents" ThisKey="Id" OtherKey="IdKontrahentaNadrzednego" Type="Kontrahent" />
+      <Association Name="Kontrahent_FakturaZakupu" Member="FakturaZakupus" ThisKey="Id" OtherKey="IdKontrahenta" Type="FakturaZakupu" />
+      <Association Name="Kontrahent_FakturaSprzedazy" Member="FakturaSprzedazies" ThisKey="Id" OtherKey="IdKontrahenta" Type="FakturaSprzedazy" />
+      <Association Name="Firma_Kontrahent" Member="Firma" ThisKey="IdFirmy" OtherKey="Id" Type="Firma" IsForeignKey="true" />
+      <Association Name="Kontrahent_Kontrahent" Member="Kontrahenci1" ThisKey="IdKontrahentaNadrzednego" OtherKey="Id" Type="Kontrahent" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ZaplatyFakturSprzedazy" Member="ZaplataFakturySprzedazies">
+    <Type Name="ZaplataFakturySprzedazy">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="IdFakturySprzedazy" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Kwota" Type="System.Decimal" DbType="Decimal(16,2) NOT NULL" CanBeNull="false" />
+      <Column Name="DataZaplaty" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="Opis" Type="System.String" DbType="NVarChar(1000)" CanBeNull="true" />
+      <Association Name="FakturaSprzedazy_ZaplataFakturySprzedazy" Member="FakturaSprzedazy" ThisKey="IdFakturySprzedazy" OtherKey="Id" Type="FakturaSprzedazy" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ZaplatyFakturZakupu" Member="ZaplataFakturyZakupus">
+    <Type Name="ZaplataFakturyZakupu">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="IdFakturyZakupu" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Kwota" Type="System.Decimal" DbType="Decimal(16,2) NOT NULL" CanBeNull="false" />
+      <Column Name="DataZaplaty" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="Opis" Type="System.String" DbType="NVarChar(1000)" CanBeNull="true" />
+      <Association Name="FakturaZakupu_ZaplataFakturyZakupu" Member="FakturaZakupu" ThisKey="IdFakturyZakupu" OtherKey="Id" Type="FakturaZakupu" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.FakturyZakupu" Member="FakturaZakupus">
+    <Type Name="FakturaZakupu">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="IdFirmy" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="IdRoku" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="NumerFaktury" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="WlasnyNumerFaktury" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="DataFaktury" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="TerminPlatnosci" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="Opis" Type="System.String" DbType="NVarChar(1000)" CanBeNull="true" />
+      <Column Name="IdKontrahenta" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="IdSposobuPlatnosci" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CzyZaliczka" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="DataZakupu" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Association Name="FakturaZakupu_KompensataPowiazanie" Member="KompensataPowiazanies" ThisKey="Id,IdKontrahenta" OtherKey="IdFakturyZakupu,IdKontrahenta" Type="KompensataPowiazanie" />
+      <Association Name="FakturaZakupu_ZaplataFakturyZakupu" Member="ZaplataFakturyZakupus" ThisKey="Id" OtherKey="IdFakturyZakupu" Type="ZaplataFakturyZakupu" />
+      <Association Name="FakturaZakupu_PozycjaFakturyZakupu" Member="PozycjaFakturyZakupus" ThisKey="Id" OtherKey="IdFaktury" Type="PozycjaFakturyZakupu" />
+      <Association Name="Firma_FakturaZakupu" Member="Firma" ThisKey="IdFirmy" OtherKey="Id" Type="Firma" IsForeignKey="true" />
+      <Association Name="Kontrahent_FakturaZakupu" Member="Kontrahent" ThisKey="IdKontrahenta" OtherKey="Id" Type="Kontrahent" IsForeignKey="true" />
+      <Association Name="RokObrotowy_FakturaZakupu" Member="RokObrotowy" ThisKey="IdRoku" OtherKey="Id" Type="RokObrotowy" IsForeignKey="true" />
+      <Association Name="SposobPlatnosci_FakturaZakupu" Member="SposobPlatnosci" ThisKey="IdSposobuPlatnosci" OtherKey="Id" Type="SposobPlatnosci" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.AnalizaRozrachunkow_vw" Member="AnalizaRozrachunkus">
+    <Type Name="AnalizaRozrachunku">
+      <Column Name="[Key]" Member="Key" Type="System.String" DbType="NVarChar(32)" CanBeNull="true" />
+      <Column Name="IdFirmy" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="IdRoku" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="IdKontrahenta" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="KodKontrahenta" Type="System.String" DbType="NVarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="NumerFaktury" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="DataFaktury" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="TerminPlatnosci" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="Wn" Type="System.Decimal" DbType="Decimal(38,6)" CanBeNull="true" />
+      <Column Name="Ma" Type="System.Decimal" DbType="Decimal(38,6)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TypyInwestycji" Member="TypInwestycjis">
+    <Type Name="TypInwestycji">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="KodTypuInwestycji" Type="System.String" DbType="NVarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="NazwaTypuInwestycji" Type="System.String" DbType="NVarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="CzyDomyslny" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="TypInwestycji_Inwestycja" Member="Inwestycjas" ThisKey="Id" OtherKey="IdTypuInwestycji" Type="Inwestycja" />
+    </Type>
+  </Table>
+  <Table Name="dbo.KosztyNaInwestycjach" Member="KosztNaInwestycjaches">
+    <Type Name="KosztNaInwestycjach">
+      <Column Name="IdFirmy" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="IdRoku" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="IdInwestycji" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="NumerInwestycji" Type="System.String" DbType="NVarChar(300) NOT NULL" CanBeNull="false" />
+      <Column Name="IdTypuInwestycji" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="KodTypuInwestycji" Type="System.String" DbType="NVarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="NumerFaktury" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="DataFaktury" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="WlasnyNumerFaktury" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="IdKontrahenta" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="KodKontrahenta" Type="System.String" DbType="NVarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="NazwaKontrahenta" Type="System.String" DbType="NVarChar(500) NOT NULL" CanBeNull="false" />
+      <Column Name="Opis" Type="System.String" DbType="NVarChar(1000)" CanBeNull="true" />
+      <Column Name="KwotaNetto" Type="System.Decimal" DbType="Decimal(38,2)" CanBeNull="true" />
+      <Column Name="KwotaVat" Type="System.Decimal" DbType="Decimal(38,6)" CanBeNull="true" />
+      <Column Name="KwotaBrutto" Type="System.Decimal" DbType="Decimal(38,6)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Inwestycje" Member="Inwestycjas">
+    <Type Name="Inwestycja">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="IdFirmy" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="NumerInwestycji" Type="System.String" DbType="NVarChar(300) NOT NULL" CanBeNull="false" />
+      <Column Name="NumerUmowy" Type="System.String" DbType="NVarChar(300)" CanBeNull="true" />
+      <Column Name="CzyDomyslny" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="IdTypuInwestycji" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Opis" Type="System.String" DbType="NVarChar(1000)" CanBeNull="true" />
+      <Association Name="Inwestycja_FakturaSprzedazy" Member="FakturaSprzedazies" ThisKey="Id" OtherKey="IdInwestycji" Type="FakturaSprzedazy" />
+      <Association Name="Inwestycja_PozycjaFakturyZakupu" Member="PozycjaFakturyZakupus" ThisKey="Id" OtherKey="IdInwestycji" Type="PozycjaFakturyZakupu" />
+      <Association Name="Firma_Inwestycja" Member="Firma" ThisKey="IdFirmy" OtherKey="Id" Type="Firma" IsForeignKey="true" />
+      <Association Name="TypInwestycji_Inwestycja" Member="TypInwestycji" ThisKey="IdTypuInwestycji" OtherKey="Id" Type="TypInwestycji" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.FakturySprzedazy" Member="FakturaSprzedazies">
+    <Type Name="FakturaSprzedazy">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="IdFirmy" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="IdRoku" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="NumerFaktury" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="DataFaktury" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="TerminPlatnosci" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="Opis" Type="System.String" DbType="NVarChar(1000)" CanBeNull="true" />
+      <Column Name="IdKontrahenta" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CzyZaliczka" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="IdInwestycji" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="IdKontaBankowegoFirmy" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="IdSposobuPlatnosci" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="DataSprzedazy" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="CzyUmowa" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="IdFakturyKorygujacej" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Uwagi" Type="System.String" DbType="NVarChar(1000)" CanBeNull="true" />
+      <Association Name="FakturaSprzedazy_KompensataPowiazanie" Member="KompensataPowiazanies" ThisKey="Id,IdKontrahenta" OtherKey="IdFakturySprzedazy,IdKontrahenta" Type="KompensataPowiazanie" />
+      <Association Name="FakturaSprzedazy_ZaplataFakturySprzedazy" Member="ZaplataFakturySprzedazies" ThisKey="Id" OtherKey="IdFakturySprzedazy" Type="ZaplataFakturySprzedazy" />
+      <Association Name="FakturaSprzedazy_FakturaSprzedazy" Member="FakturaKorygowana" ThisKey="Id" OtherKey="IdFakturyKorygujacej" Type="FakturaSprzedazy" />
+      <Association Name="FakturaSprzedazy_PozycjaFakturySprzedazy" Member="PozycjaFakturySprzedazies" ThisKey="Id" OtherKey="IdFaktury" Type="PozycjaFakturySprzedazy" />
+      <Association Name="FakturaSprzedazy_FakturaSprzedazy" Member="FakturaKorygujaca" ThisKey="IdFakturyKorygujacej" OtherKey="Id" Type="FakturaSprzedazy" IsForeignKey="true" />
+      <Association Name="Firma_FakturaSprzedazy" Member="Firma" ThisKey="IdFirmy" OtherKey="Id" Type="Firma" IsForeignKey="true" />
+      <Association Name="Inwestycja_FakturaSprzedazy" Member="Inwestycja" ThisKey="IdInwestycji" OtherKey="Id" Type="Inwestycja" IsForeignKey="true" />
+      <Association Name="KontoBankowe_FakturaSprzedazy" Member="KontoBankowe" ThisKey="IdKontaBankowegoFirmy,IdFirmy" OtherKey="Id,IdFirmy" Type="KontoBankowe" IsForeignKey="true" />
+      <Association Name="Kontrahent_FakturaSprzedazy" Member="Kontrahent" ThisKey="IdKontrahenta" OtherKey="Id" Type="Kontrahent" IsForeignKey="true" />
+      <Association Name="RokObrotowy_FakturaSprzedazy" Member="RokObrotowy" ThisKey="IdRoku" OtherKey="Id" Type="RokObrotowy" IsForeignKey="true" />
+      <Association Name="SposobPlatnosci_FakturaSprzedazy" Member="SposobPlatnosci" ThisKey="IdSposobuPlatnosci" OtherKey="Id" Type="SposobPlatnosci" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.NieuregulowaneFakturySprzedazy_vw" Member="NieuregulowanaFakturaSprzedazies">
+    <Type Name="NieuregulowanaFakturaSprzedazy">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="IdFirmy" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="IdRoku" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="NumerFaktury" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="DataFaktury" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="TerminPlatnosci" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="Opis" Type="System.String" DbType="NVarChar(1000)" CanBeNull="true" />
+      <Column Name="IdKontrahenta" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="KwotaZaplacona" Type="System.Decimal" DbType="Decimal(38,2) NOT NULL" CanBeNull="false" />
+      <Column Name="IdInwestycji" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="KwotaNetto" Type="System.Decimal" DbType="Decimal(38,2)" CanBeNull="true" />
+      <Column Name="KwotaVat" Type="System.Decimal" DbType="Decimal(38,6)" CanBeNull="true" />
+      <Column Name="KwotaBrutto" Type="System.Decimal" DbType="Decimal(38,6)" CanBeNull="true" />
+      <Column Name="KwotaSkompensowana" Type="System.Decimal" DbType="Decimal(38,2)" CanBeNull="true" />
+      <Column Name="KwotaNieuregulowana" Type="System.Decimal" DbType="Decimal(38,2)" CanBeNull="true" />
+      <Column Name="KodKontrahenta" Type="System.String" DbType="NVarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="NumerInwestycji" Type="System.String" DbType="NVarChar(300) NOT NULL" CanBeNull="false" />
+      <Column Name="NumerUmowy" Type="System.String" DbType="NVarChar(300)" CanBeNull="true" />
+      <Column Name="IdFakturyKorygujacej" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.PozycjeFakturSprzedazy" Member="PozycjaFakturySprzedazies">
+    <Type Name="PozycjaFakturySprzedazy">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="NumerPozycji" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="IdFaktury" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CenaJednostkowa" Type="System.Decimal" DbType="Decimal(16,2) NOT NULL" CanBeNull="false" />
+      <Column Name="StawkaVat" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Opis" Type="System.String" DbType="NVarChar(1000)" CanBeNull="true" />
+      <Column Name="IdJednostkiMiary" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Ilosc" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CzyBrutto" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="FakturaSprzedazy_PozycjaFakturySprzedazy" Member="FakturaSprzedazy" ThisKey="IdFaktury" OtherKey="Id" Type="FakturaSprzedazy" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="JednostkaMiary_PozycjaFakturySprzedazy" Member="JednostkaMiary" ThisKey="IdJednostkiMiary" OtherKey="Id" Type="JednostkaMiary" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.PozycjeFakturZakupu" Member="PozycjaFakturyZakupus">
+    <Type Name="PozycjaFakturyZakupu">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="NumerPozycji" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="IdFaktury" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CenaJednostkowa" Type="System.Decimal" DbType="Decimal(16,2) NOT NULL" CanBeNull="false" />
+      <Column Name="StawkaVat" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="IdInwestycji" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Opis" Type="System.String" DbType="NVarChar(1000)" CanBeNull="true" />
+      <Column Name="Ilosc" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="IdJednostkiMiary" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CzyBrutto" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="FakturaZakupu_PozycjaFakturyZakupu" Member="FakturaZakupu" ThisKey="IdFaktury" OtherKey="Id" Type="FakturaZakupu" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="Inwestycja_PozycjaFakturyZakupu" Member="Inwestycja" ThisKey="IdInwestycji" OtherKey="Id" Type="Inwestycja" IsForeignKey="true" />
+      <Association Name="JednostkaMiary_PozycjaFakturyZakupu" Member="JednostkaMiary" ThisKey="IdJednostkiMiary" OtherKey="Id" Type="JednostkaMiary" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Uzytkownicy" Member="Uzytkowniks">
+    <Type Name="Uzytkownik">
+      <Column Name="UserId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="UserName" Type="System.String" DbType="NVarChar(56) NOT NULL" CanBeNull="false" />
+      <Column Name="Imie" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="Nazwisko" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="WybraneIdRoku" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="WybraneIdFirmy" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="Uzytkownik_webpages_UsersInRole" Member="webpages_UsersInRoles" ThisKey="UserId" OtherKey="UserId" Type="webpages_UsersInRole" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Uzytkownicy_vw" Member="UzytkownikMemberships">
+    <Type Name="UzytkownikMembership">
+      <Column Name="UserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="UserName" Type="System.String" DbType="NVarChar(56) NOT NULL" CanBeNull="false" />
+      <Column Name="Imie" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="Nazwisko" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="WybraneIdRoku" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="WybraneIdFirmy" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CreateDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="ConfirmationToken" Type="System.String" DbType="NVarChar(128)" CanBeNull="true" />
+      <Column Name="IsConfirmed" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="LastPasswordFailureDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="PasswordFailuresSinceLastSuccess" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="PasswordChangedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="PasswordSalt" Type="System.String" DbType="NVarChar(128) NOT NULL" CanBeNull="false" />
+      <Column Name="PasswordVerificationToken" Type="System.String" DbType="NVarChar(128)" CanBeNull="true" />
+      <Column Name="PasswordVerificationTokenExpirationDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="CzyAdmin" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CzyKancelaria" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Function Name="dbo.SkorygujFaktureSprzedazy" Method="SkorygujFaktureSprzedazy">
+    <Parameter Name="IdFaktury" Parameter="idFaktury" Type="System.Int32" DbType="Int" />
+    <ElementType Name="SkorygujFaktureSprzedazyResult">
+      <Column Name="" Member="Column1" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </ElementType>
+  </Function>
+</Database>

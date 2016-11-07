@@ -1,0 +1,17 @@
+﻿@model System.Web.Mvc.HandleErrorInfo
+
+@{
+    ViewBag.Title = "Error";
+}
+
+<hgroup class="title">
+    <h1 class="error">Błąd</h1>
+    <h2 class="error">Wystąpił problem na serwerze. Jeśli problem się powtarza, proszę przesłać poniższe informacje emailowo pod adres lukasz.fliegel@gmail.com</h2>    
+</hgroup>
+
+<div>
+    @Model.ActionName - @Model.ControllerName:<br />
+</div>
+<pre>    
+    @Model.Exception
+</pre>

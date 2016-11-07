@@ -1,0 +1,11 @@
+﻿@model int?
+
+@if ((ViewData.TemplateInfo.FormattedModelValue as int?).HasValue)
+{
+    <input name="@ViewData.TemplateInfo.HtmlFieldPrefix" class="kanc-spinner" value="@((ViewData.TemplateInfo.FormattedModelValue).ToString())" size="@(Model.ToString().Length < 5 ? 5 : Model.ToString().Length)" />
+}
+else
+{
+    <input name="@ViewData.TemplateInfo.HtmlFieldPrefix" class="kanc-spinner" value="" size="5" />
+}
+

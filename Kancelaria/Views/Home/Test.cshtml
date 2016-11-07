@@ -1,0 +1,76 @@
+﻿@{
+    ViewBag.Title = "Test";
+}
+
+<script>
+    $(function () {
+        $("#dialog").dialog({
+            autoOpen: false,
+            show: {
+                effect: "blind",
+                duration: 1000
+            },
+            hide: {
+                effect: "explode",
+                duration: 1000
+            }
+        });
+
+        $("#dialog2").dialog({
+            autoOpen: false,
+            show: {
+                effect: "blind",
+                duration: 1000
+            },
+            hide: {
+                effect: "explode",
+                duration: 1000
+            }
+        });
+
+        $("#opener").click(function () {
+            $("#dialog").dialog("open");
+        });
+
+        $("#opener2").click(function () {
+            $("#dialog2").dialog("open");
+        });
+
+        $("#pp").click(function () {
+            var ele = $("#p");
+            //alert(ele.next().attr('id'));
+            //ele.after($('#d'));
+            var idEle = '#' + ele.next().attr('id');
+            alert(idEle);
+            //ele.after($(idEle.toString()));
+            ele.before($(idEle));
+        });
+
+        //$("#pd").click(function () {
+        //    var ele = $("#p");
+        //    //alert(ele.next().attr('id'));
+        //    //ele.after($('#d'));
+        //    var idEle = '#' + ele.next().attr('id');
+        //    alert(idEle);
+        //    //ele.after($(idEle.toString()));
+        //    $("#d").after($(idEle.toString()));
+        //});
+    });
+  </script>
+ 
+<div id="dialog" title="Wyzej">
+  <p>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA!</p>
+</div>
+
+    <div id="dialog2" title="Nizej">
+  <p>This is an animated dialog which is useful for displaying information. The dialog window can be moved, resized and closed with the 'x' icon.</p>
+</div>
+ 
+<button id="opener">Open Dialog</button>
+<button id="opener2">Open Dialog</button>
+
+<button id="pp">przestaw pierwszy</button>
+<button id="pd">przestaw drugi</button>
+
+<div id="p">pierwszy</div>
+<div id="d">drugi</div>

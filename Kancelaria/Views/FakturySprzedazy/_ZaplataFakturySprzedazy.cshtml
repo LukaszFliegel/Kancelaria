@@ -1,0 +1,35 @@
+﻿@model ZaplataFakturySprzedazy
+
+<div class="kanc-fieldset-left">
+    <div class="editor-label">
+        @Html.Label("Data zapłaty")
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.DataZaplaty)
+        @Html.ValidationMessageFor(model => model.DataZaplaty)
+    </div>
+
+    @*<div class="editor-label">
+        @Html.Label("Kwota")
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.Kwota)
+        @Html.ValidationMessageFor(model => model.Kwota)
+    </div>*@
+    <div class="editor-label">
+        @Html.Label("Kwota")
+    </div>
+    <div class="editor-field">
+        @*@Html.TextBox("Kwota", Model.Kwota)*@
+        <input id="Kwota" class="text-box single-line ui-menu ui-widget ui-widget-content ui-corner-all" type="text" value="@Model.Kwota" name="Kwota">
+    </div>
+</div>
+<div class="kanc-fieldset-right">
+    <div class="editor-label">
+        @Html.Label("Opis")
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.Opis)
+        @Html.ValidationMessageFor(model => model.Opis)
+    </div>
+</div>

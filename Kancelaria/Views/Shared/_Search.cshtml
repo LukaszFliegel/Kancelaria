@@ -1,0 +1,81 @@
+﻿@model FilterBoxModel
+
+@*<div class="search-panel">
+    @using(Html.BeginForm())
+    {
+        @Html.TextBox("Search")
+        <input class="button" type="submit" value="Szukaj" />
+    }
+</div>*@
+
+<script type="text/javascript">
+    function Szukaj(id) {
+        document.getElementById(id).submit();
+    }
+
+    function switchdiv@(Model.ControlName)() {
+        var selector = '#' + 'SearchDiv<%: Model.ControlName %>';
+        var options = {};
+        $(selector).toggle("blind", options, 500);
+    }
+
+    function SprawdzFiltr@(Model.ControlName)() {
+
+        var search = $("#search" + @(Html.Raw(String.Format("\"{0}\"", Model.ControlName)))).val();
+
+        href = "/" + @(Html.Raw(String.Format("\"{0}\"", ViewContext.RouteData.Values["Controller"]))) + "/" + @(Html.Raw(String.Format("\"{0}\"", Model.FilterActionName))) + "?search=" + search + @(Html.Raw(String.Format("\"&controlName={0}\"", Model.ControlName)));
+
+        $("#filtermsg" + @(Html.Raw(String.Format("\"{0}\"", Model.ControlName)))).load(encodeURI(href),
+                    function (responseText, status, req) {
+
+                    }
+                );
+    }
+
+    function UstawWartoscFiltru@(Model.ControlName)(filtr)
+    {
+        var val = $("#search" + @(Html.Raw(String.Format("\"{0}\"", Model.ControlName)))).val();
+        $("#search" + @(Html.Raw(String.Format("\"{0}\"", Model.ControlName)))).val(val + ' ' + filtr);
+        SprawdzFiltr@(Model.ControlName)();
+    }
+
+    $(document).ready(function () {
+        SprawdzFiltr@(Model.ControlName)();
+        $('#filter_button_@(Model.ControlName)').click(
+            function() {
+                switchdiv@(Model.ControlName)();
+            }
+        );
+    });
+</script>
+
+
+<div class="grid-filter">
+<div id="SearchDiv@(Model.ControlName)" class="filter-switchable-box" style="display:block">
+    @using (Html.BeginForm(null, null, FormMethod.Get, new { id = "SearchForm" + Model.ControlName, @class = "centerDiv" }))
+    { 
+        switch(Model.ShowDatesFilter)
+        {
+            case DateTimeSearchControlType.DateRange:
+                <div class="date-filter-container">
+                    <span>Data od </span><input type="datetime" name="dateFrom" class="kanc-date-picker" value="@Request.Params["dateFrom"]" />
+                    <span>Data do </span><input type="datetime" name="dateTo" class="kanc-date-picker" value="@Request.Params["dateTo"]" />
+                </div>
+                break;
+            case DateTimeSearchControlType.OneDate:
+                <div class="date-filter-container">
+                    <span>Stan na dzień </span><input type="datetime" name="stanNaDzien" class="kanc-date-picker" value="@Request.Params["stanNaDzien"]" />
+                </div>
+                break;
+        }
+        <input type="text" class="search-text" name="search@(Model.ControlName)" size="50" oninput="SprawdzFiltr@(Model.ControlName)()" value="@Request.Params["search"]" />
+        <input class="button" type="submit" value="Szukaj" />
+        foreach(var field in Model.RouteValues)
+        {
+            @Html.Hidden(field.Key, field.Value)
+        }
+    }
+    <br />
+</div>
+</div>
+

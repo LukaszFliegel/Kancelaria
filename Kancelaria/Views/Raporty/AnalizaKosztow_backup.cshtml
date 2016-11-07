@@ -1,0 +1,70 @@
+﻿@model ReportModel<PagedSearchedQueryResult<KosztNaInwestycjach>>
+
+@{
+    ViewBag.Title = "Analiza kosztów na inwestycjach";
+    Layout = "~/Views/Shared/_ReportLayout.cshtml";
+}
+
+<table class="grid">
+    <caption>
+        <span class="caption-buttons"></span>
+        @using (Html.BeginForm(null, null, FormMethod.Get, new { id = "SearchForm", @class = "centerDiv" }))
+        { 
+            <div class="caption-lookup-list">
+                <div class="caption-lookup-item">
+                    <span class="caption-lookup-item-label">@Html.Label("Kontrahent")</span>
+                    <div class="caption-lookup-item-control">
+                        @Html.Lookup("IdKontrahenta", controller: "Kontrahenci", multiselect: false, chooseText: "Wybierz", cancelText: "Anuluj", title: "Wybierz kontrahenta", paging: true)
+                    </div>
+                    <span class="caption-lookup-item-label">@Html.Label("Typ inwestycji")</span>
+                    <div class="caption-lookup-item-control">
+                        @Html.Lookup("IdTypuInwestycji", controller: "TypyInwestycji", multiselect: false, chooseText: "Wybierz", cancelText: "Anuluj", title: "Wybierz typ inwestycji", paging: true)
+                    </div>
+                </div>
+            </div>
+            @Html.Partial("_Search", new FilterBoxModel("", "Slownik", new KontrahenciDictionary(), DateTimeSearchControlType.DateRange))
+        }
+    </caption>
+    <thead>
+        <tr class="ui-widget-header"> 
+            <th class="ui-widget">Numer inwestycji</th>
+            <th class="ui-widget">Kod typu inwestycji</th>
+            <th class="ui-widget">Faktura zakupu</th>
+            <th class="ui-widget">Kontrahent FZ</th>
+            <th class="ui-widget">Opis</th>
+            <th class="ui-widget">Brutto</th>
+            <th class="ui-widget">Netto</th>
+            <th class="ui-widget">Vat</th>
+            <th class="ui-widget">Data faktury</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (KosztNaInwestycjach kni in Model.Model.Result)
+    {
+        <tr>
+            <td>@kni.NumerInwestycji</td>  
+            <td>@kni.KodTypuInwestycji</td>          
+            <td>@kni.NumerFaktury</td>
+            <td>@kni.KodKontrahenta</td>
+            <td>@kni.Opis</td>
+            <td>@((kni.KwotaBrutto ?? 0).ToString("N2"))</td>
+            <td>@((kni.KwotaNetto ?? 0).ToString("N2"))</td>
+            <td>@((kni.KwotaVat ?? 0).ToString("N2"))</td>
+            <td>@kni.DataFaktury.ToShortDateString()</td>
+        </tr>
+    }
+    </tbody>
+    <tfoot>
+        <tr><td>&nbsp;</td></tr>
+        <tr>
+            <td>Suma</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>@(Model.Model.Result.Count() > 0 ? Model.Model.Result.Sum(p => p.KwotaBrutto ?? 0).ToString("N2") : "")</td>
+            <td>@(Model.Model.Result.Count() > 0 ? Model.Model.Result.Sum(p => p.KwotaNetto ?? 0).ToString("N2") : "")</td>
+            <td>@(Model.Model.Result.Count() > 0 ? Model.Model.Result.Sum(p => p.KwotaVat ?? 0).ToString("N2") : "")</td>
+            <td></td>
+        </tr>
+    </tfoot>
+</table>

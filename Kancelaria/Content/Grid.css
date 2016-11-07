@@ -1,0 +1,85 @@
+﻿table.grid {
+    /*border-width:1px;
+    border-style:solid;*/
+    border:0;
+    min-width:960px;
+}
+
+    table.grid tbody {
+        border-width:1px;
+        border-style:solid;
+    }
+
+    table.grid tbody tr:nth-child(2n+1) {
+        background-color:#eeeeff;
+    }
+
+    table.grid tfoot tr {
+        /*background-color:#EEEEFF;*/
+        background-color:transparent;
+        /*padding-top:10px;*/
+        font-weight: bold;
+    }
+
+table.small-grid {
+    border:0;
+    width:100%
+}
+
+    table.small-grid tbody {
+        border-width:1px;
+        border-style:solid;
+    }
+
+    table.small-grid tbody tr:nth-child(2n+1) {
+        background-color:#eeeeff;
+    }
+
+    table.small-grid tfoot tr {
+        background-color:transparent;
+        font-weight: bold;
+    }
+
+tr.sub-table-row {
+    font-style:italic;
+}
+
+/*tr.sub-table-row:not(:last-child) td:not(:first-child) {
+    border-bottom: 1px solid #B0B0B0;
+}*/
+
+tr.last-row.sub-table-row:not(:last-child) td:not(:first-child) {
+    border-bottom: 1px solid #B0B0B0;
+}
+
+tr.sub-table-row td:first-child {
+    border-right: 1px solid #B0B0B0;
+}
+
+/*tr.sub-table-row:not(:last-child) td:not(:first-child) {
+    border-bottom: 1px solid #B0B0B0;
+}*/
+
+tr.breaking-row {
+    background-color: transparent !important;
+    border-color: black transparent;
+    border-style: solid;
+    border-width: 1px;
+}
+
+tr.summary-row {
+    font-weight:bold;
+}
+
+td.numer-cell {
+    /*text-align: right;*/
+}
+
+td.grid-elements-header {
+    text-align:center;
+}
+
+table.grid td.border-cell {
+    border-left: 1px solid;
+    border-right: 1px solid;
+}

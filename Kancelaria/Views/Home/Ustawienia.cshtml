@@ -1,0 +1,20 @@
+﻿@{
+    ViewBag.Title = "Ustawienia wyglądu aplikacji";
+}
+@section featured {
+    @Html.Partial("_FeaturedSection", new FeaturedSectionModel() { Title = "Zmiana ustawień aplikacji.", SubTitle = "" })
+}
+
+<h3>Dostępne opcje:</h3>
+
+<ol class="round">
+    <li class="one">
+        <h5>Skórka</h5>
+            @using(Html.BeginForm("ChangeSkin", "Theme", FormMethod.Post))
+            {            
+            <span>Skórka: @Html.DropDownList("skinNames", ViewBag.skinNames as SelectList)</span>
+            <input type="hidden" name="returnUrl" value="@ViewBag.returnUrl" />
+            <input type="submit" value="Wybierz" />
+            }
+        </li>
+</ol>

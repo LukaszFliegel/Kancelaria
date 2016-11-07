@@ -1,0 +1,17 @@
+﻿@model TypInwestycji
+
+<div class="editor-label">
+    @Html.Label("Kod typu inwestycji")
+</div>
+<div class="editor-field">
+    @Html.EditorFor(model => model.KodTypuInwestycji)
+    @Html.ValidationMessageFor(model => model.KodTypuInwestycji)
+</div>
+
+<div class="editor-label">
+    @Html.Label("Nazwa typu inwestycji")
+</div>
+<div class="editor-field">
+    @Html.EditorFor(model => model.NazwaTypuInwestycji)
+    @Html.ValidationMessageFor(model => model.NazwaTypuInwestycji)
+</div>

@@ -1,0 +1,114 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>@ViewBag.Title - eKancelaria</title>
+        <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+        <meta name="viewport" content="width=device-width" />
+        @Styles.Render("~/Content/Awesome.css")
+        @Styles.Render("~/Content/site.css")
+        @Styles.Render("~/Content/Kancelaria.css")
+        @Styles.Render("~/Content/Grid.css")
+        @*@Styles.Render("~/Content/themes/base/jquery-ui.css")*@
+        @Styles.Render("~/Content/themes/" + ViewBag.CurrentTheme + "/jquery-ui-1.10.3.custom.min.css")
+        @Styles.Render("~/Content/themes/" + ViewBag.CurrentTheme + "/site.css")
+        @Scripts.Render("~/bundles/modernizr")
+        @Scripts.Render("~/Scripts/jqueryui/jquery-1.9.1.js")
+        @*@Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.min.js")*@
+    </head>
+    <body>
+        <header>
+            <nav class="menu">
+                @Html.Partial("_Menu")
+                @Html.Partial("_LogOnUserControl")
+            </nav>
+            @*<div id="cookies-info">Ta strona wykorzystuje cookies w celu zapewnienia maksymalnej wygody w korzystaniu z naszego serwisu. Mogą też korzystać z nich współpracujące z nami firmy badawcze oraz reklamowe.<br /><a href="#">Rozumiem</a></div>*@
+            
+            <div class="content-wrapper">
+                <div class="content-wrapper-cell">
+                    @*<p class="site-title">*@
+                        <a href="/">
+                            <img src="~/Content/Images/KazLogo.png" />
+                        </a>
+                    @*</p>*@
+                    
+                </div>
+                <div class="content-wrapper-cell">
+                    @*<section id="login">
+                        @Html.Partial("_LoginPartial")
+                    </section>*@                    
+                    <nav>
+                        
+                    </nav>
+                </div>                
+            </div>
+        </header>
+        <div id="body">
+            @RenderSection("featured", required: false)
+            <section class="content-wrapper main-content clear-fix">
+                @if (!String.IsNullOrEmpty(ViewBag.Message))
+                {
+                    <div class="ui-widget">
+                        <div class="ui-state-highlight ui-corner-all kanc-message">
+                            <p style="white-space: pre-wrap; text-align: center;"><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>@ViewBag.Message</p>
+                        </div>
+                    </div>
+                }
+
+                @if (TempData["Message"] != null && !String.IsNullOrEmpty(TempData["Message"].ToString()))
+                {
+                    <div class="ui-widget">
+                        <div class="ui-state-highlight ui-corner-all kanc-message">
+                            <p style="white-space: pre-wrap; text-align: center;"><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>@TempData["Message"]</p>
+                        </div>
+                    </div>
+                }
+
+                @if (!String.IsNullOrEmpty(ViewBag.ErrorMessage))
+                {
+                    <div class="ui-widget">
+                        <div class="ui-state-error ui-corner-all kanc-message">
+                            <p style="white-space: pre-wrap; text-align: center;"><span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>@ViewBag.ErrorMessage</p>
+                        </div>
+                    </div>
+                }
+
+                @if (TempData["ErrorMessage"] != null && !String.IsNullOrEmpty(TempData["ErrorMessage"].ToString()))
+                {
+                    <div class="ui-widget">
+	                    <div class="ui-state-error ui-corner-all kanc-message">
+		                    <p style="white-space: pre-wrap; text-align: center;"><span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>@TempData["ErrorMessage"]</p>
+	                    </div>
+                    </div>
+                }
+
+                @*@if (!String.IsNullOrEmpty(ViewBag.CompanyName) || !String.IsNullOrEmpty(ViewBag.YearName))
+                {                    
+                    <div class="ui-widget">
+                        <div class="ui-state-highlight ui-corner-all kanc-message">
+                            @(!String.IsNullOrEmpty(ViewBag.CompanyName) ? String.Format("Firma {0}", ViewBag.CompanyName) : "") @(!String.IsNullOrEmpty(ViewBag.YearName) ? String.Format("Rok obrotowy {0}", ViewBag.YearName) : "")
+                        </div>
+                    </div>
+                }*@
+                
+                @RenderBody()
+            </section>
+        </div>
+        <footer>
+            <div class="content-wrapper">
+                <div class="float-left">
+                    <p>&copy; @DateTime.Now.Year - @KancelariaSettings.CompanyName() - eKancelaria</p>
+                </div>
+            </div>
+        </footer>
+
+        @*@Scripts.Render("~/Scripts/jquery-1.8.2.min.js")
+        @Scripts.Render("~/Scripts/jquery-ui-1.8.24.min.js")*@
+        @Scripts.Render("~/Scripts/jqueryui/jquery-1.9.1.js")
+        @Scripts.Render("~/Scripts/jqueryui/jquery-ui-1.10.3.custom.min.js")
+        @Scripts.Render("~/Scripts/Awesome.js")
+        @Scripts.Render("~/Scripts/Kancelaria.js")
+        @*@Scripts.Render("~/Scripts/monster.js")*@
+        @RenderSection("scripts", required: false)
+    </body>
+</html>

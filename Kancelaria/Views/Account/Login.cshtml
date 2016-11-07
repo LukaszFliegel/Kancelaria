@@ -1,0 +1,82 @@
+﻿@model LoginModel
+
+@{
+    ViewBag.Title = "Zaloguj się";
+}
+
+
+@if (Request.IsAuthenticated)
+{
+    @section featured {
+        @Html.Partial("_FeaturedSection", new FeaturedSectionModel() { Title = "Brak uprawnień.", SubTitle = "Nie masz uprawnień do żądanego zasobu." })
+    }
+    
+    <h2>Brak uprawnień do tej części aplikacji. Zgłoś się do administratora o przyznanie dostępu.</h2>
+    <hr />
+    @Html.ActionLink("Strona główna", "Index", "Home")
+}
+else
+{
+    @section featured {
+        @Html.Partial("_FeaturedSection", new FeaturedSectionModel() { Title = "Logowanie.", SubTitle = "Zaloguj się." })
+    }
+    
+    using (Html.BeginForm(new { ReturnUrl = ViewBag.ReturnUrl })) {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+
+        <fieldset>
+            <legend>Logowanie</legend>
+
+                <div class="editor-label">
+                    @Html.LabelFor(m => m.UserName)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(m => m.UserName)
+                    @Html.ValidationMessageFor(m => m.UserName)
+                </div>
+                <div class="editor-label">
+                    @Html.LabelFor(m => m.Password)
+                </div>
+                <div class="editor-field">
+                    @Html.PasswordFor(m => m.Password)
+                    @Html.ValidationMessageFor(m => m.Password)
+                </div>
+                @*<div class="editor-label">
+                    @Html.LabelFor(m => m.RememberMe)
+                </div>
+                <div class="editor-field">
+                    @Html.CheckBoxFor(m => m.RememberMe)
+                </div>*@
+
+                <div class="editor-label">
+                    @Html.LabelFor(m => m.RememberMe)
+                </div>
+                <div class="editor-field">
+                    <input type="checkbox" name="CheckCzyZaliczka" id="CheckCzyZaliczka" />
+                    <label for="CheckCzyZaliczka" title=".ui-icon-circle-check">
+                        <span class="ui-icon ui-icon-check"></span>
+                    </label>
+                    @Html.ValidationMessageFor(model => model.RememberMe)
+                </div>
+
+                
+            <hr />
+            <p>
+                <input type="submit" value="Zaloguj" />
+            </p>
+        </fieldset>
+        <p>
+            @Html.ActionLink("Zarejestruj", "Register") jeśli nie masz konta.
+        </p>
+    }
+}
+
+@*<section class="social" id="socialLoginForm">
+    <h2>Use another service to log in.</h2>
+    @Html.Action("ExternalLoginsList", new { ReturnUrl = ViewBag.ReturnUrl })
+</section>*@
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

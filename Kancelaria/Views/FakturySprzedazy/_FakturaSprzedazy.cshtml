@@ -1,0 +1,123 @@
+﻿@model FakturaSprzedazy
+
+<div class="kanc-fieldset-left">
+    <div class="editor-label">
+        @Html.Label("Numer faktury")
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.NumerFaktury)
+        @Html.ValidationMessageFor(model => model.NumerFaktury)
+    </div>
+
+    <div class="editor-label">
+        @Html.Label("Data faktury")
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.DataFaktury)
+        @Html.ValidationMessageFor(model => model.DataFaktury)
+    </div>
+
+    <div class="editor-label">
+        @Html.Label("Kontrahent")
+    </div>
+    <div class="editor-field">
+        @Html.LookupFor(o => o.IdKontrahenta, controller: "Kontrahenci", multiselect: false, chooseText: "Wybierz", cancelText: "Anuluj", title: "Wybierz kontrahenta", paging: true)
+        @Html.ValidationMessageFor(model => model.IdKontrahenta)
+    </div>
+
+    <div class="editor-label">
+        @Html.Label("Inwestycja")
+    </div>
+    <div class="editor-field">
+        @Html.LookupFor(o => o.IdInwestycji, controller: "Inwestycje", multiselect: false, chooseText: "Wybierz", cancelText: "Anuluj", title: "Wybierz inwestycję", paging: true)
+        @Html.ValidationMessageFor(model => model.IdInwestycji)
+    </div>
+
+    <div class="editor-label">
+        @Html.Label("Sposób płatności")
+    </div>
+    <div class="editor-field">
+        @Html.LookupFor(o => o.IdSposobuPlatnosci, controller: "SposobyPlatnosci", multiselect: false, chooseText: "Wybierz", cancelText: "Anuluj", title: "Wybierz sposób płatności", paging: true)
+        @Html.ValidationMessageFor(model => model.IdSposobuPlatnosci)
+    </div>
+
+    <div class="editor-label">
+        @Html.Label("Konto bankowe")
+    </div>
+    <div class="editor-field">
+        @Html.LookupFor(o => o.IdKontaBankowegoFirmy, controller: "KontaBankowe", multiselect: false, chooseText: "Wybierz", cancelText: "Anuluj", title: "Wybierz konto bankowe", paging: true)
+        @Html.ValidationMessageFor(model => model.IdKontaBankowegoFirmy)
+    </div>
+</div>
+<div class="kanc-fieldset-right">
+    <div class="editor-label">
+        @Html.Label("Termin płatności")
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.TerminPlatnosci)
+        <div class="kanc-date-tracker">
+            <span>przesuń o:</span>
+            @Html.TextBox("TerminPlatnosciTracker", 0, new { @class = "kanc-date-tracker" })
+            @*<a class="ui-state-default ui-corner-all" href="#"><span class="ui-icon ui-icon-plusthick"></span></a>*@
+
+            <div class="ui-state-default ui-corner-all kanc-date-tracker-button" title="Przesuń termin płatności o tyle dni"><span class="ui-icon ui-icon-plusthick"></span></div>
+        </div>
+        @Html.ValidationMessageFor(model => model.TerminPlatnosci)
+    </div>
+
+    <div class="editor-label">
+        @Html.Label("Data sprzedaży")
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.DataSprzedazy)
+        @Html.ValidationMessageFor(model => model.DataSprzedazy)
+    </div>
+
+    <div class="editor-label">
+        @Html.Label("Faktura zaliczkowa")
+    </div>
+    <div class="editor-field">
+        <input type="checkbox" name="CheckCzyZaliczka" id="CheckCzyZaliczka" checked="@Model.CzyZaliczka" />
+        <label for="CheckCzyZaliczka" title=".ui-icon-circle-check">
+            <span class="ui-icon ui-icon-check"></span>
+        </label>
+        @Html.ValidationMessageFor(model => model.CzyZaliczka)
+    </div>
+
+    <div class="editor-label">
+        @Html.Label("Umowa")
+    </div>
+    <div class="editor-field">
+        <input type="checkbox" name="CheckCzyUmowa" id="CheckCzyUmowa" checked="@Model.CzyUmowa" />
+        <label for="CheckCzyUmowa" title=".ui-icon-circle-check">
+            <span class="ui-icon ui-icon-check"></span>
+        </label>
+        @Html.ValidationMessageFor(model => model.CzyUmowa)
+    </div>
+
+    <div class="editor-label">
+        @Html.Label("Kwota zapłacona")
+    </div>
+    <div class="editor-field">
+        @*@Html.TextBoxFor(model => model.KwotaZaplacona)*@
+        @* Wylaczam walidacje HTMLowa tego pola - walidacja typu number "is a mess" *@
+        <input id="KwotaZaplacona" class="text-box single-line ui-menu ui-widget ui-widget-content ui-corner-all read-only" type="text" readonly value="@Model.KwotaZaplacona" name="KwotaZaplacona">
+        @Html.ValidationMessageFor(model => model.KwotaZaplacona)
+    </div>
+
+    <div class="editor-label">
+        @Html.Label("Opis faktury")
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.Opis)
+        @Html.ValidationMessageFor(model => model.Opis)
+    </div>
+
+    <div class="editor-label">
+        @Html.Label("Uwagi faktury")
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.Uwagi)
+        @Html.ValidationMessageFor(model => model.Uwagi)
+    </div>
+</div>

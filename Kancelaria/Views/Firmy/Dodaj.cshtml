@@ -1,0 +1,32 @@
+﻿@model Firma
+
+@{
+    ViewBag.Title = "Dodawanie nowej firmy";
+}
+
+@section featured {
+    @Html.Partial("_FeaturedSection", new FeaturedSectionModel() { Title = "Dodawanie firmy.", SubTitle = "Dodaj nową firmę." })
+}
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Firma</legend>
+
+        @Html.Partial("_Firma", Model)
+        <hr />
+        <p>
+            <input type="submit" value="Dodaj fimę" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Powrót do kartoteki", "Kartoteka")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

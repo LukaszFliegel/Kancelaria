@@ -1,0 +1,43 @@
+﻿@model LogOnUserModel
+           
+@*<script type="text/javascript">
+    window.on = function () {
+        CreatePopupPanels();
+    }
+</script>*@
+
+<div class="left-logon-part">
+    @Model.Uzytkownik.UserName
+</div>
+<div class="right-logon-part">
+    @*<img class="ProfileSmallPicture" alt="" src="@Url.Action("GetUserSelfPhoto", "Zdjecia", new { id = Model.MainPhotoId, photoSize = 64 })" /> <!-- tutaj kwadracik z liczba nowych wiadomosci (bedacy linkiem do poczty) -->*@
+
+    @*<img id="authuserdropdownbutton" class="popup-panel-button" onclick="PopUp('authuserdropdown')" alt="V" src="/Content/Images/drop.png" />*@
+    <div id="authuserdropdownbutton" class="popup-panel-button button" onclick="PopUp('authuserdropdown')">
+        <span class="ui-icon ui-icon-circle-triangle-s"></span>
+    </div>
+</div>
+
+<div class="popup-panel shadow-sided dark-border right" id="authuserdropdown" >
+    <div class="text-center">
+        <strong>@Model.Uzytkownik.UserName</strong>
+        <br />
+        @Model.Uzytkownik.Imie @Model.Uzytkownik.Nazwisko
+        <br />
+    </div>
+    <hr />
+    <div class="text-center">
+        @Html.ActionLink("Wybierz rok obrotowy", "Wybor", "LataObrotowe")
+        @*@Html.ActionLink("Edytuj dane firmy", "Kartoteka", "Firmy")*@
+        @Html.ActionLink("Zmień skórkę", "Ustawienia", "Home")
+        @Html.ActionLink("Zmień hasło", "Manage", "Account")
+    </div>
+    <hr />
+    <div class="text-right">
+        @using (Html.BeginForm("LogOff", "Account", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            <input id="LogOutButton" type="submit" class="button" value="Wyloguj" />
+        }
+    </div>
+</div>

@@ -1,0 +1,65 @@
+﻿@model ReportModel<PagedSearchedQueryResult<NieuregulowanaFakturaSprzedazy>>
+
+@{
+    ViewBag.Title = "Nieuregulowane faktury sprzedaży";
+    Layout = "~/Views/Shared/_ReportLayout.cshtml";
+}
+
+<table class="grid">
+    <caption>
+        <span class="caption-buttons"></span>
+        @using (Html.BeginForm(null, null, FormMethod.Get, new { id = "SearchForm", @class = "centerDiv" }))
+        { 
+            <div class="caption-lookup-list">
+                <div class="caption-lookup-item"><span class="caption-lookup-item-label">@Html.Label("Kontrahent")</span><div class="caption-lookup-item-control">@Html.Lookup("IdKontrahenta", controller: "Kontrahenci", multiselect: false, chooseText: "Wybierz", cancelText: "Anuluj", title: "Wybierz kontrahenta", paging: true)</div></div>
+                <div class="caption-lookup-item"><span class="caption-lookup-item-label">@Html.Label("Inwestycja")</span><div class="caption-lookup-item-control">@Html.Lookup("IdInwestycji", controller: "Inwestycje", multiselect: false, chooseText: "Wybierz", cancelText: "Anuluj", title: "Wybierz inwestycję", paging: true)</div></div>
+            </div>
+            @Html.Partial("_Search", new FilterBoxModel("", "Slownik", new FakturySprzedazyDictionary(), DateTimeSearchControlType.OneDate))
+        }
+    </caption>
+    <thead>
+        <tr class="ui-widget-header">
+            @Html.KancelariaGridSortingColumn("NumerFaktury", "Numer faktury", Request.Url.AbsolutePath, Request.Url.Query)
+            @Html.KancelariaGridSortingColumn("DataFaktury", "Data faktury", Request.Url.AbsolutePath, Request.Url.Query)
+            <th class="ui-widget">Kontrahent</th>
+            <th class="ui-widget">Inwestycja</th>
+            <th class="ui-widget">Termin płatnosci</th>
+            <th class="ui-widget">Kwota brutto</th>
+            <th class="ui-widget">Kwota zapłacona</th>
+            <th class="ui-widget">Kwota skompensowana</th>
+            <th class="ui-widget">Kwota nieuregulowana</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (NieuregulowanaFakturaSprzedazy fz in Model.Model.Result)
+    {
+        <tr>
+            <td>@fz.NumerFaktury</td>            
+            <td>@fz.DataFaktury.ToShortDateString()</td>
+            <td>@fz.KodKontrahenta</td>
+            <td>@fz.NumerInwestycji</td>
+            <td>@fz.TerminPlatnosci.ToShortDateString()</td>
+            <td class="border-cell">@((fz.KwotaBrutto ?? 0).ToString("N2"))</td>
+            <td class="border-cell">@fz.KwotaZaplacona</td>
+            <td class="border-cell">@fz.KwotaSkompensowana</td>
+            <td class="border-cell">@((fz.KwotaNieuregulowana ?? 0).ToString("N2"))</td>
+        </tr>
+    }
+    </tbody>
+    <tfoot>
+        <tr><td>&nbsp;</td></tr>
+        <tr>
+            <td>Suma</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>@Model.Model.Result.AsEnumerable().Sum(p => p.KwotaBrutto ?? 0).ToString("N2")</td>
+            @*<td>@Model.Model.Result.AsEnumerable().Sum(p => p.KwotaNetto).ToString("N2")</td>*@
+            @*<td>@Model.Model.Result.AsEnumerable().Sum(p => p.KwotaVat).ToString("N2")</td>*@
+            <td>@Model.Model.Result.AsEnumerable().Sum(p => p.KwotaZaplacona).ToString("N2")</td>
+            <td>@Model.Model.Result.AsEnumerable().Sum(p => p.KwotaSkompensowana ?? 0).ToString("N2")</td>
+            <td>@Model.Model.Result.AsEnumerable().Sum(p => p.KwotaNieuregulowana ?? 0).ToString("N2")</td>
+        </tr>
+    </tfoot>    
+</table>

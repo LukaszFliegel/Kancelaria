@@ -1,0 +1,7 @@
+﻿@model AppliedFiltersModel
+
+@if(Model != null)
+    foreach (string s in Model.List)
+    {
+        <div class="aplied-filter-info icon-16 icon-plus-small"></div><span class="aplied-filter-info">@(s)></span>
+    }

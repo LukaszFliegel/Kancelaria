@@ -1,0 +1,28 @@
+﻿@model Kompensata
+
+<div class="kanc-fieldset-left">
+    <div class="editor-label">
+        @Html.Label("Numer kompenstaty")
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.NumerKompensaty)
+        @Html.ValidationMessageFor(model => model.NumerKompensaty)
+    </div>
+
+    <div class="editor-label">
+        @Html.Label("Data kompenstaty")
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.DataKompensaty)
+        @Html.ValidationMessageFor(model => model.DataKompensaty)
+    </div>
+</div>
+<div class="kanc-fieldset-right">
+    <div class="editor-label">
+        @Html.Label("Kontrahent")
+    </div>
+    <div class="editor-field">
+        @Html.LookupFor(o => o.IdKontrahenta, controller: "Kontrahenci", multiselect: false, chooseText: "Wybierz", cancelText: "Anuluj", title: "Wybierz kontrahenta", paging: true )
+        @Html.ValidationMessageFor(model => model.IdKontrahenta)
+    </div>
+</div>

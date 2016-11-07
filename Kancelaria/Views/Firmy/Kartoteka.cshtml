@@ -1,0 +1,48 @@
+﻿@model GridSettings<Firma>
+
+@{
+    ViewBag.Title = "Kartoteka Firm";
+}
+
+@section featured {
+    @Html.Partial("_FeaturedSection", new FeaturedSectionModel() { Title = "Firmy.", SubTitle = "Tutaj możesz dodawać, edytować i usuwać firmy." })
+}
+
+<table class="grid">
+    <caption>
+        <span class="caption-buttons"><a href="@Url.Action("Dodaj")" class="kanc-button"><span>Dodaj firmę</span></a></span>
+    </caption>
+    <thead>
+        <tr class="ui-widget-header">
+            @*<th class="ui-widget">Nazwa skrócona</th>
+            <th class="ui-widget">Nazwa pełna</th>*@
+            @Html.KancelariaGridSortingColumn("NazwaSkrocona", "Nazwa skrócona", Request.Url.AbsolutePath, Request.Url.Query)
+            @Html.KancelariaGridSortingColumn("NazwaPelna", "Nazwa pełna", Request.Url.AbsolutePath, Request.Url.Query)
+            <th class="ui-widget grid-operations-cell">Operacje</th>
+        </tr>
+    </thead>
+    <tbody>
+
+    @foreach(Firma f in Model.Query.Result)
+    {
+        <tr>
+            <td>@f.NazwaSkrocona</td>
+            <td>@f.NazwaPelna</td>
+            <td class="grid-operations-cell">
+                <a title="Edytuj" href="@Url.Action("Edytuj", new { @id = f.Id })" class="kanc-button"><span class="ui-icon ui-icon-pencil"></span></a>
+                <a title="Usuń" href="@Url.Action("Usun", new { @id = f.Id })" class="kanc-button"><span class="ui-icon ui-icon-trash"></span></a>
+            </td>
+        </tr>
+    }
+
+    </tbody>
+
+    @if (Model.PageCount > 0)
+    {
+    <tfoot>
+        <tr>
+            <td colspan="3">@Html.Partial("_Pager", (IPaged)Model.Query)</td>
+        </tr>
+    </tfoot>
+    }
+</table>

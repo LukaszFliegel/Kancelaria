@@ -1,0 +1,34 @@
+﻿@model ZaplataFakturySprzedazy
+
+@{
+    ViewBag.Title = "Dodawanie nowej zapłaty dla faktury sprzedaży";
+}
+
+@section featured {
+    @Html.Partial("_FeaturedSection", new FeaturedSectionModel() { Title = "Dodawanie zapłaty faktury sprzedaży.", SubTitle = "Dodaj nową zapłatę fakturę sprzedaży." })
+}
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Zapłata faktury sprzedaży</legend>
+
+        @Html.Partial("_ZaplataFakturySprzedazy", Model)
+
+        <hr />
+
+        <p>
+            <input type="submit" value="Dodaj zapłatę" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Powrót do kartoteki", "Zaplaty", new { @idFakturyZakupu = Model.IdFakturySprzedazy })
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

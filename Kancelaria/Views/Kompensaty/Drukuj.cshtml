@@ -1,0 +1,32 @@
+﻿@model Kompensata
+
+@{
+    ViewBag.Title = "Drukuj";
+}
+<div class="kanc-print-top">
+    Data kompensaty: @Model.DataKompensaty.ToShortDateString()
+</div>
+<div class="kanc-print-head">
+    <h2>Kompensata @Model.NumerKompensaty</h2>
+</div>
+<div class="kanc-print-sub-head margin-top">
+    <div class="kanc-left-cell">
+        <h4>Kontrahent</h4>
+        @Html.AdresKontrahenta(Model.Kontrahent)
+    </div>  
+</div>
+<div class="kanc-print-details margin-top">
+    @Html.Partial("_GridPozycjeKompensaty", new ReadOnlyAbleModel<Kompensata>(Model, true, "", "", true))
+</div>
+<div class="kanc-print-footer">
+   
+</div>
+<div class="kanc-print-links">
+    <p>
+        <span class="button" onclick="window.print();">Drukuj</span>
+    </p>
+    <hr />
+    <p>
+        @Html.ActionLink("Edytuj", "Edytuj", new { id = Model.Id }) @Html.ActionLink("Powrót do kartoteki", "Kartoteka")
+    </p>
+</div>

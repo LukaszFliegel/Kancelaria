@@ -1,0 +1,38 @@
+﻿@model FakturaZakupu
+
+@{
+    ViewBag.Title = "Dodawanie nowej faktury zakupu";
+}
+
+@section featured {
+    @Html.Partial("_FeaturedSection", new FeaturedSectionModel() { Title = "Dodawanie faktury zakupu.", SubTitle = "Dodaj nową fakturę zakupu. Dodawanie pozycji będzie możliwe po zapisaniu faktury." })
+}
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Faktura zakupu</legend>
+
+
+
+        @Html.Partial("_FakturaZakupu", Model)
+
+        <hr />
+        @*<h3>Pozycje faktury</h3>
+        @Html.Partial("_PozycjeFakturyZakupu", Model)        
+        <hr />*@
+        <p>
+            <input type="submit" value="Dodaj fakturę zakupu" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Powrót do kartoteki", "Kartoteka")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

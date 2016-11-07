@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Express 2012 for Web
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kancelaria", "Kancelaria\Kancelaria.csproj", "{2DB51A94-4A8D-4B7F-BAF9-7E53CB78AE65}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kancelaria.Tests", "Kancelaria.Tests\Kancelaria.Tests.csproj", "{3F509053-E621-462E-B7E5-F713AC380F68}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2DB51A94-4A8D-4B7F-BAF9-7E53CB78AE65}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2DB51A94-4A8D-4B7F-BAF9-7E53CB78AE65}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2DB51A94-4A8D-4B7F-BAF9-7E53CB78AE65}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2DB51A94-4A8D-4B7F-BAF9-7E53CB78AE65}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3F509053-E621-462E-B7E5-F713AC380F68}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3F509053-E621-462E-B7E5-F713AC380F68}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3F509053-E621-462E-B7E5-F713AC380F68}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3F509053-E621-462E-B7E5-F713AC380F68}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

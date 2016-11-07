@@ -1,0 +1,52 @@
+﻿@{
+    ViewBag.Title = "Raporty";
+}
+@section featured {
+    @Html.Partial("_FeaturedSection", new FeaturedSectionModel() { Title = "Lista raportów.", SubTitle = " " })
+}
+
+<h3>Dostępne raporty:</h3>
+
+<ol class="round">
+    <li class="one">
+        <h5>Rejestr sprzedaży</h5>
+        Rejestr sprzedaży prezentuje zbiorcze zestawienie wszystkich faktur z wybranego roku obrotowego.<br />
+        @Html.ActionLink("Uruchom rejestr sprzedaży", "RejestrSprzedazy", "Raporty")
+    </li>
+
+    <li class="two">
+        <h5>Rejestr zakupu</h5>
+        Rejestr zakupu prezentuje zbiorcze zestawienie wszystkich faktur z wybranego roku obrotowego.<br />
+        @Html.ActionLink("Uruchom rejestr zakupu", "RejestrZakupu", "Raporty")
+    </li>
+
+    <li class="three">
+        <h5>Nieuregulowane faktury sprzedaży</h5>
+        Zestawienie nieuregulowanych faktur sprzedaży z wybranego roku obrotowego.<br />
+        @Html.ActionLink("Nieuregulowane faktury sprzedaży", "NieuregulowaneFakturySprzedazy", "Raporty")
+    </li>
+
+    <li class="four">
+        <h5>Nieuregulowane faktury zakupu</h5>
+        Zestawienie nieuregulowanych faktur zakupu z wybranego roku obrotowego.<br />
+        @Html.ActionLink("Nieuregulowane faktury zakupu", "NieuregulowaneFakturyZakupu", "Raporty")
+    </li>
+
+    <li class="five">
+        <h5>Rejestr kontrahentów</h5>
+        Zestawienie kontrahentów wraz z liczbą faktur i ich kwotami zapłaconą i niezapłaconą.<br />
+        @Html.ActionLink("Rejestr kontrahentów", "RejestrKontrahentow", "Raporty")
+    </li>
+
+    <li class="six">
+        <h5>Analiza rozrachunków</h5>
+        Analiza rozrachunków w zwybranego roku rozbita po kontrahentach.<br />
+        @Html.ActionLink("Analiza rozrachunków", "AnalizaRozrachunkow", "Raporty")
+    </li>
+
+    <li class="seven">
+        <h5>Analiza kosztów na inwestycjach</h5>
+        Analiza kosztów z wybranego roku rozbita na inwestycje.<br />
+        @Html.ActionLink("Analiza kosztów na inwestycjach", "AnalizaKosztow", "Raporty", new { dateFrom = new DateTime(DateTime.Now.Year, 1, 1).ToShortDateString() }, null)
+    </li>
+</ol>

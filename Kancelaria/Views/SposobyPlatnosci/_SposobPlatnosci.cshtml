@@ -1,0 +1,17 @@
+﻿@model SposobPlatnosci
+
+<div class="editor-label">
+    @Html.Label("Kod sposobu płatności")
+</div>
+<div class="editor-field">
+    @Html.EditorFor(model => model.KodSposobuPlatnosci)
+    @Html.ValidationMessageFor(model => model.KodSposobuPlatnosci)
+</div>
+
+<div class="editor-label">
+    @Html.Label("Opis sposobu płatności")
+</div>
+<div class="editor-field">
+    @Html.EditorFor(model => model.OpisSposobuPlatnosci)
+    @Html.ValidationMessageFor(model => model.OpisSposobuPlatnosci)
+</div>

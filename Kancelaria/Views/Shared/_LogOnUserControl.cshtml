@@ -1,0 +1,39 @@
+﻿@*@model System.Web.Mvc.ViewUserControl*@
+
+@if (Request.IsAuthenticated) 
+{
+<script type="text/javascript">
+    window.onload = function ()
+    {
+        $("#LogOnAuthenticatedUserControl").load("@Url.Action("LogOnAuthenticatedUserControl", "Account")", null, function () {
+            //LogOnAuthenticatedUserControl
+            null;
+        });
+    }
+</script>
+<div id="LogOnAuthenticatedUserControl" class="LogOnAuthenticatedUserControl float-right">
+    
+</div>
+}
+else
+{
+@*<div class="LogOnAuthenticatedUserControl">
+    <div style="display:table-row;width:100%">
+        @using (Html.BeginForm("LogOn", "Konto", FormMethod.Post))
+        {
+            <div>
+                @Html.TextBox("UserName", null, new { @size = "20", @class = "TextBox" })
+
+            
+                @Html.Password("Password", null, new { @size = "20", @class = "TextBox" })
+
+                <button class="thin-button">Zaloguj</button>
+            </div>
+        }
+    </div>
+    <div style="display:table-row;width:100%">
+        @Html.ActionLink("Nie pamietasz hasła?", "ZapomnianeHaslo", "Konto", null, new { @class = "clear" })
+    </div>
+</div>*@
+}
+

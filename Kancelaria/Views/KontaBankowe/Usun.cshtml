@@ -1,0 +1,23 @@
+﻿@model KontoBankowe
+
+@{
+    ViewBag.Title = "Usuwanie konta bankowego";
+}
+
+@section featured {
+    @Html.Partial("_FeaturedSection", new FeaturedSectionModel() { Title = String.Format("Usuwanie konta bankowego"), SubTitle = "Usuń konto bankowe." })
+}
+<h3>Czy na pewno chcesz usunąć konto bankowe?</h3>
+<h4>@Model.NumerKonta</h4>
+<h4>@Model.Nazwa</h4>
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    <p>
+        @Html.HiddenFor(model => model.Id)
+
+        <input type="submit" value="Usuń" />
+    </p>
+}
+
+@Html.ActionLink("Powrót do kartoteki", "Kartoteka")

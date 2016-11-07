@@ -1,0 +1,48 @@
+﻿@model Kompensata
+
+@{
+    ViewBag.Title = "Edycja kompensaty";
+}
+
+@section featured {
+    @Html.Partial("_FeaturedSection", new FeaturedSectionModel() { Title = String.Format("Edycja kompensaty \"{0}\".", Model.NumerKompensaty), SubTitle = "Edytuj kompensatę." })
+}
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Kompensata</legend>
+
+        @Html.HiddenFor(model => model.Id)
+
+        @Html.Partial("_Kompensata", Model)
+
+        <hr />
+        <h3 style="display:initial">Pozycje kompensaty</h3><span class="kanc-hide-button" data-target-id="kanc_kompensaty_pozycje">pokaż/ukryj</span>
+        <div id="kanc_kompensaty_pozycje">
+        @Html.Partial("_GridPozycjeKompensaty", new ReadOnlyAbleModel<Kompensata>(Model, false, "kanc_pozycja_kompensaty_edit_dialog", "kanc_kompensaty_pozycje"))        
+        </div>
+        <hr />
+        <p>
+            <input type="submit" value="Zapisz" />
+        </p>
+    </fieldset>
+}
+
+@* Wyciagniete tutaj (z _GridPozycjeFakturyZakupu.cshtml), bo <form> nie moze byc w <form> *@
+@*@Html.Partial("_PozycjaFakturyZakupu.cshtml", new AjaxEditModel<FakturaZakupu>(
+        Model, false, "FakturyZakupu", "NowaPozycjaFakturyZakupu", "kanc_faktury_zakupu_pozycje", InsertionMode.InsertAfter)
+    )*@
+
+<div id="kanc_pozycja_kompensaty_edit_dialog"></div>
+
+<div>
+    @Html.ActionLink("Powrót do kartoteki", "Kartoteka")
+    @Html.ActionLink("Drukuj", "Drukuj", new { @id = Model.Id })
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

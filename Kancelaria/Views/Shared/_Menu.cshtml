@@ -1,0 +1,12 @@
+﻿@if (Request.IsAuthenticated) 
+{
+<ul id="menu">
+    <li>@Html.ActionLink("Strona główna", "Index", "Home")</li>
+    <li>@Html.ActionLink("Faktury zakupu", "Kartoteka", "FakturyZakupu")</li>
+    <li>@Html.ActionLink("Faktury sprzedaży", "Kartoteka", "FakturySprzedazy")</li>
+    <li>@Html.ActionLink("Kontrahenci", "Kartoteka", "Kontrahenci")</li>
+    <li>@Html.ActionLink("Kompensaty", "Kartoteka", "Kompensaty")</li>
+    <li>@Html.ActionLink("Raporty", "Index", "Raporty")</li>
+    <li>@Html.ActionLink("Zarządzanie użytkownikami", "Kartoteka", "Admin")</li>
+</ul>
+}

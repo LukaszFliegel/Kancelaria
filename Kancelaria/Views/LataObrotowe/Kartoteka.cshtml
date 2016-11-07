@@ -1,0 +1,49 @@
+﻿@model GridSettings<RokObrotowy>
+
+@{
+    ViewBag.Title = "Kartoteka lat obrotowych";
+}
+
+@section featured {
+    @Html.Partial("_FeaturedSection", new FeaturedSectionModel() { Title = "Lata obrotowe.", SubTitle = "Tutaj możesz dodawać, edytować i usuwać lata obrotowe." })
+}
+
+<table class="grid">
+    <caption>
+        <span class="caption-buttons"><a href="@Url.Action("Dodaj")" class="kanc-button"><span>Dodaj rok obrotowy</span></a></span>
+    </caption>
+    <thead>
+        <tr class="ui-widget-header">
+            @*<th class="ui-widget">Rok</th>*@
+            @Html.KancelariaGridSortingColumn("NazwaRoku", "Rok", Request.Url.AbsolutePath, Request.Url.Query)
+            <th class="ui-widget">Liczba faktur zakupu</th>
+            <th class="ui-widget">Liczba faktur sprzedaży</th>
+            <th class="ui-widget grid-operations-cell">Operacje</th>
+        </tr>
+    </thead>
+    <tbody>
+
+    @foreach(RokObrotowy ro in Model.Query.Result)
+    {
+        <tr>
+            <td>@ro.NazwaRoku</td>
+            <td>@ro.FakturaZakupus.Count</td>
+            <td>@ro.FakturaSprzedazies.Count</td>
+            <td>
+                <a title="Edytuj" href="@Url.Action("Edytuj", new { @id = ro.Id })" class="kanc-button"><span class="ui-icon ui-icon-pencil"></span></a>
+                <a title="Usuń" href="@Url.Action("Usun", new { @id = ro.Id })" class="kanc-button"><span class="ui-icon ui-icon-trash"></span></a>
+            </td>
+        </tr>
+    }
+
+    </tbody>
+
+    @if (Model.PageCount > 0)
+    {
+    <tfoot>
+        <tr>
+            <td colspan="3">@Html.Partial("_Pager", (IPaged)Model.Query)</td>
+        </tr>
+    </tfoot>
+    }
+</table>

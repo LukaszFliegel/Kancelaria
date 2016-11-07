@@ -1,0 +1,62 @@
+﻿@model RegisterModel
+
+@{
+    ViewBag.Title = "Rejestracja użytkownika";
+}
+
+@section featured {
+    @Html.Partial("_FeaturedSection", new FeaturedSectionModel() { Title = "Rejestracja użytkownika.", SubTitle = "Aby korzystać z systemu eKancelaria załóż konto. Wymagana autoryzacja administratora." })
+}
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary()
+
+    <fieldset>
+        <legend>Rejestracja użytkownika</legend>
+
+        <div class="editor-label">
+            @Html.LabelFor(m => m.UserName)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(m => m.UserName)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(m => m.Password)
+        </div>
+        <div class="editor-field">
+            @Html.PasswordFor(m => m.Password)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(m => m.ConfirmPassword)
+        </div>
+        <div class="editor-field">
+            @Html.PasswordFor(m => m.ConfirmPassword)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(m => m.Imie)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(m => m.Imie)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(m => m.Nazwisko)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(m => m.Nazwisko)
+        </div>
+
+        <hr />
+        <p>
+            <input type="submit" value="Zarejestruj" />
+        </p>
+    </fieldset>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

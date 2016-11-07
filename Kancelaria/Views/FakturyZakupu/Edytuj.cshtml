@@ -1,0 +1,47 @@
+﻿@model FakturaZakupu
+
+@{
+    ViewBag.Title = "Edycja faktury zakupu";
+}
+
+@section featured {
+    @Html.Partial("_FeaturedSection", new FeaturedSectionModel() { Title = String.Format("Edycja faktury \"{0}\".", Model.NumerFaktury), SubTitle = "Edytuj fakturę zakupu." })
+}
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Faktura zakupu</legend>
+
+        @Html.HiddenFor(model => model.Id)
+
+        @Html.Partial("_FakturaZakupu", Model)
+
+        <hr />
+        <h3 style="display:initial">Pozycje faktury</h3><span class="kanc-hide-button" data-target-id="pozycje_faktury_zakupu">pokaż/ukryj</span>
+        <div id="pozycje_faktury_zakupu">
+        @Html.Partial("_GridPozycjeFakturyZakupu", new ReadOnlyAbleModel<FakturaZakupu>(Model, false, "kanc_pozycja_faktury_zakupu_edit_dialog", "pozycje_faktury_zakupu"))        
+        </div>
+        <hr />
+        <p>
+            <input type="submit" value="Zapisz" />
+        </p>
+    </fieldset>
+}
+
+@* Wyciagniete tutaj (z _GridPozycjeFakturyZakupu.cshtml), bo <form> nie moze byc w <form> *@
+@*@Html.Partial("_PozycjaFakturyZakupu.cshtml", new AjaxEditModel<FakturaZakupu>(
+        Model, false, "FakturyZakupu", "NowaPozycjaFakturyZakupu", "kanc_faktury_zakupu_pozycje", InsertionMode.InsertAfter)
+    )*@
+
+<div id="kanc_pozycja_faktury_zakupu_edit_dialog"></div>
+
+<div>
+    @Html.ActionLink("Powrót do kartoteki", "Kartoteka") @Html.ActionLink("Drukuj", "Drukuj", new { @id = Model.Id })
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

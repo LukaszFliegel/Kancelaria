@@ -1,0 +1,48 @@
+﻿@model GridSettings<KontoBankowe>
+
+@{
+    ViewBag.Title = "Konta bankowe";
+}
+
+@section featured {
+    @Html.Partial("_FeaturedSection", new FeaturedSectionModel() { Title = "Konta bankowe.", SubTitle = "Tutaj możesz dodawać, edytować i usuwać konta bankowe dla wybranej firmy." })
+}
+
+<table class="grid">
+    <caption>
+        <span class="caption-buttons"><a href="@Url.Action("Dodaj")" class="kanc-button"><span>Dodaj konto bankowe</span></a></span>
+    </caption>
+    <thead>
+        <tr class="ui-widget-header">
+            <th class="ui-widget">Konto bankowe</th>
+            <th class="ui-widget">Nazwa konta</th>
+            <th class="ui-widget">Nazwa banku</th>
+            <th class="ui-widget grid-operations-cell">Operacje</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (KontoBankowe kb in Model.Query.Result)
+    {
+        <tr>
+            <td @(kb.CzyDomyslny.HasValue && kb.CzyDomyslny.Value ? "class=default" : "")>@kb.NumerKonta</td>
+            <td>@kb.Nazwa</td>
+            <td>@kb.NazwaBanku</td>
+            <td class="grid-operations-cell">
+                <a title="Edytuj" href="@Url.Action("Edytuj", new { @id = kb.Id })" class="kanc-button"><span class="ui-icon ui-icon-pencil"></span></a>
+                <a title="Usuń" href="@Url.Action("Usun", new { @id = kb.Id })" class="kanc-button"><span class="ui-icon ui-icon-trash"></span></a>
+                <a title="Ustaw domyślny" href="@Url.Action("UstawDomyslny", new { @id = kb.Id, @returnUrl = Request.Url.ToString() })" class="kanc-button"><span class="ui-icon ui-icon-star"></span></a>
+            </td>
+        </tr>
+    }
+    </tbody>
+    @if (Model.PageCount > 0)
+    {
+    <tfoot>
+        <tr>
+            <td colspan="4">@Html.Partial("_Pager", (IPaged)Model.Query)</td>
+        </tr>
+    </tfoot>
+    }
+</table>
+
+

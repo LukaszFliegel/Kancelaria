@@ -1,0 +1,10 @@
+﻿@model System.DateTime?
+
+@if((ViewData.TemplateInfo.FormattedModelValue as DateTime?).HasValue)
+{
+    @Html.TextBox("", (ViewData.TemplateInfo.FormattedModelValue as DateTime?).Value.ToShortDateString(), new { @class = "kanc-date-picker" })
+}
+else
+{
+    @Html.TextBox("", null, new { @class = "kanc-date-picker" })
+}

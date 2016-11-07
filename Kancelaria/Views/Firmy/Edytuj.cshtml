@@ -1,0 +1,41 @@
+﻿@model Firma
+
+@{
+    ViewBag.Title = "Edycja firmy";
+}
+
+@section featured {
+    @Html.Partial("_FeaturedSection", new FeaturedSectionModel() { Title = String.Format("Edycja firmy."), SubTitle = "Edytuj firmę." })
+}
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Firma</legend>
+
+        @Html.HiddenFor(model => model.Id)
+
+        @Html.Partial("_Firma", Model)
+
+        <p>
+            <input type="submit" value="Zapisz" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @if (KancelariaSettings.IsOneFirm())
+    {
+        @Html.ActionLink("Powrót do strony głównej", "Index", "Home")
+    }
+    else
+    {
+        @Html.ActionLink("Powrót do kartoteki", "Kartoteka")
+    }
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

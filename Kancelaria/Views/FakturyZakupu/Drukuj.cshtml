@@ -1,0 +1,163 @@
+﻿@model Kancelaria.Models.FakturaZakupu
+
+@{
+    ViewBag.Title = "Drukuj";
+}
+<div class="kanc-print-top">
+    Data faktury: @Model.DataFaktury.ToShortDateString()
+    @if(Model.DataZakupu.HasValue)
+    {
+    @:<br />Data sprzedaży: @Model.DataZakupu.Value.ToShortDateString()
+    }
+</div>
+<div class="kanc-print-head">
+    <h2>Faktura @if(Model.CzyZaliczka) { 
+                    @:zaliczkowa 
+                    } @Model.NumerFaktury</h2>
+
+    @*<h4>Termin płatności: @Model.TerminPlatnosci.ToShortDateString()</h4>*@
+</div>
+<div class="kanc-print-sub-head margin-top">
+    <div class="kanc-left-cell">
+        @*<h4>Sprzedawca</h4>
+        @Model.Firma.NazwaPelna<br />
+        @Model.Firma.Ulica @Model.Firma.NumerDomu @if (!String.IsNullOrEmpty(Model.Firma.NumerDomu) && !String.IsNullOrEmpty(Model.Firma.NumerLokalu))
+                                                  { 
+                                                    @:/ 
+                                                  }
+        @Model.Firma.NumerLokalu<br />
+        @Model.Firma.KodPocztowy @Model.Firma.Miejscowosc<br />
+        NIP: @Model.Firma.NIP<br />*@
+        <h4>Sprzedawca</h4>
+        @Html.AdresKontrahenta(Model.Kontrahent)
+    </div>
+    <div class="kanc-right-cell">
+        @*<h4>Konto bankowe</h4> 
+        Bank: @Model.KontoBankowe.NazwaBanku<br />
+        Numer konta bankowego: @Model.KontoBankowe.NumerKonta*@
+    </div>    
+</div>
+<div class="kanc-print-details margin-top">
+    @Html.Partial("_GridPozycjeFakturyZakupu", new ReadOnlyAbleModel<FakturaZakupu>(Model, true, "", ""))
+</div>
+<div class="kanc-print-footer">
+    <div class="kanc-row">
+        <div class="kanc-left-cell">
+            @*Umowa/Zamówienie nr: @Model.Inwestycja.NumerUmowy<br />*@
+            Forma płatności: @Model.SposobPlatnosci.OpisSposobuPlatnosci<br />
+            Termin płatności: @Model.TerminPlatnosci.ToShortDateString()
+        </div>
+        <div class="kanc-right-cell">
+            <table class="small-grid">
+                <thead>
+                    <tr class="ui-widget-header">
+                        <th class="ui-widget">Vat (%)</th>
+                        <th class="ui-widget">Kwota netto</th>
+                        <th class="ui-widget">Kwota vat</th>
+                        <th class="ui-widget">Kwota brutto</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach(var grupa in Model.PozycjaFakturyZakupus.GroupBy(p => p.StawkaVat).AsEnumerable())
+                    {
+                        @:
+                        <tr>
+                            <td>@grupa.First().StawkaVat</td>
+                            <td>@grupa.Sum(p => p.KwotaNetto).ToString("N2")</td>
+                            <td>@grupa.Sum(p => p.KwotaNetto * p.StawkaVat / 100).ToString("N2")</td>
+                            <td>@grupa.Sum(p => p.KwotaNetto + p.KwotaNetto * p.StawkaVat / 100).ToString("N2")</td>
+                        </tr>
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th>Razem</th>
+                        <th>@Model.PozycjaFakturyZakupus.Sum(p => p.KwotaNetto).ToString("N2")</th>
+                        <th>@Model.PozycjaFakturyZakupus.Sum(p => p.KwotaNetto * p.StawkaVat / 100).ToString("N2")</th>
+                        <th>@Model.PozycjaFakturyZakupus.Sum(p => p.KwotaNetto + p.KwotaNetto * p.StawkaVat / 100).ToString("N2")</th>
+                    </tr>
+                </tfoot>
+            </table>
+            <hr />
+            <strong><span>Do zapłaty:</span> <span class="float-right">@Model.PozycjaFakturyZakupus.Sum(p => p.KwotaNetto + p.KwotaNetto * p.StawkaVat / 100).ToString("N2")</span></strong><br />
+            <strong>
+                <span>Słownie:</span> 
+                <span class="float-right">
+                @Formatowanie.LiczbaSlownie(
+                    Decimal.ToInt32(Decimal.Round(Model.PozycjaFakturyZakupus.Sum(p => p.KwotaNetto + p.KwotaNetto * p.StawkaVat / 100)))
+                ) 
+                @Formatowanie.WalutaSlownie(Decimal.ToInt32(Decimal.Round(Model.PozycjaFakturyZakupus.Sum(p => p.KwotaNetto + p.KwotaNetto * p.StawkaVat / 100))), "PLN") 
+                i 
+                @Formatowanie.LiczbaSlownie(
+                    Decimal.ToInt32(
+                        Decimal.Round((Model.PozycjaFakturyZakupus.Sum(p => p.KwotaNetto + p.KwotaNetto * p.StawkaVat / 100) - Decimal.Round(Model.PozycjaFakturyZakupus.Sum(p => p.KwotaNetto + p.KwotaNetto * p.StawkaVat / 100))) * 100)
+                    )
+                )
+                @Formatowanie.WalutaSlownie(
+                    Decimal.ToInt32(
+                        Decimal.Round((Model.PozycjaFakturyZakupus.Sum(p => p.KwotaNetto + p.KwotaNetto * p.StawkaVat / 100) - Decimal.Round(Model.PozycjaFakturyZakupus.Sum(p => p.KwotaNetto + p.KwotaNetto * p.StawkaVat / 100))) * 100)
+                    ),
+                    ".PLN"
+                )
+                </span>
+            </strong>
+        </div>
+    </div>
+    <div class="margin-top text-center">
+        <div class="kanc-left-cell">
+            <strong>Wystawił(a)</strong><br />
+            <br />
+            <br />
+            Podpis osoby upoważnionej<br />
+            do wystawienia faktury Vat
+        </div>
+        <div class="kanc-right-cell">
+            <strong>Odebrał(a)</strong><br />
+            <br />
+            <br />
+            Podpis osoby upoważnionej<br />
+            do odbioru faktury Vat
+        </div>
+    </div>
+</div>
+<div class="kanc-print-links">
+    <p>
+        <span class="button" onclick="window.print();">Drukuj</span>
+    </p>
+    <hr />
+    <p>
+        @Html.ActionLink("Edytuj", "Edytuj", new { id = Model.Id }) @Html.ActionLink("Powrót do kartoteki", "Kartoteka")
+    </p>
+</div>
+@*<div class="kanc-print-head">
+    <h2>Faktura @if(Model.CzyZaliczka) { 
+                    @:zaliczkowa 
+                    } @Model.NumerFaktury</h2>
+    <h3>@Model.WlasnyNumerFaktury</h3>
+
+    <h4>Termin płatności: @Model.TerminPlatnosci.ToShortDateString()</h4>
+</div>
+<div class="kanc-print-sub-head">
+    Kontrahent: @Model.Kontrahent.KodKontrahenta<br />
+    @Model.Kontrahent.NazwaKontrahenta<br />
+    NIP: @Model.Kontrahent.NIP<br />
+    @Model.Kontrahent.Ulica @Model.Kontrahent.NumerDomu @if (!String.IsNullOrEmpty(Model.Kontrahent.NumerDomu) && !String.IsNullOrEmpty(Model.Kontrahent.NumerLokalu))
+                                                        {
+                                                            @:/
+                                                        } 
+    @Model.Kontrahent.NumerLokalu
+    @Model.Kontrahent.KodPocztowy @Model.Kontrahent.Miejscowosc
+</div>
+<div class="kanc-print-details">
+    @Html.Partial("_GridPozycjeFakturyZakupu", new ReadOnlyAbleModel<FakturaZakupu>(Model, true, "", ""))  
+</div>
+<div class="kanc-print-links">
+    <p>
+        <span class="button" onclick="window.print();">Drukuj</span>
+    </p>
+    <hr />
+    <p>
+        @Html.ActionLink("Edytuj", "Edytuj", new { id = Model.Id })
+        @Html.ActionLink("Powrót do kartoteki", "Kartoteka")
+    </p>
+</div>*@
