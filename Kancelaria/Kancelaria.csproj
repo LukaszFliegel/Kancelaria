@@ -771,7 +771,6 @@
     <Content Include="Content\Themes\vader\jquery-ui-1.10.3.custom.css" />
     <Content Include="Content\Themes\vader\jquery-ui-1.10.3.custom.min.css" />
     <Content Include="Content\Themes\vader\Site.css" />
-    <Content Include="Controllers\TODO.txt" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Images\orderedList10.png" />

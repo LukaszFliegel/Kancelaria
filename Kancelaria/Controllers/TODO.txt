@@ -1,8 +1,0 @@
-﻿DONE - Unique key na "kod" roku
-DONE - Sprawdzic, czemu nie wyswietla sie opis roku po jego wyborze (np. na kartotece FS/FZ)
-DONE - Nie otwieracv formatek gdy brak danych slownikowych (redirect do definicji danej slownikowej, np. sposobu platnosci)
-NOT - Schować kartoteke firm gdy mamy jednofirmowosc
-- dopracowac wydruki (na podgladzie wygladaja kiepsko)
-- Ustandaryzowac wydruki (moze jakis dedykowany view?) - np. Logo
-- Sprawdzic dlaczego w KAZie nie drukuje sie logo wydruku a u mnie sie drukuje
-- Zrobic jakies sensowne menu
