@@ -53,7 +53,7 @@ namespace Kancelaria.Repositories
             NewDefault.CzyDomyslny = true;
         }
 
-        public int GetDefaultId()
+        public int? GetDefaultId()
         {
             var result = (from sp in db.TypInwestycjis
                           where sp.CzyDomyslny == true
@@ -62,10 +62,10 @@ namespace Kancelaria.Repositories
             if (result == null)
             {
                 result = (from sp in db.TypInwestycjis
-                          select sp).First();
+                          select sp).FirstOrDefault();
             }
 
-            if (result == null) return 0;
+            if (result == null) return null;
 
             return result.Id;
         }

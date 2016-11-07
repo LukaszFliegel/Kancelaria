@@ -278,6 +278,7 @@
     <Content Include="Content\Images\FoldPaper.png" />
     <Content Include="Content\Images\KazLogo.png" />
     <Content Include="Content\Images\kaz_logo.gif" />
+    <Content Include="Content\Images\Logo.png" />
     <Content Include="Content\Kancelaria.css" />
     <Content Include="Content\Themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\Themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
@@ -787,7 +788,7 @@
     <None Include="Models\Kancelaria.dbml.layout">
       <DependentUpon>Kancelaria.dbml</DependentUpon>
     </None>
-    <None Include="Properties\PublishProfiles\KancelariaDemo.pubxml" />
+    <None Include="Properties\PublishProfiles\eKancelariaDemo - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\localhost.pubxml" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
     <Content Include="Scripts\Awesome.js" />
@@ -835,6 +836,7 @@
     </Content>
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\_references.js" />
@@ -867,7 +869,9 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Web.config" />
+    <Content Include="Views\Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Views\FakturyZakupu\Kartoteka.cshtml" />
     <Content Include="Views\Shared\_FeaturedSection.cshtml" />
     <Content Include="Views\FakturyZakupu\Dodaj.cshtml" />

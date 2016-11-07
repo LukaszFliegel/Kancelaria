@@ -15,6 +15,7 @@ namespace Kancelaria.Controllers
     public class InwestycjeController : KancelariaLookupController
     {
         protected InwestycjeRepository InwestycjeRepository = new InwestycjeRepository();
+        protected TypyInwestycjiRepository TypyInwestycjiRepository = new TypyInwestycjiRepository(); 
 
         public ActionResult Search(string search, int? page)
         {
@@ -62,9 +63,17 @@ namespace Kancelaria.Controllers
 
         public ActionResult Dodaj()
         {
+            var domyslnyTypInwestycji = TypyInwestycjiRepository.GetDefaultId();
+
+            if(domyslnyTypInwestycji == null)
+            {
+                TempData["Message"] = "Brak typu inwestycji, dla którego można by stworzyć inwestycję";
+                return RedirectToAction("Kartoteka");
+            }
+
             var Model = new Inwestycja()
             {
-                IdTypuInwestycji = (new TypyInwestycjiRepository()).GetDefaultId()
+                IdTypuInwestycji = domyslnyTypInwestycji.Value
             };            
 
             return View(Model);
