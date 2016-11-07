@@ -5,10 +5,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using Kancelaria.Repositories.Interfaces;
 
 namespace Kancelaria.Repositories
 {
-    public class LataObrotoweRepository : KancelariaRepository
+    public class LataObrotoweRepository : KancelariaRepository, ILataObrotoweRepository
     {
         public PagedSearchedQueryResult<RokObrotowy> LataObrotowe(int idFirmy, int page)
         {
@@ -21,12 +22,6 @@ namespace Kancelaria.Repositories
 
         public PagedSearchedQueryResult<RokObrotowy> LataObrotowe(int idFirmy, int page, string search, string asc, string desc)
         {
-            //var result = (from lo in db.RokObrotowies
-            //              where lo.IdFirmy == idFirmy
-            //              select lo).AsQueryable();
-
-            //return new PagedSearchedQueryResult<RokObrotowy>(result, page, KancelariaSettings.PageSize);
-
             if (search == null) search = "";
 
             var Query = QueryStringParser<RokObrotowy>.Parse(
