@@ -95,7 +95,7 @@ namespace Kancelaria.Repositories
             catch (Exception e)
             {
                 Logger.Error("Niepowodzenie odczytu wybranego Id roku", e);
-                throw e;
+                throw;
             }
 
             return idRoku;
