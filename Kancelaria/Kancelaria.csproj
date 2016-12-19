@@ -247,17 +247,6 @@
     <Compile Include="Repositories\FakturySprzedazyRepository.cs" />
     <Compile Include="Repositories\FakturyZakupuRepository.cs" />
     <Compile Include="Repositories\FirmyRepository.cs" />
-    <Compile Include="Repositories\Interfaces\ILataObrotoweRepository.cs" />
-    <Compile Include="Repositories\Interfaces\IKontrahenciRepository.cs" />
-    <Compile Include="Repositories\Interfaces\IKontaBankoweRepository.cs" />
-    <Compile Include="Repositories\Interfaces\IKompensatyRepository.cs" />
-    <Compile Include="Repositories\Interfaces\IInwestycjeRepository.cs" />
-    <Compile Include="Repositories\Interfaces\IJednostkiMiaryRepository.cs" />
-    <Compile Include="Repositories\Interfaces\IFirmyRepository.cs" />
-    <Compile Include="Repositories\Interfaces\IFakturyZakupuRepository.cs" />
-    <Compile Include="Repositories\Interfaces\IFakturySprzedazyRepository.cs" />
-    <Compile Include="Repositories\Interfaces\IAdminRepository.cs" />
-    <Compile Include="Repositories\Interfaces\IKancelariaRepository.cs" />
     <Compile Include="Repositories\InwestycjeRepository.cs" />
     <Compile Include="Models\Kancelaria.cs">
       <DependentUpon>Kancelaria.dbml</DependentUpon>
@@ -267,9 +256,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Kancelaria.dbml</DependentUpon>
     </Compile>
-    <Compile Include="Repositories\Interfaces\ITypyInwestycjiRepository.cs" />
-    <Compile Include="Repositories\Interfaces\IRaportyRepository.cs" />
-    <Compile Include="Repositories\Interfaces\ISposobyPlatnosciRepository.cs" />
     <Compile Include="Repositories\JednostkiMiaryRepository.cs" />
     <Compile Include="Repositories\KancelariaRepository.cs" />
     <Compile Include="Repositories\KompensatyRepository.cs" />

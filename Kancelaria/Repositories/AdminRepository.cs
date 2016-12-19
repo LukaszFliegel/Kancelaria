@@ -5,11 +5,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Security;
-using Kancelaria.Repositories.Interfaces;
 
 namespace Kancelaria.Repositories
 {
-    public class AdminRepository : KancelariaRepository, IAdminRepository
+    public class AdminRepository : KancelariaRepository
     {
         public IQueryable<UzytkownikMembership> UzytkownicyMembership()
         {
@@ -24,6 +23,13 @@ namespace Kancelaria.Repositories
 
             return new PagedSearchedQueryResult<UzytkownikMembership>(result, page);
         }
+
+        //public UzytkownikMembership Uzytkownik(string userName)
+        //{
+        //    return (from u in db.UzytkownikMemberships
+        //            where u.UserName == userName
+        //            select u).FirstOrDefault();
+        //}
 
         public void DodajRole(int userId, string roleName)
         {

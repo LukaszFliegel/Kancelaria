@@ -4,11 +4,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using Kancelaria.Repositories.Interfaces;
 
 namespace Kancelaria.Repositories
 {
-    public class TypyInwestycjiRepository : KancelariaRepository, ITypyInwestycjiRepository
+    public class TypyInwestycjiRepository : KancelariaRepository
     {
         public IQueryable<TypInwestycji> TypyInwestycji()
         {

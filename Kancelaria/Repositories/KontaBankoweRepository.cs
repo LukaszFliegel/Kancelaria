@@ -5,11 +5,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using Kancelaria.Repositories.Interfaces;
 
 namespace Kancelaria.Repositories
 {
-    public class KontaBankoweRepository : KancelariaRepository, IKontaBankoweRepository
+    public class KontaBankoweRepository : KancelariaRepository
     {
         public IQueryable<KontoBankowe> KontaBankowe(int idFirmy)
         {

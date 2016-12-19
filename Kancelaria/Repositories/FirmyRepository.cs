@@ -5,11 +5,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using Kancelaria.Repositories.Interfaces;
 
 namespace Kancelaria.Repositories
 {
-    public class FirmyRepository : KancelariaRepository, IFirmyRepository
+    public class FirmyRepository : KancelariaRepository
     {
         public PagedSearchedQueryResult<Firma> Firmy(int page)
         {

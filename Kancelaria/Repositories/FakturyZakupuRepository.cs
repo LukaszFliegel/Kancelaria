@@ -5,11 +5,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using Kancelaria.Repositories.Interfaces;
 
 namespace Kancelaria.Repositories
 {
-    public class FakturyZakupuRepository : KancelariaRepository, IFakturyZakupuRepository
+    public class FakturyZakupuRepository : KancelariaRepository
     {
         public IQueryable<FakturaZakupu> FakturyZakupu(int idFirmy, int idRoku, int? idKontrahenta)
         {

@@ -5,11 +5,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using Kancelaria.Repositories.Interfaces;
 
 namespace Kancelaria.Repositories
 {
-    public class KompensatyRepository : KancelariaRepository, IKompensatyRepository
+    public class KompensatyRepository : KancelariaRepository
     {
         public IQueryable<Kompensata> Kompensaty(int idFirmy, int idRoku)
         {
